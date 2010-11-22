@@ -1,0 +1,48 @@
+This file documents updates and changes in package sensR since version
+1.0.0
+
+Oct. 9. 2009:
+
+- betabin has been completely rewritten with option to choose the
+  chance corrected beta-binomial model as well as the ordinary
+  beta-binomial model.
+- discrim, discrimPwr, discrimSS and findcr have been updated to allow
+  for difference as well as similarity tests and have grown an
+  argument 'pd0 = 0' to indicate the proportion of discriminators in
+  the population. All help pages have been updated.
+- references updated in help files to published same-diff paper and
+  in-press GLIM paper
+
+June 17. 2010: version 1.2.0:
+
+- the twoAC() function and its print method is introduced for
+  estimation of d-prime and tau in the 2-AC protocol
+- the clls function and its methods are no longer supported. 
+  The user is adviced to use clm() from package ordinal instead. 
+
+July 20. 2010: version 1.2.1:
+
+- the following methods for twoAC objects are now available: confint,
+  profile, confint.profile and plot.profile.
+
+October 13. 2010: version 1.2.2:
+
+- rescale function and additional auxiliary (psyfun, psyinv, psyderiv,
+  pc2pd, pd2pc) functions included
+- major revision of betabin: argument Pguess has been removed and the
+  method argument is now the sensory discrimination protocol rather
+  than the parameterization of the beta-binomial model. The summary
+  method has gained the argument level instead of alpha. The results
+  of the summary method are much more extensive with results in terms
+  of Pc, Pd and d-prime.
+- revision of findcr function. It is now faster and more reliable
+  since it is using uniroot rather than a simple while loop and an
+  explicit test that the return value is in fact the critical value is
+  conducted.  
+- Error in discrimSim for the threeAFC method corrected.
+
+October 28. 2010: version 1.2.3:
+
+- major revision of discrim, discrimPwr and discrimSS including
+  confint.discrim, profile.discrim, print.discrim and
+  plot.profile.discrim. 
