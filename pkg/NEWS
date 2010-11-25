@@ -46,3 +46,10 @@ October 28. 2010: version 1.2.3:
 - major revision of discrim, discrimPwr and discrimSS including
   confint.discrim, profile.discrim, print.discrim and
   plot.profile.discrim. 
+
+November 25. 2010: version 1.2.4:
+
+- Vignette 'Methodology' describes the statistical methodology of
+  sensory discrimination tests. 
+- Added the convenience functions d.primePwr and d.primeSS.
+

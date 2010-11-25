@@ -50,7 +50,7 @@
 
 
 \usepackage{lineno}
- \linenumbers
+% \linenumbers
 \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
 \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
 \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
@@ -140,7 +140,7 @@ how such analyses can be performed in \textsf{R} using package
 \textsf{sensR} \citep{christensen10d} co-developed by the author of
 this document. 
 
-This document is devided into section that cover topics with similar
+This document is divided into section that cover topics with similar
 statistical methodology. Implementation choices in the \textsf{sensR}
 package will be described in connection with the statistical
 methodology whenever appropriate. Small examples illustrating the use
@@ -190,7 +190,7 @@ the remaining protocols involve one or more additional parameters each
 with their particular cognitive interpretation.
 
 The 2-AFC and 3-AFC protocols are so-called directional protocols
-since they require that the nature of the difference (e.g. sweetnes)
+since they require that the nature of the difference (e.g. sweetness)
 is provided as part of the assessor instructions. On the other hand
 the triangle and duo-trio protocols are not directional since these 
 protocols are used to test of un-specified differences. From a
@@ -200,16 +200,16 @@ decision strategy is consequently assumed different in these two
 classes of protocols. When the perceptual dimension is fixed, the
 assessors may use the more effective skimming strategy, while
 assessors are forced to use the inferior comparison of distances
-strategy when using the undirectional protocols.  
+strategy when using the un-directional protocols.  
 
 The A-not A and same-different protocols are methods with so-called
 response bias. Response bias refers to the concept that one type of
-response is prefered over another dispite the sensory distance remains
+response is preferred over another despite the sensory distance remains
 unchanged. For instance some assessors may prefer the ``A'' response over
 the ``not A'' response. 
 
 The four simple protocols are without response bias since no response
-can be consistently prefered over another without affecting the
+can be consistently preferred over another without affecting the
 discriminative effect. The decision criterion is said to be fixed or
 stabilized.
 
@@ -219,7 +219,7 @@ stabilized.
   triangle and duo-trio}
 \label{sec:simple-discr-meth}
 
-The four common sensory discrimination protocols are aften used in
+The four common sensory discrimination protocols are often used in
 practical applications in the food industry as well as in other
 areas. They are also of considerable interest in the scientific
 literature about sensory discrimination. 
@@ -245,7 +245,7 @@ are always guessing and discriminators who always discriminate
 correctly and provide the appropriate answer (though this will not
 always be the \emph{correct} answer). One way to express the sensory
 distance of the objects (or discriminative ability of the assessors
---- we will treat these viewpoints synonimously throughout)
+--- we will treat these viewpoints synonymously throughout)
 is the \emph{proportion of discriminators}, $p_d$ in the population of
 interest. It is almost always an unreasonable assumption that some
 assessors are either always discriminating or always guessing
@@ -275,7 +275,7 @@ known as $d'$ (pronounced ``d-prime'') from signal detection theory
 \citep[SDT,][]{green66, macmillan05}, or equivalently \emph{the Thurstonian delta},
 $\delta$ \citep{thurstone27, thurstone27b, thurstone27c}. 
 These two concepts are identical and will be
-used synonimously thoughout, and they are actually based on the same
+used synonymously throughout, and they are actually based on the same
 underlying psychophysical model for the cognitive process. Whereas
 $p_c$ is a measure and parameter completely free of reference to any
 particular discrimination protocol, $p_d$ depends on the
@@ -303,11 +303,11 @@ protocols.
 <<scaleRelations>>=
 
 pd <- seq(0, 1-1e-5, length = 1e2)
-coef.twoAFC <- coef(rescale(Pd = pd, method = "twoAFC"))
-coef.threeAFC <- coef(rescale(Pd = pd, method = "threeAFC"))
+coef.twoAFC <- coef(rescale(pd = pd, method = "twoAFC"))
+coef.threeAFC <- coef(rescale(pd = pd, method = "threeAFC"))
 pd <- seq(0, 1-1e-2, length = 1e2)
-coef.triangle <- coef(rescale(Pd = pd, method = "triangle"))
-coef.duotrio <- coef(rescale(Pd = pd, method = "duotrio"))
+coef.triangle <- coef(rescale(pd = pd, method = "triangle"))
+coef.duotrio <- coef(rescale(pd = pd, method = "duotrio"))
 
 ## OK:
 tail(coef.duotrio)
@@ -332,10 +332,10 @@ plot(c(0, 6), c(.3, 1), type = "n", xlab = "d-prime",
      ylab = "P(correct answer)", axes = FALSE)
 axis(1)
 axis(2, las = 1)
-with(coef.twoAFC, lines(d.prime, Pc, lty = 1))
-with(coef.threeAFC, lines(d.prime, Pc, lty = 2))
-with(coef.duotrio, lines(d.prime, Pc, lty = 3))
-with(coef.triangle, lines(d.prime, Pc, lty = 4))
+with(coef.twoAFC, lines(d.prime, pc, lty = 1))
+with(coef.threeAFC, lines(d.prime, pc, lty = 2))
+with(coef.duotrio, lines(d.prime, pc, lty = 3))
+with(coef.triangle, lines(d.prime, pc, lty = 4))
 legend("topleft", legend = c("2-AFC", "3-AFC", "duo-trio",
                         "triangle"), lty = 1:4, bty = "n")
 
@@ -346,10 +346,10 @@ plot(c(0, 6), c(0, 1), type = "n", xlab = "d-prime",
      ylab = "P(discrimination)", axes = FALSE)
 axis(1)
 axis(2, las = 1)
-with(coef.twoAFC, lines(d.prime, Pd, lty = 1))
-with(coef.threeAFC, lines(d.prime, Pd, lty = 2))
-with(coef.duotrio, lines(d.prime, Pd, lty = 3))
-with(coef.triangle, lines(d.prime, Pd, lty = 4))
+with(coef.twoAFC, lines(d.prime, pd, lty = 1))
+with(coef.threeAFC, lines(d.prime, pd, lty = 2))
+with(coef.duotrio, lines(d.prime, pd, lty = 3))
+with(coef.triangle, lines(d.prime, pd, lty = 4))
 legend("topleft", legend = c("2-AFC", "3-AFC", "duo-trio",
                         "triangle"), lty = 1:4, bty = "n")
 
@@ -399,7 +399,7 @@ so
   P(X = x) = {n \choose x} p_c^x (1 - p_c)^{n - x} .
 \end{equation}
 
-There is a subtle but important destinction between the
+There is a subtle but important distinction between the
 \emph{proportion} of a correct answer and the \emph{probability} of a
 correct answer. The proportion of correct answers is $x/n$ which can
 be any number between 0 and 1. The probability of a correct answer,
@@ -458,7 +458,7 @@ parameters in eq.~\eqref{eq:29}, so if the supplied $p_c$ is less than
 $p_g$, then $p_c = p_g$ is returned with $p_d$ and $d'$ at the
 appropriate levels:
 <<rescaleExample, results = verbatim, echo = t>>=
-rescale(Pc = 0.25, method = "triangle")
+rescale(pc = 0.25, method = "triangle")
 @ 
 
 Function \texttt{rescale} use a number of auxiliary functions for its
@@ -547,7 +547,7 @@ eq.~\eqref{eq:12} with \eqref{eq:2} or \eqref{eq:6}.
 In general, standard errors can be found as the square root of
 the diagonal elements of the variance-covariance matrix of the
 parameters. The variance-covariance matrix can be found as the inverse
-of the negative Hessian matrix (the matrix of second order derivaties)
+of the negative Hessian matrix (the matrix of second order derivatives)
 of the log-likelihood function evaluated at the ML estimates. Here
 there is only one parameter (either one of $p_c$, $p_d$ or $d'$), so
 the matrices are merely scalars. 
@@ -586,7 +586,7 @@ Using $w$ as $t$ in \eqref{eq:14} gives the interval \eqref{eq:13}.
 
 Another general approach is to use the likelihood root statistic 
 (inverted likelihood ratio test) which applies to all likelihood based
-models and almost always impressively successfull. 
+models and almost always impressively successful. 
 The likelihood root statistic is given by:
 \begin{equation}
   \label{eq:15}
@@ -595,8 +595,8 @@ The likelihood root statistic is given by:
 \end{equation}
 Both the Wald and likelihood root statistics asymptotically follow
 standard normal distributions under the null hypothesis. Even though
-their asymptotic behaviour is infact identical, their finite
-sample properties may be quite different and often favour the
+their asymptotic behavior is in fact identical, their finite
+sample properties may be quite different and often favor the
 likelihood root statistic since it removes nonlinear parameterization
 effects. 
 
@@ -766,13 +766,13 @@ given by:
 %% probability of discrimination for a triangle test, then $p_{d0} = 0.2$,
 %% so $p_{c0} = 1/3 + 2/3 p_{d0} = 7/15 \approx 0.467$.
 
-\subsubsection{Confidence intervald and hypothesis tests}
+\subsubsection{Confidence intervals and hypothesis tests}
 \label{sec:conf-interv-hypoth}
 
 Confidence intervals are often described by their relation to
 hypothesis tests such that a two-sided hypothesis test should be
-accompagnied by a two-sided confidence interval and one-sided
-hypothesis tests should be accompagnied by one-sided confidence
+accompanied by a two-sided confidence interval and one-sided
+hypothesis tests should be accompanied by one-sided confidence
 intervals. This will make the $1 - \alpha$ level confidence interval
 the region in which an observation would not lead to rejection of the
 null hypothesis. A confidence interval should, however, provide more
@@ -826,12 +826,12 @@ computations in the following assume that zero variability in
 $p_d$. Possibly the power will be lower and sample sizes higher if
 there really is variation in $p_d$ in the population.
 
-The similarity tests discussed so far are targeted towards equivalence
+The similarity tests discussed so far are targeted toward equivalence
 in the population on average. There is no consideration of equivalence
 on the level of individual discrimination.
 
 A general problem with discrimination testing outlined so far is the
-assumpion that all assessors have the same probability of
+assumption that all assessors have the same probability of
 discrimination. This is hardly ever a priory plausible. The so-called
 guessing model (refs) assumes that there are two kinds of assessors;
 non-discriminators that always guess and true discriminators that
@@ -854,7 +854,7 @@ using the user visible function \texttt{psyderiv}, which implements
 the derivative of the psychometric functions, $f_{ps}'(d')$ for the
 four common discrimination protocols:
 <<rescaleExample2, results = verbatim, echo = t>>=
-rescale(Pd = 0.2, std.err = 0.12, method = "triangle")
+rescale(pd = 0.2, std.err = 0.12, method = "triangle")
 @ 
 
 The \texttt{discrim} function is the primary function for inference in
@@ -928,8 +928,9 @@ The resulting graph is shown in
 Fig.~\ref{fig:plotProfileExample}. Observe that the likelihood
 (profile) function may be extracted from a \texttt{discrim} object
 that is not fitted with \texttt{statistic = "likelihood"}. Further
-information about the use and interpretation of (profile) likelhood
-curves in sensory experiments is given in REFS.
+information about the use and interpretation of (profile) likelihood
+curves in sensory experiments is given in \citep{brockhoff10,
+  christensen09}. 
 
 \setkeys{Gin}{width=.49\textwidth}
 \begin{figure}
@@ -940,7 +941,7 @@ curves in sensory experiments is given in REFS.
   \caption{Relative likelihood function for a 3-AFC experiment with 10
 correct answers in 15 trials. The maximum likelihood estimate is at
 $d' = 1.12$ and the two horizontal lines determine the 95\% and 99\%
-likelhood based confidence intervals.}
+likelihood based confidence intervals.}
 \label{fig:plotProfileExample}
 \end{figure}
 
@@ -1191,12 +1192,12 @@ sufficient.
 
 In more complicated models it is not possible to determine an explicit
 expression for the power of a test and calculation of power based
-simulations can be an attactive approach. Sometimes it may also just
+simulations can be an attractive approach. Sometimes it may also just
 be easier to let the computer do the job by running simulations rather
 than to get bugged down in derivations of explicit expressions for
 power even though they may in fact be possible to derive. 
 
-Recal that power is the probability of getting a significant result
+Recall that power is the probability of getting a significant result
 when there is in fact a difference, thus in the long run it is the
 proportion of significant results to the total number of tests:
 \begin{equation}
@@ -1288,7 +1289,7 @@ and under the alternative hypothesis approximately
 where $p_A$ is the probability under the alternative hypothesis,
 $\sigma_0 = \sqrt{p_0(1 - p_0)/n}$,
 $\sigma_A = \sqrt{p_A(1 - p_A)/n}$ and $\hat p = X/n$ is the estimator
-of a bionomial parameter. The critical point above which the
+of a binomial parameter. The critical point above which the
 null hypothesis is rejected is then
 \begin{equation}
   \label{eq:54}
@@ -1381,7 +1382,7 @@ hypotheses as well as the significance level of the test,
 i.e. $\alpha$ and the desired minimum power; the \emph{target-power}. 
 
 So much for the formal definitions: practical sample size
-determinition is in fact not as simple as the definitions may lead one
+determination is in fact not as simple as the definitions may lead one
 to believe. Consider a situation in which we want to know which sample
 size to choose in a difference test using the triangle protocol where
 the null hypothesis is no difference, target power is 0.80, and we
@@ -1391,7 +1392,7 @@ definition~\eqref{eq:33} tells us that 297 tests are enough; this
 leads to an actual power of 0.802. However, had we decided to use,
 say, 300 tests---for convenience and just to be on the safe side, the
 power of the test is only 0.774; much less than the power with 297
-tests and below our target power. This is truely worrying; how many
+tests and below our target power. This is truly worrying; how many
 samples do we need to be sure that all larger sample sizes also lead
 to a power above 0.80? It is natural to expect power to
 increase with every increase in sample size (a monotonic increase in
@@ -1412,7 +1413,7 @@ than 0.80.
 
 <<sampleSizeFigure>>=
 ss <- 275:325
-(pd <- coef(rescale(d.prime = .9, method = "triangle"))$Pd)
+(pd <- coef(rescale(d.prime = .9, method = "triangle"))$pd)
 pwr <- sapply(ss, function(x) 
               discrimPwr(pdA = pd, sample.size = x, pGuess = 1/3))
 pwrN <- sapply(ss, function(x) 
@@ -1454,7 +1455,7 @@ power of 0.80 is desired. }
 Even though an increase in sample size may lead to a decrease in
 power, it will instead lead to a decrease in the actual
 $\alpha$-level. This occurs because the critical value of the test is
-at times piece-weise constant as a function of sample size,
+at times piece-wise constant as a function of sample size,
 cf. Fig.~\ref{fig:xcrAlpha}.  
 
 \setkeys{Gin}{width=.49\textwidth}
@@ -1483,7 +1484,7 @@ axis(1); axis(2)
 \end{figure}
 
 The sample size for the exact binomial test may be computed with much
-the same while lopp that could also be used to find the critical value
+the same while loop that could also be used to find the critical value
 (cf. section~\ref{sec:critical-value}):
 \begin{algorithmic}
   \STATE $i = 1$
@@ -1510,12 +1511,12 @@ samples is enough to obtain a power of 0.80 (actual power =
 than at $i = 1$. A problem with this approach is that the normal
 approximation is not always strictly liberal. In the function
 \texttt{discrimSS} in package \textsf{sensR} a
-compromize is used, where the while loop is started at one if the
+compromise is used, where the while loop is started at one if the
 sample size estimated by the normal approximation is less than
 50. Otherwise the while loop is started at 90\% of the normal
 approximation estimate and sometimes even lower necessary. If the normal
 approximation estimate is larger than 10,000, the function will
-inform of that and not attemtp to estimate the sample size due to the
+inform of that and not attempt to estimate the sample size due to the
 expected large computation time. In addition to the sample size for
 the 'exact' binomial test, it is also possible to ask for the sample
 size based on the normal approximation. 
@@ -1531,7 +1532,7 @@ actual difference is $d' = 0.9$ under the alternative
 hypothesis. Using package \textsf{sensR} we may get the sample size
 for the exact binomial test with
 <<exactSSexample, results = verb, echo = t>>=
-(pd <- coef(rescale(d.prime = .9, method = "triangle"))$Pd)
+(pd <- coef(rescale(d.prime = .9, method = "triangle"))$pd)
 discrimSS(pdA = pd, pd0 = 0, target.power = 0.8, alpha = 0.05, pGuess
           = 1/3, test = "difference", statistic = "exact")
 @ 
@@ -1625,7 +1626,7 @@ section~\ref{sec:simple-discr-meth}.
 
 It does not have to be assumed that assessors are either
 discriminators or non-discriminators. These assessor types can be
-regarded as the extreme endpoints inbetween which the population of
+regarded as the extreme endpoints in-between which the population of
 assessors distribute.
 
 
@@ -1638,7 +1639,7 @@ assessors distribute.
 A likelihood ratio test of over-dispersion can be calculated by
 comparing the likelihood of the beta-binomial model with the
 likelihood of the standard binomial model.
-Suppose 20 panellists each conduct 10 triangle tests, with $x_i$
+Suppose 20 panelists each conduct 10 triangle tests, with $x_i$
 number of correct responses out of $n_i = 10$ trials for all $i$,
 where $i = 1, \ldots, N$, $N = 20$. 
 
@@ -1675,7 +1676,7 @@ test of $\gamma = 0$ versus $\gamma > 0$ and hence a test on the
 boundary of the parameter space for $\gamma$. The appropriate df may
 be closer to one half, but this has not been empirically
 justified. One df corresponds to the two-sided test and the test is in
-fact one-sided, which motivates halfing the degrees of freedom.
+fact one-sided, which motivates halving the degrees of freedom.
 Choosing df = 1 is on the safe side since this leads to
 $p$-value which may be a little too large.
 
@@ -1739,245 +1740,8 @@ without a difference in mean, so the joint test of mean and
 dispersion; the test of any difference, may be almost as
 powerful. We expect that when the beta-binomial model is appropriate,
 i.e. when there is appreciably over-dispersion, the test of any
-difference will be supperior to the other two tests or at least at
+difference will be Superior to the other two tests or at least at
 least as good as them. 
-
-\subsubsection{$\chi^2$-tests based on contingency tables}
-\label{sec:chi2-tests-based-on-contingency-tables}
-
-
-For the test of any difference (i.e. the no-difference test) an exact
-binomial one-tailed difference test, cf. eg.~(\ref{eq:21}) may be
-used. This test is only appropriate when the difference test is that of
-no-difference. If the null hypothesis is at a $p_{c0} > p_g$, this
-test is no longer valid. 
-
-The Pearson $\chi^2$ test has test statistic
-\begin{equation}
-  \label{eq:43}
-  X^2 = \sum_{jk} \frac{(o_{jk} - e_{jk})^2}{e_{jk}}
-\end{equation}
-and the often very similar likelihood ratio test has statistic
-\begin{equation}
-  \label{eq:45}
-  G^2 = 2 \sum_{jk} o_{jk} \log \frac{o_{jk}}{e_{jk}} ,
-\end{equation}
-where $o_{jk}$ are the observed frequencies and $e_{jk}$ are the
-expected frequencies in the two-way contingency table indexed by $j$
-in rows and $k$ in columns. The reference distribution for these
-statistics is a $\chi^2$-distribution with $(k-1)(j-1)$ degrees of
-freedom. The likelihood ratio test is defined under zero-counts with
-the definition: $0 \log 0 \equiv 0$.
-
-Replicated binomial observations may be summarized in a $1\times 2$
-table of correct and incorrect responses; $\sum_i x_i$ and $\sum_i
-(n_i - x_i)$ respective. The expected number of correct answers under
-the null hypothesis of no difference are $e_{11} = p_g n.$ and 
-$e_{12} = (1-p_g)n.$, where $n. = \sum_i n_i$. Application of
-(\ref{eq:43}) and (\ref{eq:45}) provide tests of the no-difference
-hypothesis versus a general alternative. The tests are on one degree
-of freedom.
-
-The observations can also be arranged in a $N\times 2$ table with one
-row for each individual ($i$). The Pearson and likelihood ratio tests
-can also be applied to this table in a test of homogeneity (or
-heterogeneity / over-dispersion). This test is on $(N-1)(2-1)$ degrees
-of freedom. 
-
-This corresponds to assuming that 
-$X_i \sim \textup{binom}(p_{ci}, n_i)$, 
-i.e. that each individual has a unique probability of a correct
-response but with no model for these subject-specific
-probabilities. In the beta-binomial model we augmented this model with
-a model for the subject-specific probabilities. As $n_i$ increases,
-and if $p_{ci}$ stay away from their boundaries, the beta-binomial
-model converges to the ``fixed-effects'' model, i.e. without the
-random (beta distributed) probability effects.
-
-Many other models are possible, e.g. we could augment the binomial
-model with the assumption that 
-$\log (p_{ci} / 1 - p_{ci}) \sim N(p_c, \sigma^2)$, which leads to a
-simple version of a generalized linear mixed model. However, all other
-tests for homogeneity/over-dispersion mentioned here than that
-provided by the chance-corrected beta-binomial are wrong in the sense
-that 
-
-<<replicatedTests, eval = f>>=
-x <- c(2,2,3,3,rep(4, 7), 5, 6, 10, 11)
-sum(x)
-n <- rep(12, length(x))
-sum(n)
-
-chisq.test(c(sum(x), sum(n)))
-
-x <- c(2, 2, 3, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 9,
-       11, 12) 
-n <- rep(12, 23)
-(x. <- sum(x))
-(n. <- sum(n))
-discrim(x., n., method = "triangle")
-(pc <- x./n.)
-rescale(Pc = pc, std.err = sqrt(pc*(1-pc)/n.), method = "triangle")
-## One df Pearson test:
-(cst <- chisq.test(c(x., n. - x.), p = c(1/3, 2/3))) ## 49.32
-## G^2 statistic:
-(G2 <- 2 * with(cst, sum(observed * log(observed / expected)))) ## 46.16
-pchisq(G2, df = 1, lower = FALSE)
-
-summary(betabin(cbind(x, n), method = "triangle"))
-
-(cst2 <- chisq.test(mat <- cbind(x, n-x))) ## sames as:
-chisq.test(mat <- cbind(x, n-x), p = c(rep(1/3, 23), rep(2/3, 23)))
-
-ra <- apply(mat, 1, function(x) x[1] / x[2]) 
-sum(with(cst2, (observed - expected)^2 / expected))
-
-G.test(mat)
-names(cst)
-
-## Similar test for over-dispersion:
-summary(glm(cbind(x, n - x) ~ 1, family = binomial))
-summary(glm(cbind(x, n - x) ~ 1, family = quasibinomial))
-
-@ 
-
-\begin{itemize}
-\item simple binomial test (possibly weak)
-\item the results of \citet{brockhoff03}
-\item chi-square table approaches - refer to Meyners paper
-\item beta-binomial model or chance-corrected beta-binomial model
-  \begin{itemize}
-  \item likelihood ratio test of any difference
-  \item likeliood ratio test of over-dispersion
-  \item appropriate degrees of freedom?
-  \end{itemize}
-\item How could we possibly do similarity testing?
-\item Power and sample size considerations?
-\end{itemize}
-
-\subsection{Related literature}
-
-\citet{meyners07c} Proposed to use a Pearson $\chi^2$ goodness-of-fit (GOF)
-test to test for effects in a paired preference test. The idea is to
-compare the observed freqencies with those of a binomial distribution
-with $p = 1/2$. Any deviation from the binomial distribution is
-evidence of heterogeneity in excess of that expected for the binomial
-distribution, evidence of a mean difference in preference or some
-combination of a mean effect and a variability effect. Meyners
-proposed to use a simulation, or 'exact' version, of the test to have
-an appropriate test when the expected frequencies are small. 
-
-The test statistic is
-\begin{equation}
-  \label{eq:61}
-  X= \sum_{j = 0}^k x_j = \sum_{j=1}^k \frac{(y_j - e_j)^2}{e_j} ,
-\end{equation}
-where $e_j = E[y_j]$ are the exected frequencies under the null model,
-where $y_j \sim \textup{binom}(p = 1/2, k)$. This statistic is
-asymptotically $\chi^2_k$ distributed under the null model. The exact
-test is to compare the observed value of $X$ with a simulated
-distribution under the null model. 
-
-If $e_j$ are computed under, say, a beta-binomial model, \eqref{eq:61}
-is a GOF test of the beta-binomial model. The degrees of freedom are
-now $k - p$, where $p$ is the number of parameters under the model,
-e.g. two under the beta-binomial model.
-
-Using simulations, Meyners showed that the GOF test is more powerful
-than the standard 'exact' binomial test and in general more powerful
-than tests based on the beta-binomial model. He even observes this
-when the observations are beta-binomially distributed. 
-
-We note, however, that Meyners refer to an ``ordinary binomial test'',
-by which we assume he means the two-sided so-called exact binomial
-test (two-sided version of \eqref{eq:21}), but he is not precise about
-this. 
-
-Perhaps more worrying, he does not say which test based on the
-beta-binomial model he employs; many tests, including for example 
-Wald and likelihood ratio tests, are available.
-
-One important point in \citet{meyners07c} is that a comparison of
-observed and expected frequencies can lend insight into the structure
-of preference in the studied population; are dispersion or mean
-differences most important?
-
-\citet{meyners07c} does not describe how many simulations he uses to
-construct his tables of power comparisons. This makes it dificult to
-assess the uncertainty in the numbers that he quotes. 
-
-\begin{table}
-  \begin{center}
-    \caption{Half the 95\% CI width for various $n$ and $p$ to express the
-      number of significant digits which should be reported for some
-      no. simulations, $n$ and the probability parameter, $p$. This is
-      relevant for simulations of power, coverage probability
-      etc.\label{tab:ciWidth} } 
-    \begin{tabular}{rrrrrrr}
-      \hline
-      & & \multicolumn{5}{c}{$n$} \\
-      \cline{3-7} 
-      \multicolumn{2}{c}{$p$} & $10^2$ & $10^3$ & $10^4$ & $10^5$ &
-      $10^6$ \\  
-      \hline
-      0.1 & 0.9 & 0.05880 & 0.01859 & 0.00588 & 0.00186 &
-      0.00059 \\  
-      0.2 & 0.8 & 0.07840 & 0.02479 & 0.00784 & 0.00248 &
-      0.00078 \\  
-      0.3 & 0.7 & 0.08982 & 0.02840 & 0.00898 & 0.00284 &
-      0.00090 \\  
-      0.4 & 0.6 & 0.09602 & 0.03036 & 0.00960 & 0.00304 &
-      0.00096 \\  
-      0.5 & 0.5 & 0.09800 & 0.03099 & 0.00980 & 0.00310 &
-      0.00098 \\  
-      \hline 
-    \end{tabular}
-  \end{center}
-\end{table}
-
-In the implementation used by citet{meyners07c} the beta-binomial
-model never converges more than 50\% of the cases when the
-observations have standard binomial variation. When the oberservations
-are over-dispersed, the Meyners' implementation of the beta-binomial
-model rarely converges in 100\% of the cases. We believe this
-behaviour to be highly implementation specific, and we expect that the
-implementation of the beta-binomial model in package \textsf{sensR}
-will only rarely diverge. If we are correct in our expectations, the
-treatment of the ``beta-binomial approach'' in \citep{meyners07c} is
-unfortunate, since it may lead some readers to believe that this is an
-inherent feature of the model and not of a particular implementation. 
-
-\section{Notes}
-
-
-
-\begin{itemize}
-%% \item the critical value
-%% \item power for the no-difference test (exact binom)
-%% \item power for general difference tests
-%% \item power for general similarity tests
-\item ISO standard power and sample size calculations
-%% \item power computed from the normal approximation
-%% \item power computed from simulations
-\item sample size for
-  \begin{itemize}
-  \item simple no-difference tests
-  \item general difference tests
-  \item similarity tests
-  \end{itemize}
-%% \item Effect of a non-zero $p_d$ on the sample size of similarity
-%%   tests
-%% \item computational considerations
-\item It is a problem that various arguments in the discrim
-  family of functions are required to be provided on various scales;
-  some in terms of $p_c$, some in terms of $p_d$, and some in terms of
-  $d'$. I think we should strive for more consistency.
-%% \item Further we should have a function that takes as argument the
-%%   type of protocol and one of $p_c$, $p_d$ and $d'$ and returns values
-%%   for the rest. This could include standard errors as an optional
-%%   argument. DONE: \texttt{rescale} is now that function.
-\end{itemize}
-
 
 \bibliography{C:/Users/rhbc/Documents/DTU/EksProjPBB/EksProj}
 %% \newpage
@@ -1991,47 +1755,6 @@ inherent feature of the model and not of a particular implementation.
 <<eval=f>>=
 
 
-plot(range(ss), c(0.73, .85), type = "n", xlab = "sample size",
-     ylab = "power", axes = FALSE)
-lines(ss, pwr, type = "l")
-points(ss, pwr, pch = 20, cex = .8)
-abline(h = 0.8, lty = 2)
-lines(ss, pwrN, col = "blue")
-legend("topleft", legend = c("exact binomial", "normal approx.",
-                    "target power"), lty = c(1, 1, 2),
-       pch = c(20, NA, NA), col = c(1, "blue", 1), pt.cex = .8)
-## axis(2, at = c(0.72, 0.75, 0.80, 0.85))
-axis(2, las = 1)
-axis(1, at = c(275, 297, 297+21, 325))
-segments(297, 0.6, 297, 
-         discrimPwr(pd, sample.size = 297, pGuess = 1/3), lty = 3)
-segments(297+21, 0.6, 297+21, discrimPwr(pd, sample.size = 297+21,
-                                         pGuess = 1/3), lty = 3)
-
-points(ss, aa + .70, pch = 20)
-lines(ss, aa + .7, lty = 3)
-
-#################################
-ss
-xcr <- sapply(ss, function(ss) findcr(ss, p0 = 1/3))
-plot(ss, xcr, type = "l")
-points(ss, xcr, pch = 20)
-1 - pbinom(113-1, 297, 1/3) # 0.04937999
-
-n <- 299
-1 - pbinom(findcr(n, p0 = 1/3) - 1, n, 1/3) # 0.04937999
-aa <- sapply(ss, function(n)
-             1 - pbinom(findcr(n, p0 = 1/3) - 1, n, 1/3))
-
-plot(ss, aa, pch = 20, ylim = c(0.03, .05))
-lines(ss, aa, lty = 1)
-
-plot(ss, aa + 1 - pwr, type = "b")
-plot(ss, pwr + 1 - aa, type = "b")
-
-plot(ss, aa, type = "b")
-
-1 - pbinom(112-1, 297, 1/3)
 
 @
 

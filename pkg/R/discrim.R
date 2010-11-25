@@ -89,8 +89,8 @@ discrimPwr <-
   ##   stop("'pd0' has to be between zero and one")
   if(pdA < 0 | pdA > 1)
     stop("'pdA' has to be between zero and one")
-  ## get Pc from pdA and pGuess:
-  Pc <- pd2pc(pdA, pGuess)
+  ## get pc from pdA and pGuess:
+  pc <- pd2pc(pdA, pGuess)
   if(stat == "normal") {
     pwr <- normalPwr(pdA = pdA, pd0 = pd0, sample.size = ss,
                      alpha = alpha, pGuess = pGuess, test = test)
@@ -101,15 +101,40 @@ discrimPwr <-
   ## compute power of the test from critical value:
   if(test == "difference") {
     xcr <- delimit(xcr, low = 1, up = ss + 1)
-    power <- 1 - pbinom(q = xcr - 1, size = ss, prob = Pc)
+    power <- 1 - pbinom(q = xcr - 1, size = ss, prob = pc)
   }
   else if(test == "similarity") {
     xcr <- delimit(xcr, low = 0, up = ss)
-    power <- pbinom(q = xcr, size = ss, prob = Pc)
+    power <- pbinom(q = xcr, size = ss, prob = pc)
   }
   else ## should never happen
     stop("'test' not recognized")
   return(power)
+}
+
+d.primePwr <-
+  function(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
+           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           test = c("difference", "similarity"),
+           statistic = c("exact", "normal"))
+{
+  ## Convenience function that simply modifies some arguments and
+  ## calls discrimPwr
+  newCall <- call <- match.call()
+  method <- match.arg(method)
+  stopifnot(length(d.primeA) == 1 && is.numeric(d.primeA) &&
+            d.primeA >= 0)
+  stopifnot(length(d.prime0) == 1 && is.numeric(d.prime0) &&
+            d.prime0 >= 0)
+  pdA <- coef(rescale(d.prime = d.primeA, method = method))$pd
+  pd0 <- coef(rescale(d.prime = d.prime0, method = method))$pd
+  newCall$method <- newCall$d.primeA <- newCall$d.prime0 <- NULL
+  newCall$pGuess <-
+    ifelse(method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
+  newCall$pdA <- pdA
+  newCall$pd0 <- pd0
+  newCall[[1]] <- as.name("discrimPwr")
+  return(eval.parent(newCall))
 }
 
 normalSS <-
@@ -197,6 +222,31 @@ discrimSS <-
   return(ssTry)
 }
 
+d.primeSS <- 
+  function(d.primeA, d.prime0 = 0, target.power = 0.90, alpha = 0.05,
+           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           test = c("difference", "similarity"),
+           statistic = c("exact", "normal")) 
+{
+  ## Convenience function that simply modifies some arguments and
+  ## calls discrimSS
+  newCall <- call <- match.call()
+  method <- match.arg(method)
+  stopifnot(length(d.primeA) == 1 && is.numeric(d.primeA) &&
+            d.primeA >= 0)
+  stopifnot(length(d.prime0) == 1 && is.numeric(d.prime0) &&
+            d.prime0 >= 0)
+  pdA <- coef(rescale(d.prime = d.primeA, method = method))$pd
+  pd0 <- coef(rescale(d.prime = d.prime0, method = method))$pd
+  newCall$method <- newCall$d.primeA <- newCall$d.prime0 <- NULL
+  newCall$pGuess <-
+    ifelse(method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
+  newCall$pdA <- pdA
+  newCall$pd0 <- pd0
+  newCall[[1]] <- as.name("discrimSS")
+  return(eval.parent(newCall))
+}
+
 
 discrim <-
   function(correct, total, pd0 = 0, conf.level = 0.95,
@@ -232,15 +282,15 @@ discrim <-
   se.mu <- sqrt(mu*(1 - mu)/n)
   ## Draft coefficient table:
   table <- array(NA, dim = c(3, 4))
-  rownames(table) <- c("Pc", "Pd", "d-prime")
+  rownames(table) <- c("pc", "pd", "d-prime")
   colnames(table) <- c("Estimate", "Std. Error", "Lower", "Upper")
   ## Fill in estimates:
-  obj <- rescale(Pc = mu, method = method)
+  obj <- rescale(pc = mu, method = method)
   table[,1] <- unlist(obj$coefficients)
   pc.hat <- table[1,1]
   ## Fill in standard errors:
   if(mu < 1 && mu > Pguess) {
-    obj <- rescale(Pc = mu, std.err = se.mu, method = method)
+    obj <- rescale(pc = mu, std.err = se.mu, method = method)
     table[,2] <- unlist(obj$std.err)
   }
   ## Get p-value, CI and test statistic:
@@ -286,7 +336,7 @@ discrim <-
   }
   if(sum(is.na(ci)) == 0) {
     ci <- delimit(x = ci, lower = 0, upper = 1)
-    intervals <- rescale(Pc = ci, method = method)$coefficients
+    intervals <- rescale(pc = ci, method = method)$coefficients
     table[,3] <- unlist(intervals[1,])
     table[,4] <- unlist(intervals[2,])
   }
@@ -744,19 +794,19 @@ plotProf <-
 ##     stop("'alpha' has to be between zero and one")
 ##   if(pd0 < 0 | pd0 > 1)
 ##     stop("'pd0' has to be between zero and one")
-##   ## get Pc from delta:
-##   Pc <- psyfun(delta, method = method)
+##   ## get pc from delta:
+##   pc <- psyfun(delta, method = method)
 ##   Pguess <- ifelse(method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
 ##   ## critical value in one-tailed binomial test:
 ##   xcr <- findcr(ss, alpha, Pguess, test = test, pd0)
 ##   ## compute power of the test from critical value:
 ##   if(test == "difference") {
 ##     xcr <- delimit(xcr, low = 1, up = ss + 1)
-##     power <- 1 - pbinom(q = xcr - 1, size = ss, prob = Pc)
+##     power <- 1 - pbinom(q = xcr - 1, size = ss, prob = pc)
 ##   }
 ##   else if(test == "similarity") {
 ##     xcr <- delimit(xcr, low = 0, up = ss)
-##     power <- pbinom(q = xcr, size = ss, prob = Pc)
+##     power <- pbinom(q = xcr, size = ss, prob = pc)
 ##   }
 ##   else ## should never happen
 ##     stop("'test' not recognized")

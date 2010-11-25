@@ -1,24 +1,39 @@
 \name{discrimPwr}
 \alias{discrimPwr}
+\alias{d.primePwr}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Sensory discrimination power analysis}
 \description{
   Computes the power of a difference or similarity test for a sensory
   discrimination experiment using the binomial distribution.
+  \code{d.primePwr} is a convenience function that calls
+  \code{discrimPwr} but has arguments in terms of d-prime rather than
+  pd, the probability of discrimination.
 }
 \usage{
 discrimPwr(pdA, pd0 = 0, sample.size, alpha = 0.05, pGuess = 1/2,
+           test = c("difference", "similarity"),
+           statistic = c("exact", "normal"))
+
+d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
+           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
            test = c("difference", "similarity"),
            statistic = c("exact", "normal"))
 }
 \arguments{
   \item{pdA}{the probability of discrimination for the model under the
     alternative hypothesis; scalar between zero and one}
+  \item{d.primeA}{d-prime for the model under the
+    alternative hypothesis; non-negative numerical scalar}
   \item{pd0}{the probability of discrimination under the
     null hypothesis; scalar between zero and one}
+  \item{d.prime0}{d-prime under the null hypothesis; non-negative
+    numerical scalar}
   \item{sample.size}{the sample size; a scalar positive integer}
   \item{alpha}{the type I level of the test; scalar between zero and
     one}
+  \item{method}{the discrimination protocol for which the power should
+    be computed} 
   \item{pGuess}{the guessing probability for the discrimination
     protocol, e.g. 1/2 for duo-trio and 2-AFC, and 1/3 for
     triangle and 3-AFC; scalar between zero and one}
@@ -54,9 +69,11 @@ discrimPwr(pdA, pd0 = 0, sample.size, alpha = 0.05, pGuess = 1/2,
 \examples{
 ## Finding the power of a discrimination test with d-prime = 1,
 ## a sample of size 30 and a type I level of .05:
-pd <- coef(rescale(d.prime = 1, method = "twoAFC"))$Pd
+pd <- coef(rescale(d.prime = 1, method = "twoAFC"))$pd
 discrimPwr(pd, sample.size = 30)
+d.primePwr(1, sample.size = 30, method = "twoAFC")
 discrimPwr(pd, sample.size = 30, statistic = "normal")
+
 
 ## A similarity example:
 discrimPwr(pdA = 0.1, pd0 = 0.2, sample.size = 100, pGuess = 1/3,
