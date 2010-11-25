@@ -95,7 +95,7 @@ beta-binomial models.
 \newpage
 
 \SweaveOpts{echo=f, results=hide, strip.white=t, width=4.5, height=4.5}
-\SweaveOpts{prefix.string=./figs/methodology}
+\SweaveOpts{prefix.string=figs}
 \fvset{listparameters={\setlength{\topsep}{0pt}}, gobble=0, fontsize=\small}
 %% \fvset{gobble=0, fontsize=\small}
 \setkeys{Gin}{width=.7\textwidth}
