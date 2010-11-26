@@ -134,9 +134,12 @@ discrim(10, 15, method = "threeAFC", statistic = "likelihood")
 discrim(10, 15, method = "duotrio", conf.level = 0.90)
 discrim(10, 15, method = "triangle", statistic = "score")
 
+## plot the distributions of sensory intensity:
+m1 <- discrim(10, 15, method = "twoAFC")
+plot(m1)
+
 ## A similarity test where less than chance successes are obtained:
-discrim(20, 75, method = "triangle", pd0 = .2,
-   test = "similarity")
+discrim(20, 75, method = "triangle", pd0 = .2, test = "similarity")
 
 }
 \keyword{models}% at least one, from doc/KEYWORDS

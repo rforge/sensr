@@ -53,3 +53,9 @@ November 25. 2010: version 1.2.4:
   sensory discrimination tests. 
 - Added the convenience functions d.primePwr and d.primeSS.
 
+November 26. 2010: version 1.2.5:
+
+- print.anota is fixed.
+- confint.anota and plot.anota functions added and documented in the
+  AnotA help file. Examples added to help page.
+

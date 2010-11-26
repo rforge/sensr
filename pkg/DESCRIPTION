@@ -1,8 +1,8 @@
 Package: sensR
 Type: Package
 Title: Thurstonian models for sensory discrimination
-Version: 1.2.4
-Date: 2010-11-25
+Version: 1.2.5
+Date: 2010-11-26
 Author: Rune Haubo B Christensen and Per Bruun Brockhoff
 Maintainer: Rune Haubo B Christensen <rhbc@imm.dtu.dk>
 Depends: numDeriv

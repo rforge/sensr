@@ -507,6 +507,21 @@ plot.discrim <-
   y2 <- dnorm(z, mean = coefficients(x)[1, 3])
   main.txt <- ifelse(main,
                      paste("Distribution of sensory intensity for the",
+                           x$method, "test"), c("") )
+  plot(z, y, type="l", xlab = "Sensory Magnitude",
+       ylab = "", main = main.txt, las = 1, lty = 2, ...)
+  lines(z, y2, col = "red", lty = 1, ...)
+  invisible()
+}
+
+plot.anota <-
+  function(x, main = TRUE, length = 1000, ...)
+{
+  z <- seq(-5, 5, length.out = length)
+  y <- dnorm(z)
+  y2 <- dnorm(z, mean = coefficients(x))
+  main.txt <- ifelse(main,
+                     paste("Distribution of sensory intensity for the",
                            x$test, "test"), c("") )
   plot(z, y, type="l", xlab = "Sensory Magnitude",
        ylab = "", main = main.txt, las = 1, lty = 2, ...)
@@ -607,6 +622,16 @@ discrimr <- ## Discrim revised
   names(fit$coef) <- dn
   class(fit) <- "discrimr"
   fit
+}
+
+confint.anota <-
+  function(object, parm, level = 0.95, ...)
+### get confint from the discrim object.
+{
+  ci <- MASS:::confint.glm(object$res, level = level)
+  rownames(ci) <- c("threshold", "d.prime")
+  ci[2,] <- -ci[2,]
+  return(ci)
 }
 
 confint.discrim <-
