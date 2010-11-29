@@ -73,12 +73,12 @@ profile.twoAC <-
     sapply(dseq, function(dd)
            optimize(nll.tau, c(1e-6, 10), d = dd, data = fitted$data)$objective)
   ## get likelihood root statistic:
-  sgn <- 2*(dseq > fitted$d.prime) - 1
+  sgn <- 2*(dseq < fitted$d.prime) - 1
   Lroot <- sgn * sqrt(2) * sqrt(nll + fitted$logLik)
   res <- data.frame("Lroot" = c(0, Lroot),
                     "d.prime" = c(fitted$d.prime, dseq))
   res <- res[order(res[,1]),]
-  if(!all(diff(res[,2]) > 0))
+  if(!all(diff(res[,2]) < 0))
     warning("likelihood is not monotonically decreasing from maximum,\n",
             "  so profile may be unreliable")
   prof <- vector("list", length = 1)
@@ -131,7 +131,7 @@ confint.profile.twoAC <-
   cutoff <- qnorm(a)
   pro <- object[[ "d.prime" ]]
   sp <- spline(x = pro[, 2], y = pro[, 1])
-  ci[1, ] <- approx(sp$y, sp$x, xout = cutoff)$y
+  ci[1, ] <- approx(-sp$y, sp$x, xout = cutoff)$y
   ci
 }
 
