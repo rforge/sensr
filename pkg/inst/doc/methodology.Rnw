@@ -1743,7 +1743,7 @@ i.e. when there is appreciably over-dispersion, the test of any
 difference will be Superior to the other two tests or at least at
 least as good as them. 
 
-\bibliography{C:/Users/rhbc/Documents/DTU/EksProjPBB/EksProj}
+\bibliography{meth}
 %% \newpage
 %% \appendix
 %% \input{Appendix.tex}
