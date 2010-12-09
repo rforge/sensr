@@ -160,17 +160,17 @@ discrimination testing to the level of \citep[][chapter 7]{naes10}.
 \section{Classification of sensory discrimination protocols}
 \label{sec:class-sens-discr}
 
-\begin{itemize}
-\item simple binomial response
-\item compound binomial response
-\item multinomial response
-\item comparison of distances versus skimming strategy
-\item decision strategy versus decision rule
-\item protocols with response bias
-\item Forced choice methods
-\item ``nature of difference'' or ``sensory/perceptual dimension''
-  required
-\end{itemize}
+%% \begin{itemize}
+%% \item simple binomial response
+%% \item compound binomial response
+%% \item multinomial response
+%% \item comparison of distances versus skimming strategy
+%% \item decision strategy versus decision rule
+%% \item protocols with response bias
+%% \item Forced choice methods
+%% \item ``nature of difference'' or ``sensory/perceptual dimension''
+%%   required
+%% \end{itemize}
 
 The most common and simplest discrimination protocols comprise the
 2-AFC, 3-AFC, triangle, duo-trio, A-not A and same-different
