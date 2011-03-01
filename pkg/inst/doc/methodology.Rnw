@@ -615,8 +615,8 @@ models and almost always impressively successful.
 The likelihood root statistic is given by:
 \begin{equation}
   \label{eq:15}
-  r(\mu_0) = \textup{sign}(\hat\mu - \mu_0) \sqrt{2} \left\{
-    \ell(\hat\mu; x) - \ell(\mu_0; x) \right\}
+  r(\mu_0) = \textup{sign}(\hat\mu - \mu_0) \sqrt{2 \left\{
+    \ell(\hat\mu; x) - \ell(\mu_0; x) \right\} }
 \end{equation}
 Both the Wald and likelihood root statistics asymptotically follow
 standard normal distributions under the null hypothesis. Even though
