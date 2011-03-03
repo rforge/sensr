@@ -2,55 +2,71 @@
 \alias{twoAC}
 \alias{print.twoAC}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{2-AC discrimination protocol}
+\title{2-AC Discrimination Protocol}
 \description{
-  Provides estimates and standard errors of d-prime and tau for the two
-  alternative (2-AC) discrimination protocol. The 2-AC protocol is
+  Computes estimates and standard errors of d-prime and tau for the two
+  alternative (2-AC) protocol. A confidence interval and
+  significance test for d-prime is also provided. The 2-AC protocol is 
   equivalent to a 2-AFC protocol with a "no-difference" option. 
 }
 \usage{
 
-twoAC(data, ...)
+twoAC(data, d.prime0 = 0, conf.level = 0.95,
+      statistic = c("likelihood", "Wald"),
+      alternative = c("two.sided", "less", "greater"), ...)
 
 }
 \arguments{
   \item{data}{
-    a numeric vector of length 3 with the number of observations in the
-    three response categories. If the third element is larger than the
-    first element, then the estimate of d-prime will be positive.
-  }
-  \item{\dots}{
-    not currently used
-  }
+    a non-negative numeric vector of length 3 with the number of
+    observations in the three response categories. If the third element
+    is larger than the first element, then the estimate of d-prime will
+    be positive. }
+  \item{d.prime0}{the value of d-prime under the null hypothesis for the
+    significance test.}
+  \item{conf.level}{the confidence level.}
+  \item{statistic}{the statistic to use for confidence level and
+    significance test.}
+  \item{alternative}{the type of alternative hypothesis.}
+  \item{\dots}{not currently used.}
 }
 \details{
   \code{\link[=confint.twoAC]{confint}},
-  \code{\link[=profile.twoAC]{profile}} and
+  \code{\link[=profile.twoAC]{profile}},
+  \code{\link{twoACpwr}},
+  \code{logLik}, \code{vcov}, and
   \code{print} methods are implemented for \code{twoAC} objects.
 }
 \value{
   An object of class \code{twoAC} with elements
-  \item{d.prime}{
-    the estimate of d-prime
-  }
-  \item{tau}{
-    the estimate of tau
-  }
   \item{coefficients}{
-    named vector of coefficients; d-prime and tau
+    2 by 2 coefficient matrix with estimates and standard errors of
+    d-prime and tau. If the variance-covariance matrix of the parameters
+    is not defined, the standard errors are \code{NA}.
   }
   \item{vcov}{
-    variance-covariance matrix of the parameter estimates
+    variance-covariance matrix of the parameter estimates. Only present
+    if defined for the supplied data.
   }
   \item{data}{
-    the data supplied to the function
+    the data supplied to the function.
   }
   \item{call}{
-    the matched call
+    the matched call.
   }
   \item{logLik}{
-    the value of the log-likelihood at the maximum likelihood estimates
+    the value of the log-likelihood at the maximum likelihood estimates.
   }
+  \item{alternative}{the name of the alternative hypothesis for the
+    significance test.}
+  \item{statistic}{the name of the test statistic used for the
+    significance test.}
+  \item{conf.level}{the confidence level for the confidence interval for
+    d-prime.}
+  \item{d.prime0}{the value of d-prime under the null hypothesis in the
+    significance test.}
+  \item{p.value}{p-value of the significance test.}
+  \item{confint}{two-sided condfidence interval for d-prime.}
 }
 \references{
   Christensen, R.H.B. and Brockhoff, P.B. (2010). Estimation of the
@@ -62,8 +78,28 @@ twoAC(data, ...)
 
 \examples{
 
+## Simple:
 fit <- twoAC(c(2,2,6))
 fit
+
+## Typical discrimination-difference test: 
+(fit <- twoAC(data = c(2, 5, 8), d.prime0 = 0, alternative = "greater"))
+
+## Typical discrimination-similarity test: 
+(fit <- twoAC(data = c(15, 15, 20), d.prime0 = .5, alternative = "less"))
+
+## Typical preference-difference test:
+(fit <- twoAC(data = c(3, 5, 12), d.prime0 = 0,
+              alternative = "two.sided"))
+
+## Typical preference (non-)inferiority test:
+(fit <- twoAC(data = c(3, 5, 12), d.prime0 = 0,
+              alternative = "greater"))
+
+## For preference equivalence tests (two-sided) use CI with alpha/2:
+## declare equivalence at the 5% level if 90% CI does not contain,
+## e.g, -1 or 1: 
+(fit <- twoAC(data = c(15, 10, 10), d.prime0 = 0, conf.level = .90))
 
 }
 \keyword{models}% at least one, from doc/KEYWORDS

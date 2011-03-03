@@ -14,7 +14,7 @@
 }
 \usage{
 \method{confint}{twoAC}(object, parm, level = 0.95, 
-        type = c("profile", "Wald"), \dots)
+        type = c("likelihood", "Wald"), \dots)
 
 \method{confint}{profile.twoAC}(object, parm = "d.prime", level = 0.95, \dots)
 

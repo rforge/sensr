@@ -62,3 +62,10 @@ November 26. 2010: version 1.2.5:
 December 9. 2010: version 1.2.6:
 
 - corrections made to Statistical Methodology vignette.
+
+March 3. 2011: version 1.2.7:
+
+- major update of twoAC implementation
+- added exact power computations for the 2-AC protocol in function
+  twoACpwr
+
