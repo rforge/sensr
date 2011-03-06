@@ -47,7 +47,7 @@ normalPwr <-
   stopifnot(is.numeric(pd0) && length(pd0) == 1 &&
             pd0 >= 0 && pd0 <= 1)
   stopifnot(is.numeric(sample.size) && length(sample.size) == 1 &&
-            isTRUE(all.equal(as.integer(sample.size), sample.size)) &&
+            isTRUE(all.equal(round(sample.size), sample.size)) &&
             sample.size > 0)
   sample.size <- as.integer(sample.size)
   stopifnot(is.numeric(alpha) && length(alpha) == 1 &&
@@ -89,7 +89,7 @@ discrimPwr <-
   stopifnot(is.numeric(pd0) && length(pd0) == 1 &&
             pd0 >= 0 && pd0 <= 1)
   stopifnot(is.numeric(sample.size) && length(sample.size) == 1 &&
-            isTRUE(all.equal(as.integer(sample.size), sample.size)) &&
+            isTRUE(all.equal(round(sample.size), sample.size)) &&
             sample.size > 0)
   sample.size <- as.integer(sample.size)
   stopifnot(is.numeric(alpha) && length(alpha) == 1 &&
@@ -273,10 +273,11 @@ discrim <-
   m <- eval.parent(m) # evaluate the *list* of arguments
   x <- m$correct;  n <- m$total
   call <- match.call()
-  if(!isTRUE(all.equal(as.integer(x), x)) || x < 0)
+  ## use round - as.integer also strips names:
+  if(!isTRUE(all.equal(round(x), x)) || x < 0)
     stop("'correct' has to be a non-negative integer")
   x <- as.integer(x)
-  if(!isTRUE(all.equal(as.integer(n), n)) || n <= 0)
+  if(!isTRUE(all.equal(round(n), n)) || n <= 0)
     stop("'total' has to be a positive integer")
   n <- as.integer(n)
   if(x > n)

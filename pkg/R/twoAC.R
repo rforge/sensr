@@ -27,7 +27,7 @@ twoAC <-
   alt <- match.arg(alternative)
 
   ## Initial argument consistency testing: 
-  if(!isTRUE(all.equal(as.integer(data), data))) 
+  if(!isTRUE(all.equal(round(data), data))) 
     stop("non-integer numbers not allowed in 'data'")
   data <- as.integer(data)
   if(length(data) != 3)
@@ -379,7 +379,7 @@ twoACpwr <-
   stopifnot(is.numeric(tau) && length(tau) == 1 && tau > 0)
   stopifnot(is.numeric(d.prime0) && length(d.prime0) == 1)
   stopifnot(is.numeric(size) &&
-            isTRUE(all.equal(as.integer(size), size)) &&
+            isTRUE(all.equal(round(size), size)) &&
             size < 5e3 && size >= 2)
   stopifnot(is.numeric(alpha) && length(alpha) == 1 &&
             alpha > 0 && alpha < 1)
@@ -459,7 +459,7 @@ LRtest.2AC <-
   if(is.data.frame(data)) data <- as.matrix(data)
   if(!(is.matrix(data) &&  ncol(data) == 3))
     stop("'data' should be a vector of length 3 or a matrix with 3 cols")
-  ## test that isTRUE(all.equal(as.integer(data), data)) ignored here
+  ## test that isTRUE(all.equal(round(data), data)) ignored here
   ## because of speed.
   
   ## Make indicator variable with the seven possible data cases:
