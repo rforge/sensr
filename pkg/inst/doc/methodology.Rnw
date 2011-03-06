@@ -43,6 +43,8 @@
 \newcommand{\tdots}{\hspace{10mm} \texttt{....}}
 \newcommand{\FL}[1]{\fvset{firstline= #1}}
 \newcommand{\LL}[1]{\fvset{lastline= #1}}
+\newcommand{\s}{\square}
+\newcommand{\bs}{\blacksquare}
 
 % figurer bagerst i artikel
 %% \usepackage[tablesfirst, nolists]{endfloat}
@@ -1572,6 +1574,50 @@ discrimSS(pdA = pd, pd0 = 0, target.power = 0.8, alpha = 0.05, pGuess
 
 
 \subsection{Related literature}
+
+%% \section{The 2-AC discrimination and preference protocol}
+%% 
+%% The statistical methodology for the 2-AC protocol is treated in detail
+%% in (refto 2-AC paper), and we refer to this source for more
+%% information. $\square \bs \s$ and $\blacksquare$ and \ldots
+%% 
+%% \begin{table}
+%%   \centering
+%%   \caption{Possible outcomes in the 2-AC protocol. 
+%%     \label{tab:twoACoutcomes}}
+%%   \begin{tabular}{lccccccc}
+%%     \hline
+%%     & \multicolumn{7}{c}{cases} \\
+%%     \cline{2-8} 
+%%     & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+%%     & $\bs \bs \bs$ & $\bs \s \s$ & $\s \bs \s$ & $\s \s \bs$ & $\bs
+%%     \bs \s$ & $\s \bs \bs$ & $\bs \s \bs$ \\
+%%     \hline
+%%     $\ell(\tau, d'_0)$ & --- & --- & 0 & --- & --- & --- & --- \\
+%%     $\ell(\hat\tau, \hat d')$ & --- & 0 & 0 & 0 & --- & --- & --- \\
+%%     $\hat\tau$ & --- & 0 & NA & 0 & NA & NA &  0 \\
+%%     $\tau_0$ & --- & 0 & NA & 0 & --- & --- & 0 \\
+%%     $\hat d'$ & --- & $-\infty$ & NA & $\infty$ & $-\infty$ & $\infty$ 
+%%     & --- \\
+%%     var-cov & --- & NA & NA & NA & NA & NA & NA \\
+%%     \hline
+%%   \end{tabular}
+%% \end{table}
+%% 
+%% Write about
+%% \begin{itemize}
+%% \item Power computations and why the error is at most $\varepsilon$
+%% \item How the likelihood root statistic when $d'_0 = 0$ is identical
+%%   to the likelihood root statistic from the 2-AFC test. This implies
+%%   that the outcome in the second cell is irrelevant for judging
+%%   deviations from $d' = 0$ and rutines for the 2-AFC protocol can be
+%%   used. However, whenever $d'_0 \neq 0$ the test statistics differ and
+%%   the 2-AFC rutines cannot be used.
+%% \item In which of the seven cases is tau constant no matter the value
+%%   of $d'$? - for $d'_0$ and $\hat d'$ separately? What is the value of
+%%   $\tau$ in those cases?
+%% \end{itemize}
+%% 
 
 \section{A-not A and same-different protocols}
 \label{sec:not-same-different}

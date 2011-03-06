@@ -33,9 +33,11 @@ twoAC(data, d.prime0 = 0, conf.level = 0.95,
 \details{
   \code{\link[=confint.twoAC]{confint}},
   \code{\link[=profile.twoAC]{profile}},
-  \code{\link{twoACpwr}},
   \code{logLik}, \code{vcov}, and
   \code{print} methods are implemented for \code{twoAC} objects.
+
+  Power computations for the 2-AC protocol is implemented in
+  \code{\link{twoACpwr}}.
 }
 \value{
   An object of class \code{twoAC} with elements
@@ -66,12 +68,15 @@ twoAC(data, d.prime0 = 0, conf.level = 0.95,
   \item{d.prime0}{the value of d-prime under the null hypothesis in the
     significance test.}
   \item{p.value}{p-value of the significance test.}
-  \item{confint}{two-sided condfidence interval for d-prime.}
+  \item{confint}{two-sided condfidence interval for d-prime. This is
+    only available if the standard errors are defined, which may happen
+    in boundary cases. Use \code{profile} and \code{confint} methods to
+    get confidence intervals instead; see the examples.}
 }
 \references{
-  Christensen, R.H.B. and Brockhoff, P.B. (2010). Estimation of the
-  Thurstonian model for the 2-AC protocol.
-  Manuscript for Food Quality and Preference.
+  Christensen R.H.B., lee H-S and Brockhoff P.B. (2010). Estimation of
+  the Thurstonian model for the 2-AC protocol. Manuscript for Food
+  Quality and Preference. 
 }
 
 \author{Rune Haubo B Christensen}
@@ -100,6 +105,16 @@ fit
 ## declare equivalence at the 5% level if 90% CI does not contain,
 ## e.g, -1 or 1: 
 (fit <- twoAC(data = c(15, 10, 10), d.prime0 = 0, conf.level = .90))
+
+## The var-cov matrix and standard errors of the parameters are not
+## defined in all situations. If standard errors are not
+## defined, then confidence intervals are not provided directly:
+(fit <- twoAC(c(5, 0, 15)))
+## We may use profile and confint methods to get confidence intervals
+## never the less: 
+pr <- profile(fit, range = c(-1, 3))
+confint(pr)
+plot(pr)
 
 }
 \keyword{models}% at least one, from doc/KEYWORDS

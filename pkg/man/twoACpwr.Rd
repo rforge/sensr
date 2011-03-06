@@ -88,9 +88,9 @@ twoACpwr(tau, d.prime, size, d.prime0 = 0, alpha = 0.05, tol = 1e-5,
     implied by the values of \code{tau} and \code{d.prime}.}
 }
 \references{
-  Christensen, R.H.B. and Brockhoff, P.B. (2010). Estimation of the
-  Thurstonian model for the 2-AC protocol.
-  Manuscript for Food Quality and Preference.
+  Christensen R.H.B., lee H-S and Brockhoff P.B. (2010). Estimation of
+  the Thurstonian model for the 2-AC protocol. Manuscript for Food
+  Quality and Preference. 
 }
 
 \author{Rune Haubo B Christensen}
@@ -102,11 +102,6 @@ twoACpwr(tau = .5, d.prime = .7, size = 50, tol = 0)
 
 ## Power exact to a reasonable number of digits
 twoACpwr(tau = .5, d.prime = .7, size = 50, tol = 1e-5)
-
-## For preference equivalence tests (two-sided) use CI with alpha/2:
-## declare equivalence at the 5% level if 90% CI does not contain,
-## e.g, -1 or 1: 
-(fit <- twoAC(data = c(15, 10, 10), d.prime0 = 0, conf.level = .90))
 
 ## Power for a similarity test in a discrimination setting where the
 ## true parameter values are expected to be tau = 0.4 and true d.prime

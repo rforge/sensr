@@ -37,7 +37,7 @@ twoAC <-
   stopifnot(is.numeric(d.prime0) && length(d.prime0) == 1)
 
   ## Get ML estimates, vcov, logLik:
-  res <- estimate.2AC(data)
+  res <- estimate.2AC(data = data, vcov = TRUE, warn = FALSE)
   d.prime <- res$coefficients[2,1]
   se.d.prime <- res$coefficients[2,2]
 
@@ -52,16 +52,18 @@ twoAC <-
     res$stat.value <-
       as.vector(LRtest.2AC(data, d.prime0 = d.prime0,
                            alternative = alt)[,"lroot"])
-  if(statName == "Wald") 
+  if(statName == "Wald" && !is.null(res$vcov)) 
     res$stat.value <- (d.prime - d.prime0) / se.d.prime
   
   ## Compute p-value:
-  res$p.value <- normalPvalue(statistic = res$stat.value,
-                              alternative = alt)
+  if(!is.null(res$stat.value))
+    res$p.value <- normalPvalue(statistic = res$stat.value,
+                                alternative = alt)
 
   ## Get confidence intervals:
-  res$confint <- confint(res, parm = "d.prime", level = conf.level, 
-                         type = statName)
+  if(!is.null(res$vcov))
+    res$confint <- confint(res, parm = "d.prime", level = conf.level, 
+                           type = statName)
 
   ## return object:
   return(res)
@@ -75,51 +77,71 @@ print.twoAC <-
                       "likelihood" = "likelihood root statistic:",
                       "Wald" = "Wald statistic:")
 
-  ## Print estimates and confidence interval:
+  ## Print estimates:
   cat(paste("Results for the 2-AC protocol with data ",
             deparse(x$call$data), ":\n", sep = ""))
   print(x$coefficients, quote = FALSE, digits = digits, ...)
-  cat(paste("\nTwo-sided ", round(100 * x$conf.level, 3),
-            "% confidence interval for d-prime based on the\n", test.stat,
-            "\n", sep = ""))
-  ci <- x$confint
-  colnames(ci) <- c("Lower", "Upper")
-  print(ci, quote = FALSE, digits = digits, ...)
 
+  ## Print confidence interval for d-prime:
+  if(is.null(x$confint))
+    cat("\nUse profile and confint methods to get confidence interval\n")
+  else {
+    cat(paste("\nTwo-sided ", round(100 * x$conf.level, 3),
+              "% confidence interval for d-prime based on the\n", test.stat,
+              "\n", sep = ""))
+    ci <- x$confint
+    colnames(ci) <- c("Lower", "Upper")
+    print(ci, quote = FALSE, digits = digits, ...)
+  }
+  
   ## Print result of signifcance test:
-  cat(paste("\nSignificance test:\n"))
-  if(x$statistic == "Wald")
-    cat(paste(" Wald statistic =", format(x$stat.value, digits),
-              "p-value =", format.pval(x$p.value), "\n"))
-  if(x$statistic == "likelihood")
-    cat(paste(" Likelihood root statistic =",
-              format(x$stat.value, digits), 
-              "p-value =", format.pval(x$p.value), "\n"))
-  cat(" Alternative hypothesis: ")
-  cat(paste("d-prime is", switch(x$alternative,
-                                 "two.sided" = "different from",
-                                 "less" = "less than",
-                                 "greater" = "greater than"),
-            format(x$d.prime0, digits), "\n"))
-  ## cat("\nlog-likelihood:", format(x$logLik, nsmall=2), "\n")
+  if(is.null(x$stat.value) && x$statistic == "Wald")
+    cat("\nSignificance test not available - try with the likelihood statistic\n")
+  ## this should never happen, but better safe than sorry:
+  else if(is.null(x$stat.value) && x$statistic == "likelihood")
+    cat("\nSignificance test not available\n")
+  else {
+    cat(paste("\nSignificance test:\n"))
+    if(x$statistic == "Wald")
+      cat(paste(" Wald statistic =", format(x$stat.value, digits),
+                "p-value =", format.pval(x$p.value), "\n"))
+    if(x$statistic == "likelihood")
+      cat(paste(" Likelihood root statistic =",
+                format(x$stat.value, digits), 
+                "p-value =", format.pval(x$p.value), "\n"))
+    cat(" Alternative hypothesis: ")
+    cat(paste("d-prime is", switch(x$alternative,
+                                   "two.sided" = "different from",
+                                   "less" = "less than",
+                                   "greater" = "greater than"),
+              format(x$d.prime0, digits), "\n"))
+  }  
   return(invisible(x))
 }
-
+  
 profile.twoAC <-
   function(fitted, alpha = 1e-3, nSteps = 1e2, range, ...)
 {
   ## Save d.prime for convenience:
   d.prime <- coef(fitted)[2, 1]
+  if(is.na(d.prime))
+    stop("profile is not available for d.prime = NA")
   ## Get range from Wald CI or over-rule with range argument:
-  if(missing(range))
+  if(missing(range)) {
     ## Get range from Wald interval and supplied alpha:
     range <- as.vector(confint(fitted, parm = "d.prime",
                                level = 1 - alpha, type = "Wald"))
-  else {
-    range <- as.numeric(range)
-    ## tjeck that d.prime is in the range interval:
-    if(d.prime >= max(range) || d.prime <= min(range))
-      stop("d.prime should be in the interval given by range")
+    if(!is.numeric(range) || !is.finite(range))
+      stop(paste("could not determine 'range' from fitted object:",
+                 "Please specify 'range'"))
+  } else {
+    stopifnot(is.numeric(range) && is.finite(range) &&
+              length(range) >= 2)
+    ## Warn if d.prime is finite and not in the range interval:
+    if(is.finite(d.prime)) {
+      if(d.prime >= max(range) || d.prime <= min(range))
+        warning("d.prime should be in the interval given by range")
+    }
   }
   dseq <- seq(from = min(range), to = max(range),
               length.out = nSteps)
@@ -128,9 +150,10 @@ profile.twoAC <-
            optimize(nll.2AC, c(0, 10), d.prime = dd,
                     data = fitted$data)$objective)
   ## Compute the signed likelihood root statistic:
-  Lroot <- sign(d.prime - dseq) * sqrt(2 * (fitted$logLik + nll)) 
-  res <- data.frame("Lroot" = c(0, Lroot),
-                    "d.prime" = c(d.prime, dseq))
+  Lroot <- sign(d.prime - dseq) * sqrt(2 * (fitted$logLik + nll))
+  if(any(!is.finite(Lroot)))
+    warning("invalid values of the likelihood profile occured")
+  res <- data.frame("Lroot" = Lroot, "d.prime" = dseq)
   res <- res[order(res[,1]),]
   if(!all(diff(res[,2]) < 0))
     warning("likelihood is not monotonically decreasing from maximum,\n",
@@ -269,14 +292,41 @@ estimate.2AC <- function(data, vcov = TRUE, warn = TRUE)
   }
   
   ## Get ML estimates:
+  x <- data
+  if(x[1] > 0 && x[2] == 0 && x[3] == 0) { # case 1
+    tau <- 0
+    d.prime <- -Inf
+  }
+  else if(x[1] == 0 && x[2] > 0 && x[3] == 0) { # case 2
+    tau <- NA
+    d.prime <- NA
+  }
+  else if(x[1] == 0 && x[2] == 0 && x[3] > 0) { # case 3
+    tau <- 0
+    d.prime <- Inf
+  }
+  else if(x[1] > 0 && x[2] > 0 && x[3] == 0) { # case 4
+    d.prime <- -Inf
+    tau <- NA
+  }
+  else if(x[1] == 0 && x[2] > 0 && x[3] > 0) { # case 5
+    d.prime <- Inf
+    tau <- NA
+  }
+  else { # case 0 and 6
+    prob <- data / sum(data)
+    gamma <- cumsum(prob)[-3]
+    z <- qnorm(gamma) * sqrt(2)
+    tau <- (z[2] - z[1]) / 2
+    d.prime <- -z[1] - tau
+  }
+
+  ## Get the log likelihood at the MLE:
   prob <- data / sum(data)
-  gamma <- cumsum(prob)
-  z <- qnorm(gamma)[-3]
-  z <- z * sqrt(2)
-  tau <- (z[2] - z[1]) / 2
-  d.prime <- -z[1] - tau
   prob[prob <= 0] <- 1 ## to evaluate log safely
   logLikMax <- sum(data * log(prob))
+
+  ## Save estimates in coefficient table
   coef <- matrix(NA, 2, 2, dimnames = list(c("tau", "d.prime"),
                             c("Estimate", "Std. Error")))
   coef[,1] <- c(tau, d.prime)
@@ -284,20 +334,27 @@ estimate.2AC <- function(data, vcov = TRUE, warn = TRUE)
               logLik = logLikMax)
 
   ## Get Hessian, vcov and standard errors:
-  if(vcov) {
-    hess <- hessian(nll, x = c(tau, d.prime), method = "Richardson",
-                    method.args = list())
-    vcov <- try(solve(hess))
-    if(class(vcov) == "try-error") {
-      if(warn)
-        warning("computation of vcov and standard errors failed",
-                call. = FALSE)
+  if(vcov) { 
+    makeWarn <- TRUE
+    ## If all coef are finite and tau < 0:
+    if(all(is.finite(coef[,1])) && tau > 0) {
+      makeWarn <- FALSE
+      hess <- hessian(nll, x = c(tau, d.prime), method = "Richardson",
+                      method.args = list())
+      vcov <- try(solve(hess), silent = TRUE)
+      ## If hess is not invertible:
+      if(class(vcov) != "try-error") {
+        makeWarn <- TRUE
+        res$coefficients[,2] <- sqrt(diag(vcov))
+        res$vcov <- vcov
+      }
     }
-    else {
-      res$coefficients[,2] <- sqrt(diag(vcov))
-      res$vcov <- vcov
-    }
-  }
+    ## Not all coef are finite or tau <= 0:
+    if(warn && makeWarn)
+      warning("vcov and standard errors are not available",
+              call. = FALSE)
+  } ## end vcov
+  
   ## Return results
   return(res)
 }
