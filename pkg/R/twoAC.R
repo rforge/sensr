@@ -525,6 +525,40 @@ LRtest.2AC <-
   return(cbind(p.value = p.value, lroot = lroot))
 }
 
+clm2twoAC <- function(object, ...) {
+  stopifnot("clm" %in% class(object) ||
+            "clmm" %in% class(object))
+  tab <- coef(summary(object))
+  theta <- object$Theta
+  stopifnot(length(theta) == 2)
+  mat <- array(NA, dim = c(2, 4))
+  rownames(mat) <- c("tau", "d-prime")
+  colnames(mat) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+  ## parameter estimates:
+  mat[1, 1] <- (theta[2] - theta[1]) / sqrt(2)
+  mat[2, 1] <- (-theta[2] - theta[1]) / sqrt(2)
+  VCOV <- vcov(object)[1:2, 1:2]
+  ## standard errors:
+  mat[1, 2] <- sqrt((VCOV[1, 1] + VCOV[2,2] - 2* VCOV[2, 1])/2)
+  mat[2, 2] <- sqrt((VCOV[1, 1] + VCOV[2,2] + 2* VCOV[2, 1])/2)
+  ## z-values and p-values:
+  mat[,3] <- mat[,1] / mat[,2]
+  mat[,4] <- 2*pnorm(abs(mat[, 3]), lower.tail=FALSE)
+  ## add additional rows to coefficient matrix
+  if(dim(tab)[1] > 2) {
+    tmp <- tab[-(1:2), , drop = FALSE]
+    ## scale estimates and standard errors with sqrt(2):
+    tmp[,1:2] <- tmp[,1:2] * sqrt(2)
+    mat <- rbind(mat, tmp)
+    rownames(mat)[-(1:2)] <- rownames(tab)[-(1:2)]
+  }
+  mat <- as.data.frame(mat)
+  mat[,4] <- format.pval(mat[,4])
+  return(mat)
+}
+
+
+
 ##  LRtest.2AC.old <- function(x, ...) {
 ##  ### With the fomulation below, this function is only applicable when
 ##  ### d.prime0 = 0, i.e. when value of d.prime under the null hypothesis

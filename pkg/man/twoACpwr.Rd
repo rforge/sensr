@@ -73,6 +73,9 @@ twoACpwr(tau, d.prime, size, d.prime0 = 0, alpha = 0.05, tol = 1e-5,
   encounter those cases and have to deal with them. This would be
   cumbersome to implement.
 }
+\seealso{
+  \code{\link{clm2twoAC}}, \code{\link{twoACpwr}}
+}
 \value{
   A \code{data.frame} with one line and the following entries
   \item{power}{the computed power}
@@ -88,7 +91,7 @@ twoACpwr(tau, d.prime, size, d.prime0 = 0, alpha = 0.05, tol = 1e-5,
     implied by the values of \code{tau} and \code{d.prime}.}
 }
 \references{
-  Christensen R.H.B., lee H-S and Brockhoff P.B. (2010). Estimation of
+  Christensen R.H.B., lee H-S and Brockhoff P.B. (2011). Estimation of
   the Thurstonian model for the 2-AC protocol. Manuscript for Food
   Quality and Preference. 
 }

@@ -37,7 +37,10 @@ twoAC(data, d.prime0 = 0, conf.level = 0.95,
   \code{print} methods are implemented for \code{twoAC} objects.
 
   Power computations for the 2-AC protocol is implemented in
-  \code{\link{twoACpwr}}.
+  \code{\link{twoACpwr}}. 
+}
+\seealso{
+  \code{\link{clm2twoAC}}, \code{\link{twoACpwr}}
 }
 \value{
   An object of class \code{twoAC} with elements
@@ -74,7 +77,7 @@ twoAC(data, d.prime0 = 0, conf.level = 0.95,
     get confidence intervals instead; see the examples.}
 }
 \references{
-  Christensen R.H.B., lee H-S and Brockhoff P.B. (2010). Estimation of
+  Christensen R.H.B., lee H-S and Brockhoff P.B. (2011). Estimation of
   the Thurstonian model for the 2-AC protocol. Manuscript for Food
   Quality and Preference. 
 }
