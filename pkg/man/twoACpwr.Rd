@@ -91,8 +91,8 @@ twoACpwr(tau, d.prime, size, d.prime0 = 0, alpha = 0.05, tol = 1e-5,
     implied by the values of \code{tau} and \code{d.prime}.}
 }
 \references{
-  Christensen R.H.B., lee H-S and Brockhoff P.B. (2011). Estimation of
-  the Thurstonian model for the 2-AC protocol. Manuscript for Food
+  Christensen R.H.B., Lee H-S and Brockhoff P.B. (2011). Estimation of
+  the Thurstonian model for the 2-AC protocol. Submitted to Food
   Quality and Preference. 
 }
 

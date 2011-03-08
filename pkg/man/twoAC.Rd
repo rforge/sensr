@@ -77,8 +77,8 @@ twoAC(data, d.prime0 = 0, conf.level = 0.95,
     get confidence intervals instead; see the examples.}
 }
 \references{
-  Christensen R.H.B., lee H-S and Brockhoff P.B. (2011). Estimation of
-  the Thurstonian model for the 2-AC protocol. Manuscript for Food
+  Christensen R.H.B., Lee H-S and Brockhoff P.B. (2011). Estimation of
+  the Thurstonian model for the 2-AC protocol. Submitted to Food
   Quality and Preference. 
 }
 
