@@ -434,8 +434,7 @@ Versions details for \textsf{R} and the packages \textsf{sensR} and
 sessionInfo()
 @
 
-
-\bibliography{C:/Users/rhbc/Documents/DTU/EksProjPBB/EksProj}
+\bibliography{twoAC}
 %% \newpage
 %% \appendix
 %% \input{Appendix.tex}
