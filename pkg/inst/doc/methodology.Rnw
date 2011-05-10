@@ -106,8 +106,6 @@ beta-binomial models.
 
 ## Load common packages, functions and set settings:
 library(sensR)
-## library(ordinal)
-## library(xtable)
 ## 
 RUN <- FALSE    #redo computations and write .RData files
 ## Change options:
