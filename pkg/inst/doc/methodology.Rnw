@@ -96,7 +96,7 @@ beta-binomial models.
 \tableofcontents
 \newpage
 
-\SweaveOpts{echo=FALSE, results=hide, strip.white=TRUE, width=4.5, height=4.5}
+\SweaveOpts{echo=FALSE, results=hide, width=4.5, height=4.5}
 \SweaveOpts{prefix.string=figs}
 \fvset{listparameters={\setlength{\topsep}{0pt}}, gobble=0, fontsize=\small}
 %% \fvset{gobble=0, fontsize=\small}
