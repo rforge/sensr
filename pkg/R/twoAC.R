@@ -577,10 +577,13 @@ Pears <- function(x) {
 }
 
 clm2twoAC <- function(object, ...) {
-  stopifnot("clm" %in% class(object) ||
-            "clmm" %in% class(object))
+  if(inherits(object, c("clm", "clmm")))
+    theta <- object$alpha
+  else if(inherits(object, c("clm2", "clmm2")))
+    theta <- object$Theta
+  else
+    stop("'object' not of appropriate class")
   tab <- coef(summary(object))
-  theta <- object$Theta
   stopifnot(length(theta) == 2)
   mat <- array(NA, dim = c(2, 4))
   rownames(mat) <- c("tau", "d-prime")

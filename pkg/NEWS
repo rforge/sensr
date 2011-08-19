@@ -83,3 +83,11 @@ April 8. 2011: version 1.2.9:
 May 10. 2011: version 1.2.10:
 
 - completing partially matched arguments.
+
+August 12. 2011: version 1.2.11:
+
+- updating clm2twoAC() to accomodate change to ordinal::clm
+
+August 19. 2011: version 1.2.12:
+
+- interchanging the second and third arguments of AUC.default
