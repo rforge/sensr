@@ -331,8 +331,17 @@ normalPvalue <-
   stopifnot(all(is.finite(statistic)))
   p.value <-
     switch(alternative,
-           "greater" = pnorm(statistic, lower = FALSE),
-           "less" = pnorm(statistic, lower = TRUE),
-           "two.sided" = 2 * pnorm(abs(statistic), lower = FALSE))
+           "greater" = pnorm(statistic, lower.tail = FALSE),
+           "less" = pnorm(statistic, lower.tail = TRUE),
+           "two.sided" = 2 * pnorm(abs(statistic), lower.tail = FALSE))
   return(p.value)
 }
+
+
+## Do not partially match arguments.
+## If possible give functions explicitly named  arguments - preferably
+##   with default values.
+## Value readability over speed.
+## Value accuracy over speed.
+## Use small functions with conceptual - easy-to-understand tasks.
+## 

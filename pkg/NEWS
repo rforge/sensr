@@ -96,3 +96,7 @@ September 23. 2011: version 1.2.13:
 
 - bug in plot.discrim (mean separation of perceptual curves was wrong)
   corrected. 
+
+November 14. 2011: version 1.2.14:
+
+- completing partially matched argument lower -> lower.tail in pnorm. 
