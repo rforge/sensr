@@ -100,3 +100,10 @@ September 23. 2011: version 1.2.13:
 November 14. 2011: version 1.2.14:
 
 - completing partially matched argument lower -> lower.tail in pnorm. 
+
+January 26. 2012: version 1.2.15:
+
+- Formatting coefficient table and p-values from print.summary.betabin
+  with printCoefmat and format.pval.
+- Updating the description of the data argument to the twoAC
+  function. 
