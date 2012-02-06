@@ -673,7 +673,9 @@ profile.discrim <-
   pg <- ifelse(fitted$method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
   prof <- prof[prof$pSeq >= pg, ]
   prof$d.prime <- psyinv(prof$pSeq, method = fitted$method)
+  keep <- is.finite(prof$d.prime)
   prof$pSeq <- NULL
+  prof <- prof[keep, ]
   attr(prof, "method") <- fitted$method
   class(prof) <- c("profile.discrim", "data.frame")
   return(prof)

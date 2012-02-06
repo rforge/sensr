@@ -101,9 +101,28 @@ November 14. 2011: version 1.2.14:
 
 - completing partially matched argument lower -> lower.tail in pnorm. 
 
-January 26. 2012: version 1.2.15:
+January 26-27. 2012: version 1.2.15:
 
-- Formatting coefficient table and p-values from print.summary.betabin
+- formatting coefficient table and p-values from print.summary.betabin
   with printCoefmat and format.pval.
-- Updating the description of the data argument to the twoAC
+- updating the description of the data argument to the twoAC
   function. 
+- printing coef table in print.twoAC with more reasonable no. digits. 
+- printing coef table in print.summary.samediff with printCoefmat.
+- moving vignettes to vignette subdirectory.
+- considerable improvements to the triangle family object using the
+  non-central F distribution for the inverse link function.
+- introducing links.R file in tests subdirectory currently only
+  testing the triangle link.
+- introducing .Rout.save files for examples and tests.
+- profile.discrim now returns a data.frame in which only finite
+  d.prime values are kept.
+- major update of the threeAFC link function: it now gives reasonable
+  answers in boundary cases (linkinv, linkfun and mu.eta).
+
+February 6. 2012: version 1.2.16:
+
+- triangle()$mu.eta() now using a direct expression rather than
+  numDeriv::grad. 
+- major update of duotrio and twoAFC family objects; they now work in
+  boundary cases and use effecient computations.

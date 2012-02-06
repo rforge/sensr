@@ -182,8 +182,7 @@ summary.betabin <-
 }
 
 print.summary.betabin <-
-  function(x, digits = max(3, getOption("digits") - 3),
-           signif.stars = getOption("show.signif.stars"), ...)
+  function(x, digits = max(3, getOption("digits") - 3), ...)
 {
   if(x$corrected)
     cat(paste("\nChance-corrected beta-binomial model for the ", x$method,

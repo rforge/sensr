@@ -208,7 +208,8 @@ psyderiv <-
 ##   }
 ## }
 
-test.crit <- function(xcr, sample.size, p.correct = 0.5, alpha = 0.05, test)
+test.crit <-
+  function(xcr, sample.size, p.correct = 0.5, alpha = 0.05, test)
 ### Is xcr the critical value of a one-tailed binomial test?
 ### Result: boolean
 
