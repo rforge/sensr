@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 Patched (2012-05-05 r59321) -- "Easter Beagle"
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-pc-mingw32/x64 (64-bit)
 
@@ -28,13 +28,6 @@ Loading required package: MASS
 Loading required package: ucminf
 Loading required package: Matrix
 Loading required package: lattice
-
-Attaching package: 'Matrix'
-
-The following object(s) are masked from 'package:base':
-
-    det
-
 Loading required package: numDeriv
 > 
 > assign(".oldSearch", search(), pos = 'CheckExEnv')
@@ -1227,6 +1220,90 @@ Log Likelihood: -16.6858 	AIC: 37.3715
 > 
 > 
 > cleanEx()
+> nameEx("tetrad")
+> ### * tetrad
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: tetrad
+> ### Title: Create tetrad binomial family
+> ### Aliases: tetrad
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> xt <- matrix(c(10, 5), ncol = 2) ## data: 10 correct answers, 5 incorrect
+> res <- glm(xt ~ 1, family = tetrad)
+> summary(res)
+
+Call:
+glm(formula = xt ~ 1, family = tetrad)
+
+Deviance Residuals: 
+[1]  0
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   1.5878     0.4193   3.787 0.000153 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 0  on 0  degrees of freedom
+Residual deviance: 0  on 0  degrees of freedom
+AIC: 5.0807
+
+Number of Fisher Scoring iterations: 3
+
+> 
+> ## Extended example plotting the profile likelihood
+> ## data: 10 correct answers, 9 incorrect
+> xt <- matrix(c(10, 9), ncol = 2)
+> summary(res <- glm(xt ~ 1, family = tetrad))
+
+Call:
+glm(formula = xt ~ 1, family = tetrad)
+
+Deviance Residuals: 
+[1]  0
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)   
+(Intercept)   1.1142     0.3947   2.823  0.00476 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance:  0.0000e+00  on 0  degrees of freedom
+Residual deviance: -1.7764e-15  on 0  degrees of freedom
+AIC: 5.4196
+
+Number of Fisher Scoring iterations: 2
+
+> N <- 100
+> dev <- double(N)
+> delta <- seq(1e-4, 3, length = N)
+> for(i in 1:N)
++   dev[i] <- glm(xt ~ -1 + offset(delta[i]),
++                 family = tetrad)$deviance
+> plot(delta, exp(-dev/2), type = "l",
++      xlab = expression(delta),
++      ylab = "Normalized Profile Likelihood")
+> ## Add Normal approximation:
+> lines(delta, exp(-(delta - coef(res))^2 /
++                  (2 * vcov(res))), lty = 2)
+> ## Add confidence limits:
+> level <- c(0.95, 0.99)
+> lim <- sapply(level, function(x) exp(-qchisq(x, df=1)/2) )
+> abline(h = lim, col = "grey")
+> 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("threeAFC")
 > ### * threeAFC
 > 
@@ -1658,7 +1735,7 @@ Number of Fisher Scoring iterations: 2
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.15 0.04 7.21 NA NA 
+Time elapsed:  8.88 0.08 9.05 NA NA 
 > grDevices::dev.off()
 null device 
           1 

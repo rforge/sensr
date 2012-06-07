@@ -126,3 +126,9 @@ February 6. 2012: version 1.2.16:
   numDeriv::grad. 
 - major update of duotrio and twoAFC family objects; they now work in
   boundary cases and use effecient computations.
+
+June 7. 2012: version 1.2-17:
+
+- tetrad() family object uncluded.
+- Full support for tetrad tests in discrim, d.primePwr, d.primeSS,
+  discrimSim, rescale, psyfun, psyinv, psyderiv, betabin.

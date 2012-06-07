@@ -1,6 +1,7 @@
 rescale <-
   function(pc, pd, d.prime, std.err, 
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"))
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle")) 
 {
   m <- match.call(expand.dots = FALSE)
   m[[1]] <- as.name("list")
@@ -107,7 +108,8 @@ pd2pc <- function(pd, Pguess) {
 
 psyfun <-
   function(d.prime,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"))
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle")) 
 ### Maps d.prime to pc for sensory discrimination protocols
   
 ### arg: d.prime: non-negative numeric vector
@@ -117,6 +119,7 @@ psyfun <-
   stopifnot(all(is.numeric(d.prime)) && all(d.prime >= 0))
   psyFun <- switch(method,
                    duotrio = duotrio()$linkinv,
+                   tetrad = tetrad()$linkinv,
                    triangle = triangle()$linkinv,
                    twoAFC = twoAFC()$linkinv,
                    threeAFC = threeAFC()$linkinv)
@@ -131,7 +134,8 @@ psyfun <-
 }
 
 psyinv <- function(pc, 
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"))
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle")) 
 ### Maps pc to d.prime for sensory discrimination protocols
 
 ### arg: pc: numeric vector; 0 <= pc <= 1
@@ -141,6 +145,7 @@ psyinv <- function(pc,
   stopifnot(all(is.numeric(pc)) && all(pc >= 0) && all(pc <= 1))
   psyInv <- switch(method,
                    duotrio = duotrio()$linkfun,
+                   tetrad = tetrad()$linkfun,
                    triangle = triangle()$linkfun,
                    twoAFC = twoAFC()$linkfun,
                    threeAFC = threeAFC()$linkfun)
@@ -156,7 +161,8 @@ psyinv <- function(pc,
 
 psyderiv <-
   function(d.prime, 
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"))
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle")) 
 ### Computes the derivative of the psychometric functions at some
 ### d.prime for sensory discrimination protocols.
   
@@ -167,6 +173,7 @@ psyderiv <-
   stopifnot(all(is.numeric(d.prime)) && all(d.prime >= 0))
   psyDeriv <- switch(method,
                      duotrio = duotrio()$mu.eta,
+                     tetrad = tetrad()$mu.eta,
                      triangle = triangle()$mu.eta,
                      twoAFC = twoAFC()$mu.eta,
                      threeAFC = threeAFC()$mu.eta)

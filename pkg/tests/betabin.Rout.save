@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 Patched (2012-05-05 r59321) -- "Easter Beagle"
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-pc-mingw32/x64 (64-bit)
 
@@ -25,13 +25,6 @@ Loading required package: MASS
 Loading required package: ucminf
 Loading required package: Matrix
 Loading required package: lattice
-
-Attaching package: 'Matrix'
-
-The following object(s) are masked from 'package:base':
-
-    det
-
 Loading required package: numDeriv
 > 
 > ## Data hunter 2, tab1, dataset 1:
@@ -563,3 +556,6 @@ LR-test of association, G^2: 144.2856 df: 2 p-value: < 2.2e-16
 [2,] -0.003492225  0.034249758
 > ## The variance-covariance matrix is not exactly the same however.
 > 
+> proc.time()
+   user  system elapsed 
+   3.83    0.07    3.90 

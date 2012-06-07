@@ -1,6 +1,7 @@
 betabin <-
   function(data, start = c(.5,.5),
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"), 
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"),
            vcov = TRUE, corrected = TRUE, gradTol = 1e-4, ...)
 {
   m <- match.call(expand.dots = FALSE)

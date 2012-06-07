@@ -13,7 +13,8 @@
 \usage{
 
 discrim(correct, total, pd0 = 0, conf.level = 0.95,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"), 
            statistic = c("exact", "likelihood", "score", "Wald"),
            test = c("difference", "similarity"), ...)
 

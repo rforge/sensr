@@ -237,6 +237,63 @@ triangle <- function()
   triangle
 }
 
+tetrad <- function()
+{
+  tetrad <- binomial()
+  tetrad$link <- "Link for the unspecified tetrad test"
+  tetrad$linkinv <- function(eta) {
+    eps <- 1e-8
+    ok <- eta > eps & eta < 9
+    eta[eta <= eps] <- 1/3
+    eta[eta >= 9] <- 1
+    ## TetradsLinkinv <- function(eta) {
+    ## ok <- eta > -9 & eta < 9
+    ## eta[eta <= 0] <- 1/3
+    ## eta[eta >= 9] <- 1
+    if(sum(ok)) {
+      tetrads.fun <- function(z, delta)
+        dnorm(z) * (2 * pnorm(z) * pnorm(z - delta) -
+                    pnorm(z - delta)^2)
+      eta[ok] <- sapply(eta[ok], function(eta) {
+        1 - 2*integrate(tetrads.fun, -Inf, Inf, delta=eta)$value }) 
+    }
+    pmin(pmax(eta, 1/3), 1) ## restrict to [1/3, 1] - just to be sure
+  }
+  tetrad$mu.eta <- function(eta) {
+    ok <- eta > 0 & eta < 9
+    eta[eta <= 0] <- 0 
+    eta[eta >= 9] <- 0
+    ## ok <- eta >= -9 & eta < 9
+    ## eta[eta < 0] <- 0 ## Is this value right?
+    ## eta[eta >= 9] <- 0
+    if(sum(ok)) {
+      Linkinv <- function(eta) {
+        tetrads.fun <- function(z, delta)
+          dnorm(z) * (2 * pnorm(z) * pnorm(z - delta) -
+                      pnorm(z - delta)^2)
+        sapply(eta, function(eta) {
+          1 - 2*integrate(tetrads.fun, -Inf, Inf, delta=eta)$value })
+      }
+      eta[ok] <- sapply(eta[ok], function(eta) grad(Linkinv, eta))
+### FIXME: Could probably do the integration by hand here.
+    }
+    pmax(eta, 0) ## gradient cannot be negative.
+  }
+  tetrad$linkfun <- function(mu) {
+    eps <- 1e-8 ## What is the right eps here?
+    ok <- mu > 1/3 & mu < 1 - eps
+    mu[mu <= 1/3] <- 0
+    mu[mu >= 1 - eps] <- Inf
+    if(sum(ok)) {
+      tetrads <- function(d, p) tetrad$linkinv(d) - p
+      mu[ok] <- sapply(mu[ok], function(mu)
+                       uniroot(tetrads, c(0, 9), p = mu)$root)
+    }
+    pmax(mu, 0)
+  }
+  tetrad
+}
+
 ## twoAFC <- function() {
 ##   twoAFC <- binomial()
 ##   twoAFC$link <- "Link for the 2-AFC test"

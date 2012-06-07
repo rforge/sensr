@@ -236,8 +236,9 @@ between the products, then the probability of a correct
 answers, $p_c$ is one half. Similarly for the triangle and 3-AFC
 protocols the guessing probability is 1/3. The four common
 discrimination protocols are said to be free of \emph{response bias}
-in contrast to the A-not A and same-different protocols. Response bias
-will be described in section~\ref{sec:not-same-different}. 
+in contrast to the A-not A and same-different protocols. 
+%% Response bias
+%% will be described in section~\ref{sec:not-same-different}. 
 
 If we assume for a moment that the population of assessors (be that
 judges in an expert panel or consumers) is comprised of ignorants who
@@ -252,9 +253,10 @@ assessors are either always discriminating or always guessing
 \citep{ennis93}, but we 
 may still talk about the \emph{probability of discrimination}. This
 probability may refer to particular individuals or to a population; in
-this section we will adopt a population perspective and in
-section~\ref{sec:repl-simple-discr} we will include an individual
-perspective. 
+this section we will adopt a population perspective.
+%% and in
+%% section~\ref{sec:repl-simple-discr} we will include an individual
+%% perspective. 
 
 The relation between the probability of a correct answer and the
 probability of discrimination is
@@ -1571,7 +1573,7 @@ discrimSS(pdA = pd, pd0 = 0, target.power = 0.8, alpha = 0.05, pGuess
 @ 
 
 
-\subsection{Related literature}
+%% \subsection{Related literature}
 
 %% \section{The 2-AC discrimination and preference protocol}
 %% 
@@ -1617,204 +1619,204 @@ discrimSS(pdA = pd, pd0 = 0, target.power = 0.8, alpha = 0.05, pGuess
 %% \end{itemize}
 %% 
 
-\section{A-not A and same-different protocols}
-\label{sec:not-same-different}
-
-
-\section{Replicated simple discrimination protocols}
-\label{sec:repl-simple-discr}
-
-\subsection{The beta-binomial model}
-\label{sec:beta-binomial-model}
-
-\marginpar{introduce data and model here}
-
-The beta-binomial model is derived from the marginal distribution of
-the binomial response, $X_i$, when the probabilities, $\pi_i$ are
-allowed to have a beta-distribution on the interval $(0; 1)$. 
-
-The likelihood function for the beta-binomial model is
-\begin{equation}
-  \label{eq:17}
-  \ell(\alpha, \beta; x, n) = - N \log Beta(\alpha, \beta) +
-  \sum_{i=1}^N \log Beta(\alpha + x_i, \beta - x_i + n_i)
-\end{equation}
-where $i = 1, \ldots, N$ is the number of independent binomial
-observations each with $x_i$ successes out of $n_i$ trials, $Beta$ is
-the beta function with parameters $\alpha$ and 
-$\beta$. 
-The beta-binomial model can be parameterized in terms of the mean
-binomial parameter, $\mu$ and the degree of over-dispersion, $\gamma$
-both living in the interval $(0; 1)$. The relation to the $(\alpha,
-\beta)$ parameters is:
-\begin{equation}
-  \label{eq:18}
-  \mu = \alpha/(\alpha + \beta) \quad 
-  \gamma = 1/(\alpha + \beta + 1)
-\end{equation}
-$\gamma$ can also be interpreted as a correlation\ldots
-
-In a sensory experiment $\mu$ can be interpreted as the probability of
-a correct answer, $p_c$ averaged over subjects. The corresponding
-values of $p_d$ and $d'$ can be found by eq.~\eqref{eq:2} and
-\eqref{eq:6}. 
-
-The standard error of the $\mu$ and $\gamma$ can be found from the
-variance-covariance matrix of the parameters, which in turn can be
-found from the Hessian of the likelihood function. The standard errors
-of the population $p_d$ and population $d'$ can also be found from
-eq.~\eqref{eq:9} and \eqref{eq:10}. 
-
-
-\subsection{The chance-corrected beta-binomial model}
-\label{sec:chance-corr-beta}
-
-In the chance-corrected beta-binomial model the probability of a
-correct answer is only allowed in the interval $(p_g; 1)$. This means
-that the probability of a correct answer for any one individual is not
-allowed to be less than the guessing probability. This is sensible
-since it is impossible for the underlying probability of a correct
-answer for any individual to be less than the guessing probability for
-any of the simple sensory discrimination protocols.
-
-The likelihood function for the chance-corrected beta-binomial model
-is
-\begin{align}
-  \ell(\alpha, \beta; x, n) =&~ - N \log Beta(\alpha, \beta) +
-  \sum_{j=1}^N \log \nonumber \\
-  &~\left\{ \sum_{i=1}^{x_j} {{x_j} \choose i}
-    (1-p_g)^{n_j-x_j+i} p_g^{x_j-i}
-    Beta(\alpha + i, n_j - x_j + \beta) \right\}
-  \label{eq:23}
-\end{align}
-The parameters, $\mu$ and $\gamma$ still live in the interval $(0;
-1)$, but $\mu$ now has to be interpreted on the $p_d$ scale rather
-than the $p_c$ scale. Transformation to the other scales and
-computation of standard errors follow the approach in
-section~\ref{sec:simple-discr-meth}. 
-
-\subsection{A mixture of discriminators and non-discriminators}
-\label{sec:mixt-discr-non}
-
-It does not have to be assumed that assessors are either
-discriminators or non-discriminators. These assessor types can be
-regarded as the extreme endpoints in-between which the population of
-assessors distribute.
-
-
-\subsection{Difference testing in replicated experiments}
-\label{sec:diff-test-repl}
-
-\subsubsection{Model based likelihood ratio tests}
-\label{sec:model-based-likel}
-
-A likelihood ratio test of over-dispersion can be calculated by
-comparing the likelihood of the beta-binomial model with the
-likelihood of the standard binomial model.
-Suppose 20 panelists each conduct 10 triangle tests, with $x_i$
-number of correct responses out of $n_i = 10$ trials for all $i$,
-where $i = 1, \ldots, N$, $N = 20$. 
-
-The likelihood ratio test statistic for the test of over-dispersion is
-\begin{equation}
-  \label{eq:35}
-  LR_{over-disp} = 2 \{\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n) - 
-  \ell_{binom}(\hat\mu; x, n)\} ,
-\end{equation}
-where $\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n)$ is the log-likelihood of
-the (chance-corrected) beta-binomial model given by by (\ref{eq:17})
-or (\ref{eq:23}) evaluated at the ML estimates and
-$\ell_{binom}(\hat\mu; x, n)$ is the value of
-\begin{equation}
-  \label{eq:36}
-  \ell_{binom}(\mu; x, n) = \sum_{i = 1}^N \left\{ \log {n_i \choose x_i} x_i
-  \log \mu + (n_i - x_i) \log (1 - \mu) \right\}
-\end{equation}
-evaluated at the ML estimate $\hat\mu = \sum_i x_i / \sum_i n_i$. Here
-the alternative hypothesis is that $ X_i \sim \textup{binom}(\hat\mu,
-n_i)$; that observations from different individuals are independent
-and binomially distributed with the same probability of a correct
-answer; $p_c = \mu$. 
-
-The likelihood ratio statistic asymptotically follows a
-$\chi_1^2$-distribution, so the $p$-value is given by:
-\begin{equation}
-  \label{eq:37}
-  p\textup{-value} = P(\chi^2_1 \geq LR_{over-disp})
-\end{equation}
-We assume a 1 degree of freedom reference
-distribution, but this may not be appropriate since this is in fact a
-test of $\gamma = 0$ versus $\gamma > 0$ and hence a test on the
-boundary of the parameter space for $\gamma$. The appropriate df may
-be closer to one half, but this has not been empirically
-justified. One df corresponds to the two-sided test and the test is in
-fact one-sided, which motivates halving the degrees of freedom.
-Choosing df = 1 is on the safe side since this leads to
-$p$-value which may be a little too large.
-
-
-The test of ``any difference'', is a test of $H_0:~ \mu_i = p_g$ for
-all $i$, i.e. for all individuals, versus the general alternative that
-for some individuals at least the probability of a correct answer is
-different from the guessing probability, $p_g$ and \emph{possibly}
-varies among individuals. The likelihood under the null hypothesis,
-$\ell_{binom}(p_g; x, n)$ is given by eq. (\ref{eq:36}) where $\mu =
-p_g$, and the likelihood ratio statistic is given by
-\begin{equation}
-  \label{eq:38}
-  LR_{any-diff} = 2 \{\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n) - 
-  \ell_{binom}(p_g; x, n)\} .
-\end{equation}
-
-We assume a $\chi_2^2$ reference distribution for this statistic, so
-the $p$-value is
-\begin{equation}
-  \label{eq:39}
-  p\textup{-value} = P(\chi^2_2 \geq LR_{any-diff})
-\end{equation}
-while this is still partly a test at the boundary of the parameter
-space, so the stated $p$-value may be a little too large. 
-
-Yet another test of ``any difference'' is possible. First realize that
-if there really is no sensory difference between the objects/products,
-then the probability of a correct answer will for all assessors be
-$p_g$ and there is no room for over-dispersion. We may therefore test 
-$H_0:~ \mu = p_g$ versus $H_1:~ \mu > p_g$ where $\mu$ is the average
-probability of a correct answer and 
-$\hat\mu = \sum_i x_i / \sum_i n_i$. 
-The likelihood ratio statistic for this test is 
-\begin{equation}
-  \label{eq:40}
-  LR_{mean-diff} = 2 \{\ell_{binom}(\hat\mu; x, n) - 
-  \ell_{binom}(p_g; x, n)\}
-\end{equation}
-which asymptotically follows a $\chi_1^2$-distribution, so the
-$p$-value is given by: 
-\begin{equation}
-  \label{eq:41}
-  p\textup{-value} = P(\chi^2_1 \geq LR_{mean-diff}) .
-\end{equation}
-
-These three models are nested, so the $LR$-statistics are additive in
-the following way
-\begin{equation}
-  \label{eq:42}
-  LR_{any-diff} = LR_{mean-diff} + LR_{over-disp}
-\end{equation}
-and the degrees of freedom add up similarly. This can be used to
-provide some insight in to the power of these tests under various
-scenarios. If there is only little or perhaps no over-dispersion at
-all, then the mean difference test will provide the most powerful
-test. If most of the structure in the data is due to over-dispersion,
-then the test directly targeted on over-dispersion will be the most
-powerful. It is, however, not possible to observe over-dispersion
-without a difference in mean, so the joint test of mean and
-dispersion; the test of any difference, may be almost as
-powerful. We expect that when the beta-binomial model is appropriate,
-i.e. when there is appreciably over-dispersion, the test of any
-difference will be Superior to the other two tests or at least at
-least as good as them. 
-
+%% \section{A-not A and same-different protocols}
+%% \label{sec:not-same-different}
+%% 
+%% 
+%% \section{Replicated simple discrimination protocols}
+%% \label{sec:repl-simple-discr}
+%% 
+%% \subsection{The beta-binomial model}
+%% \label{sec:beta-binomial-model}
+%% 
+%% \marginpar{introduce data and model here}
+%% 
+%% The beta-binomial model is derived from the marginal distribution of
+%% the binomial response, $X_i$, when the probabilities, $\pi_i$ are
+%% allowed to have a beta-distribution on the interval $(0; 1)$. 
+%% 
+%% The likelihood function for the beta-binomial model is
+%% \begin{equation}
+%%   \label{eq:17}
+%%   \ell(\alpha, \beta; x, n) = - N \log Beta(\alpha, \beta) +
+%%   \sum_{i=1}^N \log Beta(\alpha + x_i, \beta - x_i + n_i)
+%% \end{equation}
+%% where $i = 1, \ldots, N$ is the number of independent binomial
+%% observations each with $x_i$ successes out of $n_i$ trials, $Beta$ is
+%% the beta function with parameters $\alpha$ and 
+%% $\beta$. 
+%% The beta-binomial model can be parameterized in terms of the mean
+%% binomial parameter, $\mu$ and the degree of over-dispersion, $\gamma$
+%% both living in the interval $(0; 1)$. The relation to the $(\alpha,
+%% \beta)$ parameters is:
+%% \begin{equation}
+%%   \label{eq:18}
+%%   \mu = \alpha/(\alpha + \beta) \quad 
+%%   \gamma = 1/(\alpha + \beta + 1)
+%% \end{equation}
+%% $\gamma$ can also be interpreted as a correlation\ldots
+%% 
+%% In a sensory experiment $\mu$ can be interpreted as the probability of
+%% a correct answer, $p_c$ averaged over subjects. The corresponding
+%% values of $p_d$ and $d'$ can be found by eq.~\eqref{eq:2} and
+%% \eqref{eq:6}. 
+%% 
+%% The standard error of the $\mu$ and $\gamma$ can be found from the
+%% variance-covariance matrix of the parameters, which in turn can be
+%% found from the Hessian of the likelihood function. The standard errors
+%% of the population $p_d$ and population $d'$ can also be found from
+%% eq.~\eqref{eq:9} and \eqref{eq:10}. 
+%% 
+%% 
+%% \subsection{The chance-corrected beta-binomial model}
+%% \label{sec:chance-corr-beta}
+%% 
+%% In the chance-corrected beta-binomial model the probability of a
+%% correct answer is only allowed in the interval $(p_g; 1)$. This means
+%% that the probability of a correct answer for any one individual is not
+%% allowed to be less than the guessing probability. This is sensible
+%% since it is impossible for the underlying probability of a correct
+%% answer for any individual to be less than the guessing probability for
+%% any of the simple sensory discrimination protocols.
+%% 
+%% The likelihood function for the chance-corrected beta-binomial model
+%% is
+%% \begin{align}
+%%   \ell(\alpha, \beta; x, n) =&~ - N \log Beta(\alpha, \beta) +
+%%   \sum_{j=1}^N \log \nonumber \\
+%%   &~\left\{ \sum_{i=1}^{x_j} {{x_j} \choose i}
+%%     (1-p_g)^{n_j-x_j+i} p_g^{x_j-i}
+%%     Beta(\alpha + i, n_j - x_j + \beta) \right\}
+%%   \label{eq:23}
+%% \end{align}
+%% The parameters, $\mu$ and $\gamma$ still live in the interval $(0;
+%% 1)$, but $\mu$ now has to be interpreted on the $p_d$ scale rather
+%% than the $p_c$ scale. Transformation to the other scales and
+%% computation of standard errors follow the approach in
+%% section~\ref{sec:simple-discr-meth}. 
+%% 
+%% \subsection{A mixture of discriminators and non-discriminators}
+%% \label{sec:mixt-discr-non}
+%% 
+%% It does not have to be assumed that assessors are either
+%% discriminators or non-discriminators. These assessor types can be
+%% regarded as the extreme endpoints in-between which the population of
+%% assessors distribute.
+%% 
+%% 
+%% \subsection{Difference testing in replicated experiments}
+%% \label{sec:diff-test-repl}
+%% 
+%% \subsubsection{Model based likelihood ratio tests}
+%% \label{sec:model-based-likel}
+%% 
+%% A likelihood ratio test of over-dispersion can be calculated by
+%% comparing the likelihood of the beta-binomial model with the
+%% likelihood of the standard binomial model.
+%% Suppose 20 panelists each conduct 10 triangle tests, with $x_i$
+%% number of correct responses out of $n_i = 10$ trials for all $i$,
+%% where $i = 1, \ldots, N$, $N = 20$. 
+%% 
+%% The likelihood ratio test statistic for the test of over-dispersion is
+%% \begin{equation}
+%%   \label{eq:35}
+%%   LR_{over-disp} = 2 \{\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n) - 
+%%   \ell_{binom}(\hat\mu; x, n)\} ,
+%% \end{equation}
+%% where $\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n)$ is the log-likelihood of
+%% the (chance-corrected) beta-binomial model given by by (\ref{eq:17})
+%% or (\ref{eq:23}) evaluated at the ML estimates and
+%% $\ell_{binom}(\hat\mu; x, n)$ is the value of
+%% \begin{equation}
+%%   \label{eq:36}
+%%   \ell_{binom}(\mu; x, n) = \sum_{i = 1}^N \left\{ \log {n_i \choose x_i} x_i
+%%   \log \mu + (n_i - x_i) \log (1 - \mu) \right\}
+%% \end{equation}
+%% evaluated at the ML estimate $\hat\mu = \sum_i x_i / \sum_i n_i$. Here
+%% the alternative hypothesis is that $ X_i \sim \textup{binom}(\hat\mu,
+%% n_i)$; that observations from different individuals are independent
+%% and binomially distributed with the same probability of a correct
+%% answer; $p_c = \mu$. 
+%% 
+%% The likelihood ratio statistic asymptotically follows a
+%% $\chi_1^2$-distribution, so the $p$-value is given by:
+%% \begin{equation}
+%%   \label{eq:37}
+%%   p\textup{-value} = P(\chi^2_1 \geq LR_{over-disp})
+%% \end{equation}
+%% We assume a 1 degree of freedom reference
+%% distribution, but this may not be appropriate since this is in fact a
+%% test of $\gamma = 0$ versus $\gamma > 0$ and hence a test on the
+%% boundary of the parameter space for $\gamma$. The appropriate df may
+%% be closer to one half, but this has not been empirically
+%% justified. One df corresponds to the two-sided test and the test is in
+%% fact one-sided, which motivates halving the degrees of freedom.
+%% Choosing df = 1 is on the safe side since this leads to
+%% $p$-value which may be a little too large.
+%% 
+%% 
+%% The test of ``any difference'', is a test of $H_0:~ \mu_i = p_g$ for
+%% all $i$, i.e. for all individuals, versus the general alternative that
+%% for some individuals at least the probability of a correct answer is
+%% different from the guessing probability, $p_g$ and \emph{possibly}
+%% varies among individuals. The likelihood under the null hypothesis,
+%% $\ell_{binom}(p_g; x, n)$ is given by eq. (\ref{eq:36}) where $\mu =
+%% p_g$, and the likelihood ratio statistic is given by
+%% \begin{equation}
+%%   \label{eq:38}
+%%   LR_{any-diff} = 2 \{\ell_{beta-bin}(\hat\mu, \hat\gamma; x; n) - 
+%%   \ell_{binom}(p_g; x, n)\} .
+%% \end{equation}
+%% 
+%% We assume a $\chi_2^2$ reference distribution for this statistic, so
+%% the $p$-value is
+%% \begin{equation}
+%%   \label{eq:39}
+%%   p\textup{-value} = P(\chi^2_2 \geq LR_{any-diff})
+%% \end{equation}
+%% while this is still partly a test at the boundary of the parameter
+%% space, so the stated $p$-value may be a little too large. 
+%% 
+%% Yet another test of ``any difference'' is possible. First realize that
+%% if there really is no sensory difference between the objects/products,
+%% then the probability of a correct answer will for all assessors be
+%% $p_g$ and there is no room for over-dispersion. We may therefore test 
+%% $H_0:~ \mu = p_g$ versus $H_1:~ \mu > p_g$ where $\mu$ is the average
+%% probability of a correct answer and 
+%% $\hat\mu = \sum_i x_i / \sum_i n_i$. 
+%% The likelihood ratio statistic for this test is 
+%% \begin{equation}
+%%   \label{eq:40}
+%%   LR_{mean-diff} = 2 \{\ell_{binom}(\hat\mu; x, n) - 
+%%   \ell_{binom}(p_g; x, n)\}
+%% \end{equation}
+%% which asymptotically follows a $\chi_1^2$-distribution, so the
+%% $p$-value is given by: 
+%% \begin{equation}
+%%   \label{eq:41}
+%%   p\textup{-value} = P(\chi^2_1 \geq LR_{mean-diff}) .
+%% \end{equation}
+%% 
+%% These three models are nested, so the $LR$-statistics are additive in
+%% the following way
+%% \begin{equation}
+%%   \label{eq:42}
+%%   LR_{any-diff} = LR_{mean-diff} + LR_{over-disp}
+%% \end{equation}
+%% and the degrees of freedom add up similarly. This can be used to
+%% provide some insight in to the power of these tests under various
+%% scenarios. If there is only little or perhaps no over-dispersion at
+%% all, then the mean difference test will provide the most powerful
+%% test. If most of the structure in the data is due to over-dispersion,
+%% then the test directly targeted on over-dispersion will be the most
+%% powerful. It is, however, not possible to observe over-dispersion
+%% without a difference in mean, so the joint test of mean and
+%% dispersion; the test of any difference, may be almost as
+%% powerful. We expect that when the beta-binomial model is appropriate,
+%% i.e. when there is appreciably over-dispersion, the test of any
+%% difference will be Superior to the other two tests or at least at
+%% least as good as them. 
+%% 
 \bibliography{meth}
 %% \newpage
 %% \appendix

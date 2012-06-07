@@ -19,7 +19,8 @@ discrimSS(pdA, pd0 = 0, target.power = 0.90, alpha = 0.05,
           statistic = c("exact", "normal"))
 
 d.primeSS(d.primeA, d.prime0 = 0, target.power = 0.90, alpha = 0.05,
-          method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+          method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+            "triangle"), 
           test = c("difference", "similarity"),
           statistic = c("exact", "normal")) 
 }
@@ -64,9 +65,11 @@ d.primeSS(d.primeA, d.prime0 = 0, target.power = 0.90, alpha = 0.05,
 \value{
   The sample size; a scalar integer.
 }
-\references{Brockhoff, P.B. and Christensen, R.H.B (2010). Thurstonian
+\references{
+  Brockhoff, P.B. and Christensen, R.H.B (2010). Thurstonian
   models for sensory discrimination tests as generalized linear models.
-  Food Quality and Preference, 21, pp. 330-338.}
+  Food Quality and Preference, 21, pp. 330-338.
+}
 \author{Per Bruun Brockhoff and Rune Haubo B Christensen}
 
 \seealso{\code{\link{AnotA}}, \code{\link{discrimPwr}},

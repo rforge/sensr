@@ -53,6 +53,45 @@ threeAFC()$linkfun(1/3 + 1e-5) # 6.103516e-05
 threeAFC()$linkfun(1/3 + 1e-6) # 0
 
 #################################
+## Tests of tetrad family object:
+
+## Evaluating linkinv, mu.eta and linkfun for a range of values: 
+delta.lim <- c(-Inf, -1, 0, 1e-3, 1e-2, .1, 1:20, 30, Inf)
+pc <- c(-Inf, -1, 0:3/10, 1/3, 1/3 + 1e-4, 1/3 + 1e-3,
+        4:9/10, 1-1e-7, 1-1e-8, 1, 2, Inf)
+
+print(cbind(delta.lim,
+            linkinv= tetrad()$linkinv(delta.lim),
+            muEta= tetrad()$mu.eta(delta.lim)
+            ), digits=7)
+print(cbind(pc, tetrad()$linkfun(pc)), digits=7)
+
+## Going smooth toward zero:
+tetrad()$mu.eta(8 - 10^(0:-7))
+diff(tetrad()$mu.eta(8 - 10^(0:-7)))
+
+## Upper limit for linkinv:
+1 - tetrad()$linkinv(9-.1) # 5.737801e-10
+1 - tetrad()$linkinv(9) # 0
+1 - tetrad()$linkinv(9+.1) # 0
+## Lower limit for linkinv:
+tetrad()$linkinv(1e-4) - 1/3 # 2.043666e-09
+tetrad()$linkinv(1e-5) - 1/3 # 2.242808e-10
+tetrad()$linkinv(1e-6) - 1/3 # 2.060869e-10
+tetrad()$linkinv(1e-7) - 1/3 # 2.059049e-10
+tetrad()$linkinv(1e-8) - 1/3 # 0
+
+## The upper limit for linkfun:
+tetrad()$linkfun(1 - 1e-7) ## > Inf ~ 7.706576
+tetrad()$linkfun(1 - 1.1e-8) ## < Inf ~ 8.235212
+tetrad()$linkfun(1 - 1e-8) ## Inf
+## Lower limit for linkfun:
+tetrad()$linkfun(1/3 + 1e-8) # 0.0002441406
+tetrad()$linkfun(1/3 + 1e-9) # 6.103516e-05
+tetrad()$linkfun(1/3 + 1e-10) # 0
+tetrad()$linkfun(1/3) # 0
+
+#################################
 ## Tests of duo-trio family object:
 
 ## Evaluating linkinv, mu.eta and linkfun for a range of values: 

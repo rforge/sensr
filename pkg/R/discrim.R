@@ -122,7 +122,8 @@ discrimPwr <-
 
 d.primePwr <-
   function(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"), 
            test = c("difference", "similarity"),
            statistic = c("exact", "normal"))
 {
@@ -232,7 +233,8 @@ discrimSS <-
 
 d.primeSS <- 
   function(d.primeA, d.prime0 = 0, target.power = 0.90, alpha = 0.05,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"), 
            test = c("difference", "similarity"),
            statistic = c("exact", "normal")) 
 {
@@ -258,7 +260,8 @@ d.primeSS <-
 
 discrim <-
   function(correct, total, pd0 = 0, conf.level = 0.95,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"), 
            statistic = c("exact", "likelihood", "score", "Wald"),
            test = c("difference", "similarity"), ...)
 {
@@ -316,10 +319,11 @@ discrim <-
   if(stat == "likelihood") {
     prof <- profBinom(x, n, nProf = 100)
     ci <- c(confint(prof, level = conf.level))
-    logLikMax <- dbinom(x, n, table[1,1], log = TRUE)
+    logLikMax <- dbinom(x, n, pc.hat, log = TRUE)
     logLikNull <- dbinom(x, n, pc0, log = TRUE)
     Stat <- sign(table[1,1] - pc0) *
       sqrt(2 * (logLikMax - logLikNull))
+### Note: Stat can get negative here.
     p.value <-
       if(test == "difference") pnorm(Stat, lower.tail = FALSE)
       else pnorm(Stat)
@@ -431,8 +435,8 @@ function (success, total,
 
 discrimSim <-
   function(sample.size, replicates, d.prime, sd.indiv = 0,
-           method = c("duotrio", "halfprobit", "probit", "triangle",
-           "twoAFC", "threeAFC"))
+           method = c("duotrio", "halfprobit", "probit", "tetrad",
+             "triangle", "twoAFC", "threeAFC"))
 {
   method <- match.arg(method)
   if(sample.size != trunc(sample.size) | sample.size <= 0)
@@ -539,100 +543,80 @@ plot.anota <-
   invisible()
 }
 
-discrimr <- ## Discrim revised
-  function(formula, data, weights, start, subset, na.action, contrasts
-           = NULL, method = c("duotrio", "probit", "threeAFC",
-                     "triangle", "twoAFC", "logit"), Hess = TRUE, ...)
-{
-  nll <- function(beta, X, y, w) { # negative log-likelihood
-    eta <- offset
-    eta <- eta + X %*% beta
-    p <- link.inv(eta)
-    if(all(p > 0 && p < 1))
-      -sum(2 * w * (y*log(p/(1 - p)) + log(1-p)))
-    else(Inf)
-  }
-  grd <- function(beta, X, y, w) { # gradient
-    eta <- offset
-    eta <- eta + X %*% beta
-    p <- link.inv(eta)
-    if(all(p > 0)) {
-      ##      cat(NROW(w), NROW(p), NROW(y), "X = ", dim(X), "\n")
-      -2 * t(X) %*% (w * muEta(eta) * (y/p - (1-y)/(1-p)))
-      ##  browser()
-    }
-    else(rep(NA, length(beta)))
-  }
-  m <- match.call(expand.dots = FALSE)
-  m$start <- m$Hess <- m$method <- m$... <- NULL
-  m[[1]] <- as.name("model.frame")
-  if (is.matrix(eval.parent(m$data)))
-    m$data <- as.data.frame(data)
-  m <- eval.parent(m)
-  Terms <- attr(m, "terms")
-  x <- model.matrix(Terms, m, contrasts)
-  n <- nrow(x)
-  cons <- attr(x, "contrasts")
-  wt <- model.weights(m)
-  if (!length(wt))
-    wt <- rep(1, n)
-  offset <- model.offset(m)
-  if (length(offset) <= 1)
-    offset <- rep(0, n)
-  y <- model.response(m)
-  if (NCOL(y) == 2) {
-    n <- y[, 1] + y[, 2]
-    y <- ifelse(n == 0, 0, y[, 1]/n)
-    wt <- wt * n
-  }
-  stopifnot(all(wt > 0))
-  if(missing(start)) start <- rep(0, ncol(x))
-  if(missing(data))
-  if(length(start) != ncol(x))
-    stop("'start' is not of correct length")
-  method <- match.arg(method)
-  dn <- dimnames(x)[[2]]
-  link.inv <- switch(method,
-                     duotrio = duotrio()$linkinv,
-                     probit = pnorm,
-                     threeAFC = threeAFC()$linkinv,
-                     triangle = triangle()$linkinv,
-                     twoAFC = twoAFC()$linkinv,
-                     logit = plogis
-###                     twoAFC = function(eta) {pnorm(eta/sqrt(2))}
-                     )
-  muEta <- switch(method,
-                  duotrio = duotrio()$mu.eta,
-                  probit = dnorm,
-                  threeAFC = threeAFC()$mu.eta,
-                  triangle = triangle()$mu.eta,
-                  twoAFC = twoAFC()$mu.eta,
-                  logit = dlogis
-                  )
-
-  fit <- optim(start, fn=nll, gr=grd, X=x, y=y, w=wt, method="BFGS", #
-               hessian = Hess, ...)
-  ## Fitted values (probabilities):
-  fit$fitted <- p <- link.inv(offset + x %*% fit$par)
-  ## Deviance:
-  fit$dev <- 2 * wt * (y * log(y/p) + (1 - y) * log((1 - y)/(1 - p)))
-  fit$deviance <-  sum(fit$dev)
-  fit$resid.dev <- sign(y - p) * sqrt(fit$dev)
-  se <- NULL
-  if(Hess) {
-    fit$vcov <- solve(fit$hessian)
-    fit$se <- sqrt(diag(fit$vcov))
-    names(fit$se) <- dn
-    dimnames(fit$vcov) <- list(dn, dn)
-  }
-  fit$coef <- fit$par
-  fit$data <- data
-  fit$test <- method
-  fit$call <- match.call()
-  names(fit$coef) <- dn
-  class(fit) <- "discrimr"
-  fit
-}
+## discrimr <- ## Discrim revised
+##   function(formula, data, weights, start, subset, na.action, contrasts
+##            = NULL, method = c("duotrio", "probit", "threeAFC",
+##                      "triangle", "twoAFC", "logit"), Hess = TRUE, ...)
+## {
+##   nll <- function(beta, X, y, w) { # negative log-likelihood
+##     eta <- offset
+##     eta <- eta + X %*% beta
+##     p <- link.inv(eta)
+##     if(all(p > 0 && p < 1))
+##       -sum(2 * w * (y*log(p/(1 - p)) + log(1-p)))
+##     else(Inf)
+##   }
+##   grd <- function(beta, X, y, w) { # gradient
+##     eta <- offset
+##     eta <- eta + X %*% beta
+##     p <- link.inv(eta)
+##     if(all(p > 0)) {
+##       ##      cat(NROW(w), NROW(p), NROW(y), "X = ", dim(X), "\n")
+##       -2 * t(X) %*% (w * muEta(eta) * (y/p - (1-y)/(1-p)))
+##       ## browser() } else(rep(NA, length(beta)))
+##     }
+##   }
+##   m <- match.call(expand.dots = FALSE) m$start <- m$Hess <-
+##     m$method  <-  m$... <- NULL
+##   m[[1]] <- as.name("model.frame") if
+##   (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data) m
+##   <- eval.parent(m) Terms <- attr(m, "terms") x <-
+##     model.matrix(Terms, m, contrasts) n <- nrow(x) cons <- attr(x,
+##                                                                 "contrasts") wt <- model.weights(m) if (!length(wt)) wt <- rep(1,
+##     n) offset <- model.offset(m) if (length(offset) <= 1) offset <-
+##     rep(0, n) y <- model.response(m) if (NCOL(y) == 2) { n <- y[, 1] +
+##     y[, 2] y <- ifelse(n == 0, 0, y[, 1]/n) wt <- wt * n }
+##     stopifnot(all(wt > 0)) if(missing(start)) start <- rep(0, ncol(x))
+##     if(missing(data)) if(length(start) != ncol(x))
+##     stop("'start' is not of correct length") method <-
+##     match.arg(method) dn <- dimnames(x)[[2]] link.inv <-
+##     switch(method, duotrio = duotrio()$linkinv, probit = pnorm,
+##     threeAFC = threeAFC()$linkinv, triangle = triangle()$linkinv,
+##     twoAFC = twoAFC()$linkinv, logit = plogis
+## ###                     twoAFC = function(eta) {pnorm(eta/sqrt(2))}
+##                      )
+##   muEta <- switch(method,
+##                   duotrio = duotrio()$mu.eta,
+##                   probit = dnorm,
+##                   threeAFC = threeAFC()$mu.eta,
+##                   triangle = triangle()$mu.eta,
+##                   twoAFC = twoAFC()$mu.eta,
+##                   logit = dlogis
+##                   )
+## 
+##   fit <- optim(start, fn=nll, gr=grd, X=x, y=y, w=wt, method="BFGS", #
+##                hessian = Hess, ...)
+##   ## Fitted values (probabilities):
+##   fit$fitted <- p <- link.inv(offset + x %*% fit$par)
+##   ## Deviance:
+##   fit$dev <- 2 * wt * (y * log(y/p) + (1 - y) * log((1 - y)/(1 - p)))
+##   fit$deviance <-  sum(fit$dev)
+##   fit$resid.dev <- sign(y - p) * sqrt(fit$dev)
+##   se <- NULL
+##   if(Hess) {
+##     fit$vcov <- solve(fit$hessian)
+##     fit$se <- sqrt(diag(fit$vcov))
+##     names(fit$se) <- dn
+##     dimnames(fit$vcov) <- list(dn, dn)
+##   }
+##   fit$coef <- fit$par
+##   fit$data <- data
+##   fit$test <- method
+##   fit$call <- match.call()
+##   names(fit$coef) <- dn
+##   class(fit) <- "discrimr"
+##   fit
+## }
 
 confint.anota <-
   function(object, parm, level = 0.95, ...)
@@ -672,6 +656,9 @@ profile.discrim <-
   }
   pg <- ifelse(fitted$method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
   prof <- prof[prof$pSeq >= pg, ]
+### FIXME: This does not handle if x/n < pg, as the relative
+### likelihood needs to be rescaled to have max in pg in that case.
+### - Really? 
   prof$d.prime <- psyinv(prof$pSeq, method = fitted$method)
   keep <- is.finite(prof$d.prime)
   prof$pSeq <- NULL
@@ -688,7 +675,8 @@ plot.profile.discrim <-
   lim <- sapply(level, function(x) exp(-qchisq(x, df = 1)/2))
   if (fig == TRUE) {
     npl.spline <- spline(x$d.prime, x$Lroot, n = n, method = method)
-    plot(npl.spline$x, exp(-npl.spline$y^2/2), type = "l", las = 1, ylim = c(0, 1),
+    plot(npl.spline$x, exp(-npl.spline$y^2/2), type = "l", las = 1,
+         ylim = c(0, 1), 
          xlab = "d-prime", ylab = "Relative Likelihood",
          main = "", ...)
     abline(h = lim)

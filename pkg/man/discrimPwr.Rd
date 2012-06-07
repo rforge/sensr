@@ -16,7 +16,8 @@ discrimPwr(pdA, pd0 = 0, sample.size, alpha = 0.05, pGuess = 1/2,
            statistic = c("exact", "normal"))
 
 d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
-           method = c("duotrio", "threeAFC", "twoAFC", "triangle"),
+           method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
+             "triangle"), 
            test = c("difference", "similarity"),
            statistic = c("exact", "normal"))
 }
@@ -56,9 +57,11 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
 \value{
   The power; a numerical scalar.
 }
-\references{Brockhoff, P.B. and Christensen, R.H.B (2010). Thurstonian
+\references{
+  Brockhoff, P.B. and Christensen, R.H.B (2010). Thurstonian
   models for sensory discrimination tests as generalized linear models.
-  Food Quality and Preference, 21, pp. 330-338.}
+  Food Quality and Preference, 21, pp. 330-338.
+}
 \author{Rune Haubo B Christensen and Per Bruun Brockhoff}
 
 \seealso{\code{\link{findcr}}, 
