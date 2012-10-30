@@ -1,4 +1,9 @@
 library(sensR)
+#################################
+## profBinom uses:
+## pSeq <- seq(from = 1e-8, to = 1-1e-8, length = nProf)
+## when cumputing the likelihood function. 
+
 
 #################################
 ## Tests of triangle family object:
