@@ -1,14 +1,11 @@
 
-R version 2.15.0 Patched (2012-05-05 r59321) -- "Easter Beagle"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: x86_64-pc-mingw32/x64 (64-bit)
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -21,7 +18,6 @@ Type 'q()' to quit R.
 > pkgname <- "sensR"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
-> options(pager = "console")
 > library('sensR')
 Loading required package: ordinal
 Loading required package: MASS
@@ -30,7 +26,7 @@ Loading required package: Matrix
 Loading required package: lattice
 Loading required package: numDeriv
 > 
-> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > cleanEx()
 > nameEx("AUC")
 > ### * AUC
@@ -130,7 +126,7 @@ Coefficients:
 (Intercept)  -1.0364     0.3424  -3.027  0.00247 **
 lev2          1.0364     0.4425   2.342  0.01917 * 
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -202,12 +198,13 @@ Number of Fisher Scoring iterations: 3
 > ### ** Examples
 > 
 > ### Design table:
-> ## 8  "yes"-responses to no-samples
-> ## 1  "yes"-responses to yes-samples
-> ## 17 "no"-response to no-samples
-> ## 24 "no"-responses to yes-samples
-> ## Note that response-class is columnwise and true-class is rowwise. 
-> (mat <- matrix(c(8, 17, 1, 24), 2, byrow = TRUE))
+> ## 8  "yes"-responses to yes-samples
+> ## 1  "yes"-responses to no-samples
+> ## 17 "no"-response to yes-samples
+> ## 24 "no"-responses to no-samples
+> ## Note that response-class is columnwise and true-class is rowwise:
+> (mat <- rbind(c(8, 17),
++               c(1, 24)))
      [,1] [,2]
 [1,]    8   17
 [2,]    1   24
@@ -217,6 +214,7 @@ Number of Fisher Scoring iterations: 3
 > SDT(mat, "probit")
   z(Hit rate) z(False alarm rate)  d-prime
 1  -0.4676988           -1.750686 1.282987
+> 
 > ## compare to AnotA():
 > AnotA(8, 25, 1, 25)
 
@@ -226,6 +224,17 @@ Results for the A-Not A test:
 
         Estimate Std. Error     Lower    Upper    P-value
 d-prime 1.282987  0.5243127 0.2553532 2.310621 0.01160771
+> 
+> ## Compute d-prime 'by hand':
+> ## Hit rate and False alarm rates:
+> H = 8/(8+17)
+> FA = 1/(1+24)
+> zH = qnorm(H)
+> zFA = qnorm(FA)
+> ## d-prime:
+> zH - zFA  # d'
+[1] 1.282987
+> 
 > ## Multi-response-class example (odor example from MacMillan and
 > ## Creelman, 2005)
 > (odor <- matrix(c(112, 112, 72, 53, 22, 4, 7, 38, 50, 117, 101, 62), 2,
@@ -456,7 +465,7 @@ Response: Sat
 > 
 > 
 > 
-> options(contrasts = c(unordered = "contr.treatment",ordered = "contr.poly"))
+> base::options(contrasts = c(unordered = "contr.treatment",ordered = "contr.poly"))
 > cleanEx()
 > nameEx("clm2twoAC")
 > ### * clm2twoAC
@@ -561,8 +570,8 @@ Significance test:
 d.prime -0.2709832 1.859251
 > confint(fm1, type = "Wald")
              2.5 %    97.5 %
-tau     -0.1081812 0.9401265
-d.prime -0.2873975 1.8359165
+tau     -0.1081827 0.9401279
+d.prime -0.2874014 1.8359205
 > 
 > pr1 <- profile(fm1)
 > confint(pr1)
@@ -597,61 +606,61 @@ d.prime -0.270983 1.859252
 > discrim(10, 15, method = "twoAFC")
 
 Estimates for the twoAFC discrimination protocol with 10 correct
-answers in 15 trials. p-value and 95 percent confidence intervals
-are based on the 'exact' binomial test. 
+answers in 15 trials. One-sided p-value and 95 % two-sided confidence
+intervals are based on the 'exact' binomial test. 
 
-         Estimate Std. Error Lower     Upper
-pc      0.6666667  0.1217161   0.5 0.8817589
-pd      0.3333333  0.2434322   0.0 0.7635178
-d-prime 0.6091404  0.4734123   0.0 1.6741819
+        Estimate Std. Error Lower  Upper
+pc        0.6667     0.1217   0.5 0.8818
+pd        0.3333     0.2434   0.0 0.7635
+d-prime   0.6091     0.4734   0.0 1.6742
 
 Result of difference test:
-'exact' binomial test: p-value = 0.15088 
+'exact' binomial test:  p-value = 0.1509 
 Alternative hypothesis: d-prime is greater than 0 
 
 > discrim(10, 15, method = "threeAFC", statistic = "likelihood")
 
 Estimates for the threeAFC discrimination protocol with 10 correct
-answers in 15 trials. p-value and 95 percent confidence intervals
-are based on the likelihood root statistic. 
+answers in 15 trials. One-sided p-value and 95 % two-sided confidence
+intervals are based on the likelihood root statistic. 
 
-         Estimate Std. Error     Lower     Upper
-pc      0.6666667  0.1217161 0.4154537 0.8652194
-pd      0.5000000  0.1825742 0.1231806 0.7978291
-d-prime 1.1159023  0.4359153 0.2802776 1.9966779
+        Estimate Std. Error  Lower  Upper
+pc        0.6667     0.1217 0.4155 0.8652
+pd        0.5000     0.1826 0.1232 0.7978
+d-prime   1.1159     0.4359 0.2803 1.9967
 
 Result of difference test:
-likelihood root statistic = 2.632769 p-value = 0.0042346 
+Likelihood Root statistic = 2.632769, p-value: 0.004235
 Alternative hypothesis: d-prime is greater than 0 
 
 > discrim(10, 15, method = "duotrio", conf.level = 0.90)
 
 Estimates for the duotrio discrimination protocol with 10 correct
-answers in 15 trials. p-value and 90 percent confidence intervals
-are based on the 'exact' binomial test. 
+answers in 15 trials. One-sided p-value and 90 % two-sided confidence
+intervals are based on the 'exact' binomial test. 
 
-         Estimate Std. Error Lower     Upper
-pc      0.6666667  0.1217161   0.5 0.8583360
-pd      0.3333333  0.2434322   0.0 0.7166721
-d-prime 1.5188515  0.7158631   0.0 2.8242468
+        Estimate Std. Error Lower  Upper
+pc        0.6667     0.1217   0.5 0.8583
+pd        0.3333     0.2434   0.0 0.7167
+d-prime   1.5189     0.7159   0.0 2.8242
 
 Result of difference test:
-'exact' binomial test: p-value = 0.15088 
+'exact' binomial test:  p-value = 0.1509 
 Alternative hypothesis: d-prime is greater than 0 
 
 > discrim(10, 15, method = "triangle", statistic = "score")
 
 Estimates for the triangle discrimination protocol with 10 correct
-answers in 15 trials. p-value and 95 percent confidence intervals
-are based on the Pearson and score statistics. 
+answers in 15 trials. One-sided p-value and 95 % two-sided confidence
+intervals are based on the Pearson and score statistics. 
 
-         Estimate Std. Error      Lower     Upper
-pc      0.6666667  0.1217161 0.38686545 0.8701220
-pd      0.5000000  0.1825742 0.08029818 0.8051829
-d-prime 2.3213620  0.6510364 0.78270139 3.7069278
+        Estimate Std. Error  Lower  Upper
+pc        0.6667     0.1217 0.3869 0.8701
+pd        0.5000     0.1826 0.0803 0.8052
+d-prime   2.3214     0.6510 0.7827 3.7069
 
 Result of difference test:
-Pearson X-square statistic = 7.5, df = 1, p-value = 0.0030849
+Pearson X-square statistic = 7.5, df = 1, p-value: 0.003085
 Alternative hypothesis: d-prime is greater than 0 
 
 > 
@@ -663,16 +672,16 @@ Alternative hypothesis: d-prime is greater than 0
 > discrim(20, 75, method = "triangle", pd0 = .2, test = "similarity")
 
 Estimates for the triangle discrimination protocol with 20 correct
-answers in 75 trials. p-value and 95 percent confidence intervals
-are based on the 'exact' binomial test. 
+answers in 75 trials. One-sided p-value and 95 % two-sided confidence
+intervals are based on the 'exact' binomial test. 
 
-         Estimate Std. Error     Lower      Upper
-pc      0.3333333         NA 0.3333333 0.38137272
-pd      0.0000000         NA 0.0000000 0.07205908
-d-prime 0.0000000         NA 0.0000000 0.73948770
+        Estimate Std. Error  Lower   Upper
+pc        0.3333         NA 0.3333 0.38137
+pd        0.0000         NA 0.0000 0.07206
+d-prime   0.0000         NA 0.0000 0.73949
 
 Result of similarity test:
-'exact' binomial test: p-value = 0.00030614 
+'exact' binomial test:  p-value = 0.0003061 
 Alternative hypothesis: d-prime is less than 1.287124 
 
 > 
@@ -699,6 +708,10 @@ Alternative hypothesis: d-prime is less than 1.287124
 [1] 0.9172552
 > d.primePwr(1, sample.size = 30, method = "twoAFC")
 [1] 0.9172552
+> ## Obtaining the equivalent normal approximation with and without
+> ## continuity correction:
+> discrimPwr(pd, sample.size = 30, statistic = "cont.normal")
+[1] 0.8846648
 > discrimPwr(pd, sample.size = 30, statistic = "normal")
 [1] 0.921092
 > 
@@ -823,7 +836,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)  
 (Intercept)   1.5189     0.7159   2.122   0.0339 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -849,7 +862,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)  
 (Intercept)   1.5189     0.7159   2.122   0.0339 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -969,16 +982,16 @@ Waiting for profiling to be done...
 > (dd <- discrim(7, 10, method = "duotrio", statistic = "likelihood"))
 
 Estimates for the duotrio discrimination protocol with 7 correct
-answers in 10 trials. p-value and 95 percent confidence intervals
-are based on the likelihood root statistic. 
+answers in 10 trials. One-sided p-value and 95 % two-sided confidence
+intervals are based on the likelihood root statistic. 
 
-        Estimate Std. Error Lower     Upper
-pc      0.700000  0.1449138   0.5 0.9154321
-pd      0.400000  0.2898275   0.0 0.8308642
-d-prime 1.715302  0.8597917   0.0 3.4656468
+        Estimate Std. Error Lower  Upper
+pc         0.700     0.1449   0.5 0.9154
+pd         0.400     0.2898   0.0 0.8309
+d-prime    1.715     0.8598   0.0 3.4656
 
 Result of difference test:
-likelihood root statistic = 1.282832 p-value = 0.099775 
+Likelihood Root statistic = 1.282832, p-value: 0.09978
 Alternative hypothesis: d-prime is greater than 0 
 
 > confint(dd)
@@ -1199,7 +1212,7 @@ Coefficients
 tau     1.2296     0.3490 0.6379 1.9925  <2e-16 ***
 delta   1.8850     0.7035 0.0000 3.2062  0.0563 .  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Log Likelihood: -16.6858 	AIC: 37.3715 
 > summary(sadi, FALSE)
@@ -1212,7 +1225,7 @@ Coefficients
 tau     1.2296     0.3490 0.5455 1.9136 0.000213 ***
 delta   1.8850     0.7035 0.5061 3.2639 0.003688 ** 
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Log Likelihood: -16.6858 	AIC: 37.3715 
 > 
@@ -1247,7 +1260,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)    
 (Intercept)   1.5878     0.4193   3.787 0.000153 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -1273,7 +1286,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)   
 (Intercept)   1.1142     0.3947   2.823  0.00476 **
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -1330,7 +1343,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)  
 (Intercept)   1.1159     0.4359    2.56   0.0105 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -1356,7 +1369,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)   
 (Intercept)   1.8173     0.5648   3.218  0.00129 **
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -1413,12 +1426,12 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)    
 (Intercept)    2.321      0.651   3.566 0.000363 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 0.0000e+00  on 0  degrees of freedom
-Residual deviance: 2.2204e-15  on 0  degrees of freedom
+    Null deviance: 0  on 0  degrees of freedom
+Residual deviance: 0  on 0  degrees of freedom
 AIC: 5.0807
 
 Number of Fisher Scoring iterations: 3
@@ -1439,7 +1452,7 @@ Coefficients:
             Estimate Std. Error z value Pr(>|z|)   
 (Intercept)   1.6025     0.5864   2.733  0.00628 **
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -1734,8 +1747,8 @@ Number of Fisher Scoring iterations: 2
 > 
 > ### * <FOOTER>
 > ###
-> cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  8.88 0.08 9.05 NA NA 
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.799 0.108 6.007 0 0 
 > grDevices::dev.off()
 null device 
           1 

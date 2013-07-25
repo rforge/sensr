@@ -18,7 +18,7 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
            statistic = c("exact", "likelihood", "score", "Wald"),
            test = c("difference", "similarity"), ...)
 
-\method{print}{discrim}(x, digits = getOption("digits"), ...)
+\method{print}{discrim}(x, digits = max(3, getOption("digits")-3), ...)
 
 %% discrimr(formula, data, weights, start, subset, na.action,
 %%          contrasts = NULL, method = c("duotrio", "probit", "threeAFC",

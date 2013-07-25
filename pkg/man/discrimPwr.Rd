@@ -13,13 +13,13 @@
 \usage{
 discrimPwr(pdA, pd0 = 0, sample.size, alpha = 0.05, pGuess = 1/2,
            test = c("difference", "similarity"),
-           statistic = c("exact", "normal"))
+           statistic = c("exact", "normal", "cont.normal"))
 
 d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
            method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
              "triangle"), 
            test = c("difference", "similarity"),
-           statistic = c("exact", "normal"))
+           statistic = c("exact", "normal", "cont.normal"))
 }
 \arguments{
   \item{pdA}{the probability of discrimination for the model under the
@@ -42,7 +42,8 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
     alternative hypothesis): "difference" corresponds "greater" and
     "similarity" corresponds to "less"}
   \item{statistic}{should power determination be based on the 'exact'
-           binomial test or the normal approximation to this?}
+           binomial test, the normal approximation to this, or the
+           normal approximation with continuity correction?}
 }
 \details{
   The power of the standard one-tailed difference test where the null
@@ -52,7 +53,6 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
   given by \code{pd0 + pg * (1 - pd0)} where \code{pg} is the guessing
   probability \code{pGuess}. Similarly, the probability of the
   alternative hypothesis is given by \code{pdA + pg * (1 - pdA)}
-
 }
 \value{
   The power; a numerical scalar.
@@ -75,6 +75,9 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
 pd <- coef(rescale(d.prime = 1, method = "twoAFC"))$pd
 discrimPwr(pd, sample.size = 30)
 d.primePwr(1, sample.size = 30, method = "twoAFC")
+## Obtaining the equivalent normal approximation with and without
+## continuity correction:
+discrimPwr(pd, sample.size = 30, statistic = "cont.normal")
 discrimPwr(pd, sample.size = 30, statistic = "normal")
 
 

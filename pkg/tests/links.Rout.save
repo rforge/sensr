@@ -1,8 +1,8 @@
 
-R version 2.15.0 Patched (2012-05-05 r59321) -- "Easter Beagle"
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
-Platform: x86_64-pc-mingw32/x64 (64-bit)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -23,6 +23,11 @@ Loading required package: ucminf
 Loading required package: Matrix
 Loading required package: lattice
 Loading required package: numDeriv
+> #################################
+> ## profBinom uses:
+> ## pSeq <- seq(from = 1e-8, to = 1-1e-8, length = nProf)
+> ## when cumputing the likelihood function. 
+> 
 > 
 > #################################
 > ## Tests of triangle family object:
@@ -521,4 +526,4 @@ Loading required package: numDeriv
 > 
 > proc.time()
    user  system elapsed 
-   3.02    0.04    3.07 
+   3.27    0.04    3.33 

@@ -263,28 +263,31 @@ print.discrim <-
   cat(paste("\nEstimates for the", x$method,
             "discrimination protocol with", x$data[1],
             "correct\nanswers in", 
-            x$data[2], "trials. p-value and",
+            x$data[2], "trials. One-sided p-value and",
             round(100 * x$conf.level, 3),  
-            "percent confidence intervals\nare based on the", text1,
-            "\n\n"))
+            "% two-sided confidence\nintervals are based on the",
+            text1, "\n\n"))
   print(x$coefficients, digits = digits)
   Pguess <- ifelse(x$method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
   d.prime0 <- psyinv(pd2pc(x$pd0, Pguess), method = x$method)
   cat(paste("\nResult of", x$test, "test:\n"))
   if(x$statistic == "Wald")
     cat(paste("Wald statistic = ", format(x$stat.value, digits),
-              ", p-value: ", format.pval(x$p.value), "\n", sep=""))
+              ", p-value: ", format.pval(x$p.value, digits=4), "\n",
+  sep="")) 
   if(x$statistic == "likelihood")
     cat(paste("Likelihood Root statistic = ",
               format(x$stat.value, digits), 
-              ", p-value: ", format.pval(x$p.value), "\n", sep=""))
+              ", p-value: ", format.pval(x$p.value, digits=4), "\n",
+  sep="")) 
   if(x$statistic == "exact")
     cat(paste("'exact' binomial test: ",
-              "p-value =", format.pval(x$p.value), "\n"))
+              "p-value =", format.pval(x$p.value, digits=4), "\n"))
   if(x$statistic == "score")
     cat(paste("Pearson X-square statistic = ",
               format(x$stat.value, digits), ", df = ", x$df,
-              ", p-value: ", format.pval(x$p.value), "\n", sep = ""))
+              ", p-value: ", format.pval(x$p.value, digits=4), "\n",
+  sep = "")) 
   cat("Alternative hypothesis: ")
   cat(paste("d-prime is",
             ifelse(x$test == "difference", "greater", "less"),

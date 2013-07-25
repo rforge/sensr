@@ -30,23 +30,35 @@ SDT(tab, method = c("probit", "logit"))
 \references{MacMillan , A. N. and Creelman, C. D (2005) Detection Theory
 A User's Guide. Lawrence Elbaum Associates, Inc. 2nd edition.}
 \author{Rune Haubo B Christensen}
-%% \note{ ~~further notes~~ 
-%% 
+%% \note{ ~~further notes~~
+%%
 %%  ~Make other sections like Warning with \section{Warning }{....} ~
 %% }
 %% \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
 ### Design table:
-## 8  "yes"-responses to no-samples
-## 1  "yes"-responses to yes-samples
-## 17 "no"-response to no-samples
-## 24 "no"-responses to yes-samples
-## Note that response-class is columnwise and true-class is rowwise. 
-(mat <- matrix(c(8, 17, 1, 24), 2, byrow = TRUE))
+## 8  "yes"-responses to yes-samples
+## 1  "yes"-responses to no-samples
+## 17 "no"-response to yes-samples
+## 24 "no"-responses to no-samples
+## Note that response-class is columnwise and true-class is rowwise:
+(mat <- rbind(c(8, 17),
+              c(1, 24)))
 SDT(mat, "logit")
 SDT(mat, "probit")
+
 ## compare to AnotA():
 AnotA(8, 25, 1, 25)
+
+## Compute d-prime 'by hand':
+## Hit rate and False alarm rates:
+H = 8/(8+17)
+FA = 1/(1+24)
+zH = qnorm(H)
+zFA = qnorm(FA)
+## d-prime:
+zH - zFA  # d'
+
 ## Multi-response-class example (odor example from MacMillan and
 ## Creelman, 2005)
 (odor <- matrix(c(112, 112, 72, 53, 22, 4, 7, 38, 50, 117, 101, 62), 2,
