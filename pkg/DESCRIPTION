@@ -1,11 +1,12 @@
 Package: sensR
 Type: Package
 Title: Thurstonian models for sensory discrimination
-Version: 1.2-20
-Date: 2013-07-24
+Version: 1.2-22
+Date: 2013-09-4
 Author: Rune Haubo B Christensen and Per Bruun Brockhoff
-Maintainer: Rune Haubo B Christensen <rhbc@imm.dtu.dk>
+Maintainer: Rune Haubo B Christensen <rhbc@dtu.dk>
 Depends: ordinal, numDeriv
+Imports: multcomp
 Suggests: MASS
 Description: Provides methods for sensory discrimination methods;
   duotrio, tetrad, triangle, 2-AFC, 3-AFC, A-not A, same-different and

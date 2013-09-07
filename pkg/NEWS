@@ -150,3 +150,9 @@ July 24. 2013: version 1.2-20:
 
 - Documentation bug reported by Mike Allerhand (2013-07-09) in SDT
   fixed.
+
+September 5. 2013: version 1.2-22:
+
+- Adding support for ANOVA-type tests of d-primes using the functions
+  dprime_compare, dprime_test, dprime_table and
+  posthoc.dprime_compare/posthoc.dprime_test.
