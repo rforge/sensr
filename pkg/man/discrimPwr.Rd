@@ -17,7 +17,7 @@ discrimPwr(pdA, pd0 = 0, sample.size, alpha = 0.05, pGuess = 1/2,
 
 d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
            method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
-             "triangle"), 
+             "triangle"),
            test = c("difference", "similarity"),
            statistic = c("exact", "normal", "cont.normal"))
 }
@@ -34,10 +34,10 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
   \item{alpha}{the type I level of the test; scalar between zero and
     one}
   \item{method}{the discrimination protocol for which the power should
-    be computed} 
+    be computed}
   \item{pGuess}{the guessing probability for the discrimination
     protocol, e.g. 1/2 for duo-trio and 2-AFC, and 1/3 for
-    triangle and 3-AFC; scalar between zero and one}
+    triangle, tetrad and 3-AFC; scalar between zero and one}
   \item{test}{the type of one-sided binomial test (direction of the
     alternative hypothesis): "difference" corresponds "greater" and
     "similarity" corresponds to "less"}
@@ -64,7 +64,7 @@ d.primePwr(d.primeA, d.prime0 = 0, sample.size, alpha = 0.05,
 }
 \author{Rune Haubo B Christensen and Per Bruun Brockhoff}
 
-\seealso{\code{\link{findcr}}, 
+\seealso{\code{\link{findcr}},
   \code{\link{discrim}}, \code{\link{discrimSim}},
   \code{\link{AnotA}}, \code{\link{discrimSS}}
 }

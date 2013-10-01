@@ -14,7 +14,7 @@
 
 discrim(correct, total, pd0 = 0, conf.level = 0.95,
            method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
-             "triangle"), 
+             "triangle"),
            statistic = c("exact", "likelihood", "score", "Wald"),
            test = c("difference", "similarity"), ...)
 
@@ -26,9 +26,9 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
 }
 \arguments{
   \item{correct}{the number of correct answers; non-negativescalar
-    integer} 
+    integer}
   \item{total}{the total number of answers (the sample size); positive
-    scalar integer} 
+    scalar integer}
   \item{pd0}{the probability of discrimination under the
     null hypothesis; numerical scalar between zero and one}
 %%%   \item{formula}{an object of class "formula" (or one that can be coerced
@@ -51,8 +51,8 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
 %%%   \item{hess}{logical, should the hessian be computed? (requires for
 %%%     standard errors etc. to be computed by summary.discrimr)}
   \item{conf.level}{the confidence level for the confidence intervals}
-  \item{method}{the discrimination protocol. Four allowed values:
-    "twoAFC", "threeAFC", "duotrio", "triangle"}
+  \item{method}{the discrimination protocol. Five allowed values:
+    "twoAFC", "threeAFC", "duotrio", "tetrad", "triangle"}
   \item{test}{the type of test}
   \item{statistic}{the statistic to be used for hypothesis testing and
     confidence intervals}
@@ -76,7 +76,7 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
 
   Standard errors are not defined when the parameter estimates are at
   the boundary of their allowed range, so these will be reported as
-  \code{NA} in such cases. 
+  \code{NA} in such cases.
 
   The \code{"Wald"} statistic is *NOT* recommended for practical
   use---it is included here for completeness and to allow comparisons.
@@ -84,8 +84,8 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
   For \code{statistic = "score"}, the confidence interval is computed
   from Wilson's score interval, while the p-value for the hypothesis
   test is based on Pearson's chi-square test,
-  cf. \code{\link{prop.test}}. 
-  
+  cf. \code{\link{prop.test}}.
+
 }
 \value{
   An object of class \code{discrim} with elements
@@ -120,18 +120,20 @@ discrim(correct, total, pd0 = 0, conf.level = 0.95,
 
 \seealso{ \code{\link{triangle}}, \code{\link{twoAFC}},
   \code{\link{threeAFC}}, \code{\link{duotrio}},
+  \code{\link{tetrad}},
   \code{\link{discrimPwr}}, \code{\link{discrimSim}},
   \code{\link{discrimSS}}, \code{\link{samediff}},
   \code{\link{AnotA}}, \code{\link{findcr}},
-  \code{\link[=profile.discrim]{profile}}, 
-  \code{\link[=profile.discrim]{plot.profile}} 
-  \code{\link[=profile.discrim]{confint}} 
+  \code{\link[=profile.discrim]{profile}},
+  \code{\link[=profile.discrim]{plot.profile}}
+  \code{\link[=profile.discrim]{confint}}
 }
 
 \examples{
 ## Running the simple discrimination (difference) tests:
 discrim(10, 15, method = "twoAFC")
 discrim(10, 15, method = "threeAFC", statistic = "likelihood")
+discrim(10, 15, method = "tetrad", statistic = "likelihood")
 discrim(10, 15, method = "duotrio", conf.level = 0.90)
 discrim(10, 15, method = "triangle", statistic = "score")
 

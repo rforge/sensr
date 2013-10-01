@@ -2,15 +2,15 @@
 \alias{betabin}
 \alias{summary.betabin}
 \title{Beta-binomial and chance-corrected beta-binomial models for
-  over-dispersed binomial data} 
+  over-dispersed binomial data}
 \description{
   Fits the beta-binomial model and the chance-corrected beta-binomial
   model to (over-dispersed) binomial data.
 }
 \usage{
-betabin(data, start = c(.5,.5), 
+betabin(data, start = c(.5,.5),
         method = c("duotrio", "tetrad", "threeAFC", "twoAFC",
-          "triangle"), 
+          "triangle"),
         vcov = TRUE, corrected = TRUE, gradTol = 1e-4, ...)
 
 \method{summary}{betabin}(object, level = 0.95, ...)
@@ -66,7 +66,7 @@ Confidens intervals are computed as Wald (normal-based) intervals on the
 mu-scale and the confidence limits are subsequently transformed to the
 Pc, Pd and d-prime scales. Confidence limits are restricted to the
 allowed ranges of the parameters, for example no confidence limits will
-be less than zero. 
+be less than zero.
 
 Standard errors, and therefore also confidence intervals, are only
 available if the parameters are not at the boundary of their allowed
@@ -152,7 +152,7 @@ The following additional methods are implemented objects of class
 \author{Rune Haubo B Christensen}
 
 \seealso{ \code{\link{triangle}}, \code{\link{twoAFC}},
-  \code{\link{threeAFC}}, \code{\link{duotrio}},
+  \code{\link{threeAFC}}, \code{\link{duotrio}}, \code{\link{tetrad}}
 }
 
 \examples{

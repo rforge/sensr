@@ -30,7 +30,7 @@ dprime computation) as
 \author{Rune Haubo B Christensen and Per Bruun Brockhoff}
 
 \seealso{\code{\link{triangle}}, \code{\link{threeAFC}},
-  \code{\link{duotrio}}, \code{\link{discrim}},
+  \code{\link{tetrad}}, \code{\link{duotrio}}, \code{\link{discrim}},
   \code{\link{discrimPwr}}, \code{\link{discrimSim}},
   \code{\link{AnotA}}, \code{\link{discrimSS}},
   \code{\link{samediff}}, \code{\link{findcr}}}

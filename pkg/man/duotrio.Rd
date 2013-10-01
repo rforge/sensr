@@ -26,7 +26,7 @@ A binomial family object for models. Among other things it inludes the psychomet
 }
 
 \seealso{\code{\link{triangle}}, \code{\link{twoAFC}},
-  \code{\link{threeAFC}}, \code{\link{discrim}},
+  \code{\link{threeAFC}}, \code{\link{tetrad}}, \code{\link{discrim}},
   \code{\link{discrimPwr}}, \code{\link{discrimSim}},
   \code{\link{AnotA}}, \code{\link{discrimSS}},
   \code{\link{samediff}}, \code{\link{findcr}}}
