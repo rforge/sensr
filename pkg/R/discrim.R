@@ -404,7 +404,8 @@ confint.anota <-
   function(object, parm, level = 0.95, ...)
 ### get confint from the discrim object.
 {
-  ci <- MASS:::confint.glm(object$res, level = level)
+  ## Using confint.glm from MASS:
+  ci <- confint(object$res, level = level)
   rownames(ci) <- c("threshold", "d.prime")
   ci[2,] <- rev(-ci[2,])
   return(ci)

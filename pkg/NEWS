@@ -157,6 +157,21 @@ September 5. 2013: version 1.2-22:
   dprime_compare, dprime_test, dprime_table and
   posthoc.dprime_compare/posthoc.dprime_test.
 
-September 10. 2013
+September 10. 2013:
 
 - updating various man-pages with 'tetrad' information and links.
+
+October 1. 2013:
+
+- Removing calls to '::' and ':::' in R codebase.
+- Moving 'ordinal' from Depends to Suggests, 'numDeriv' from Depends
+  to Imports, 'MASS' from Suggests to Imports.
+- Adding ByteCompile: yes to Description file.
+- Now using import(MASS) to fetch the confint.glm method from MASS and
+  adding test for confing.anota to check that the right confint method
+  is actually used.
+- Deprecating function 'clls'.
+- Using if(require(ordinal)) in examples, tests and vignettes where
+  needed.
+- Adding 'ordinal' to vignetteDepends for the twoACexamples vignette.
+

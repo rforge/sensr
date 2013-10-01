@@ -1,6 +1,9 @@
-
+## import(ordinal)
+importFrom(numDeriv,
+           grad,
+           hessian)
 importFrom(graphics, plot, contour)
-## importFrom(MASS, confint.glm)
+import(MASS) ## to get the confint.glm method
 importFrom(stats, coef, confint, logLik, profile, vcov, update,
            family, extractAIC)
 importFrom(multcomp, contrMat)
