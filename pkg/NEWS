@@ -174,4 +174,7 @@ October 1. 2013:
 - Using if(require(ordinal)) in examples, tests and vignettes where
   needed.
 - Adding 'ordinal' to vignetteDepends for the twoACexamples vignette.
+- Adding \dontshow{} tests to examples in .Rd files rather than having
+  an .Rout.save file in ./tests/Examples to avoid problems with
+  minor numerical differences across platforms and architectures.
 
