@@ -31,10 +31,23 @@ A binomial family object for models. Among other things it inludes the psychomet
   \code{\link{AnotA}}, \code{\link{discrimSS}},
   \code{\link{samediff}}, \code{\link{findcr}}}
 \examples{
+
+## Estimating d-prime using glm for a Duotrio test:
 xt <- matrix(c(10, 5), ncol = 2) ## data: 10 correct answers, 5 incorrect
 res <- glm(xt ~ 1, family = duotrio)
 summary(res)
+## Equivalent to (Estimate and Std. Error):
+discrim(10, 15, method="duotrio")
 
+\dontshow{
+## Test agreement of glm and discrim results:
+x <- coef(summary(res))[, 1:2]
+y <- coef(discrim(10, 15, method="duotrio"))["d-prime", 1:2]
+stopifnot(
+  isTRUE(all.equal(as.vector(x), as.vector(y), tol=1e-6)),
+  isTRUE(all.equal(res$deviance, 0))
+)
+}
 ## Extended example plotting the profile likelihood
 ## data: 10 correct answers, 5 incorrect
 xt <- matrix(c(10, 5), ncol = 2)

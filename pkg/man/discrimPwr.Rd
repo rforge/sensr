@@ -80,10 +80,26 @@ d.primePwr(1, sample.size = 30, method = "twoAFC")
 discrimPwr(pd, sample.size = 30, statistic = "cont.normal")
 discrimPwr(pd, sample.size = 30, statistic = "normal")
 
-
 ## A similarity example:
 discrimPwr(pdA = 0.1, pd0 = 0.2, sample.size = 100, pGuess = 1/3,
            test = "similarity")
+\dontshow{
+## Testing stability of results:
+x1 <- discrimPwr(pd, sample.size = 30)
+x2 <- d.primePwr(1, sample.size = 30, method = "twoAFC")
+## x3 := dput(x2)
+x3 <- 0.917255217993622
+stopifnot(isTRUE(all.equal(x1, x2, x3)))
+
+y1 <- discrimPwr(pd, sample.size = 30, statistic = "cont.normal")
+y2 <- discrimPwr(pd, sample.size = 30, statistic = "normal")
+y3 <- discrimPwr(pdA = 0.1, pd0 = 0.2, sample.size = 100, pGuess = 1/3,
+           test = "similarity")
+y <- c(y1, y2, y3)
+## yres := dput(y)
+yres <- c(0.88466478871626, 0.921092040377824, 0.306809762270984)
+stopifnot(isTRUE(all.equal(y, yres)))
+}
 
 }
 \keyword{models}% at least one, from doc/KEYWORDS
