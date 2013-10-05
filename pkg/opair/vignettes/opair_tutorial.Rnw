@@ -1,0 +1,435 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}%the AMS math extension of LaTeX.
+\usepackage{amssymb}%the extended AMS math symbols.
+\usepackage{bm}%Use 'bm.sty' to get `bold math' symbols
+\usepackage{natbib}
+\usepackage{Sweave}
+\usepackage{url}
+\usepackage{algorithmic}
+%% \usepackage{subfigure}
+%% \usepackage{float}%Use `float.sty'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        Page settings:
+\usepackage[left=3.5cm,right=3.5cm]{geometry}
+%% \numberwithin{equation}{section}
+\setlength{\parskip}{2mm}%.8\baselineskip}
+\setlength{\parindent}{0in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        Example environments:
+%% \usepackage[amsmath,thmmarks,standard,thref]{ntheorem}
+%% \theoremstyle{plain} %% {break}
+%% \theoremseparator{:}
+%% \theoremsymbol{{\tiny $\square$}}
+%% %%\theoremstyle{plain}
+%% \theorembodyfont{\small}
+%% \theoremindent5mm
+%% \renewtheorem{example}{Example}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        Margin notes:
+%RE-DEFINE marginpar
+\setlength{\marginparwidth}{1in}
+\let\oldmarginpar\marginpar
+\renewcommand\marginpar[1]{\oldmarginpar[\-\raggedleft\tiny #1]%
+{\tiny #1}}
+%% Uncomment to _HIDE_MARGINPAR_:
+%\renewcommand\marginpar[1]{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       Send figures to the end of the document:
+%% figurer bagerst i artikel
+%% \usepackage[tablesfirst, nolists]{endfloat}
+%% \renewcommand{\efloatseparator}{\vspace{.5cm}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       Linenumbers
+\usepackage{lineno}
+% \linenumbers
+%% AMSmath patch for lineno:
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+\expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+\expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+\renewenvironment{#1}%
+{\linenomath\csname old#1\endcsname}%
+{\csname oldend#1\endcsname\endlinenomath}}%
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+ \patchAmsMathEnvironmentForLineno{#1}%
+ \patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        New commands:
+\newcommand{\s}{\square}
+\newcommand{\bs}{\blacksquare}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       Sweave options:
+\SweaveOpts{echo=TRUE, results=verb, strip.white=true, width=4.5, height=4.5}
+\SweaveOpts{prefix.string=figs}
+\fvset{listparameters={\setlength{\topsep}{0pt}}, gobble=0, fontsize=\small}
+%% \fvset{gobble=0, fontsize=\small}
+\setkeys{Gin}{width=.7\textwidth}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       Front matter:
+%%\VignetteIndexEntry{opair tutorial}
+%%\VignetteDepends{opair}
+\title{Tutorial for the \textsf{opair} package}
+\author{Rune Haubo B Christensen}
+\date{\today \\{\footnotesize file: {\texttt{ \jobname .Rnw}}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\bibliographystyle{chicago}
+\maketitle
+
+%% \begin{abstract}
+%%   This is the abstract
+%% \end{abstract}
+
+%% \newpage
+%% \tableofcontents
+%% \newpage
+<<Initialize, echo=FALSE, results=hide>>=
+## Load common packages, functions and set settings:
+## library(sensR)
+## library(ordinal)
+## library(xtable)
+## data(wine)
+##
+RUN <- FALSE    #redo computations and write .RData files
+## Change options:
+op <- options() ## To be able to reset settings
+options("digits" = 7)
+options(help_type = "html")
+options("SweaveHooks" = list(fig=function()
+        par(mar=c(4,4,.5,0)+.5)))
+options(prompt = "R> ", continue = "+  ", width = 80, useFancyQuotes = FALSE)
+## options(continue=" ")
+## options("width" = 75)
+
+@
+
+
+\section{Introduction}
+\label{sec:Introduction}
+
+The \textsf{opair} package contains functions that facilitate analysis
+of ordinal paired comparisons.
+
+The \texttt{opair} function fits the Thurstonian model and estimates
+$d'$. It also provides confidence intervals for $d'$ and $p$-values
+for difference and similarity tests.
+%
+The \texttt{plot} method for \texttt{opair} objects provide dot plots
+or bar plots of the estimated $d'$ values, and the \texttt{save.opair}
+function writes the coefficient table including $d'$ values,
+confidence limits and $p$-values to a \texttt{csv} file. This allows
+the user to import $d'$ values into, for example, Microsoft Excel and
+make custom plots here.
+%
+The package also includes two sample data sets; \texttt{NV} and
+\texttt{BG}.
+
+This tutorial explains the functionality in the
+\textsf{opair} package using examples.
+
+All the functions have help pages or manual pages available with, for
+example \texttt{help(opair)}. This document is meant as a supplement
+--- not a substitute to these pages.
+
+The \textsf{opair} package is loaded with the following command:
+<<>>=
+library(opair)
+@
+This makes all the functions in the \textsf{opair} package available
+to us. Note that the package automatically loads the \textsf{ordinal}
+package as well as a couple of additional packages. The
+\textsf{ordinal} package is used internally to compute the $d'$
+values.
+%
+If \texttt{library(opair)} gives an error message, you probably need
+to install one or more packages on your computer. The \textsf{opair}
+package, for example, can be installed with
+<<eval=FALSE>>=
+install.packages("opair")
+@
+which requires that you are one the internet. Note: This will only
+work when the package has been published on CRAN
+(\url{www.cran.r-project.org}).
+
+Information about version of \textsf{R} and various packages used in
+this document is provided in Appendix~\ref{sec:sessioninfo}.
+
+\section{Estimation of $d'$ with the \texttt{opair} function}
+\label{sec:estimation-d-with}
+
+The \texttt{opair} function estimates the Thurstonian model for ordinal
+paired comparisons. It takes the following arguments:
+<<>>=
+args(opair)
+@
+where \texttt{descriptors} is a \texttt{data.frame} of descriptor
+variables, \texttt{products} is a factor indicating different
+products with the reference product being the first level,
+\texttt{d.equiv} is the point of equivalence used in computing the
+$p$-value of the equivalence test, \texttt{conf.level} specifies the
+confidence level (0.95 is the default), and \texttt{abbreviate.names}
+controls if names of the \texttt{descriptors} should be abbreviated to
+compact the printed output table.
+
+As an example we will consider the \texttt{NV} data set (see
+\texttt{help(NV)} for details) that is included in the package. The
+data set has the following format (first six lines of the data set are
+shown):
+<<>>=
+head(NV)
+@
+The data is organized such that each row corresponds to a single trial
+or sample being evaluated on a number of attributes.
+Here the \texttt{Taster} column indicates which of 13 tasters provided
+the ratings, the \texttt{Samples} column indicates the three products
+involved in the experiment (432 is the reference product), and the
+remaining 12 columns hold the ratings for each of the 12 attributes or
+descriptors. The ratings take on the values (--2, --1, 0, 1, 2)
+corresponding to (\emph{much less}, \emph{less}, \emph{same},
+\emph{more}, and \emph{much more}).
+
+We can now use the \texttt{str} function to reveal the internal
+structure of the data set:
+<<>>=
+str(NV)
+@
+Here we see that the data set is stored as a \texttt{data.frame}.
+Note that \texttt{Samples} is stored as a factor and that the
+reference product 432 is the first level as required. Also note that
+the descriptor ratings are stored as integers and \emph{not} as
+factors. The \texttt{opair} function will convert the variables into
+factors internally.
+
+\subsection{Estimation of $d'$ for a single descriptor}
+\label{sec:estimation-d-single}
+
+We can use the \texttt{opair} function to estimate $d'$ for a single
+descriptor of interest. Suppose we want to estimate $d'$ for the
+\texttt{Thickness} descriptor, then we can extract a
+\texttt{data.frame} for \texttt{Thickness} with:
+<<>>=
+thick <- NV["Thickness"]
+@
+and check that it looks ok by displaying the first six rows with
+<<>>=
+head(thick)
+@
+We are now ready to fit the Thurstonian model and estimate $d'$:
+<<>>=
+opair(descriptors=thick, products=NV$Samples, d.equiv=0.5,
+      conf.level=0.95)
+@
+The output contains two $d'$ values --- one for each of the test
+products. Also provided is the two-sided 95\% confidence limits for $d'$, the
+two-sided $p$-value for the difference test (if \texttt{p.diff} is small,
+e.g.~less than 0.05, there is evidence that $d'$ is different from
+zero), and the two-sided $p$-value for the equivalence test (if \texttt{p.equiv}
+is small there is evidence that $d'$ is larger than -\texttt{d.equiv}
+and smaller than \texttt{d.equiv}, where $\mathtt{d.equiv} = 0.5$)
+based on the TOST method.
+
+The equivalence region (-\texttt{d.equiv}, \texttt{d.equiv}), and
+the confidence level can changed as one may find appropriate.
+
+Since \texttt{d.equiv=0.5} and \texttt{conf.level=0.95} are the
+defaults and because \texttt{descriptors} and \texttt{products} are
+the first two arguments, we would get the same result with
+<<results=hide>>=
+opair(thick, NV$Samples)
+@
+We could also extract the \texttt{Thickness} \texttt{data.frame}
+within the \texttt{opair} function:
+<<results=hide>>=
+opair(NV["Thickness"], NV$Samples)
+@
+
+
+
+\subsection{Estimation of $d'$ for multiple descriptors}
+\label{sec:Estimation of $d'$ for multiple descriptors}
+
+The opair function can estimate $d'$ for multiple descriptors at
+once. For example, the results for \texttt{Thickness} and
+\texttt{Sweetness} are provided by
+<<>>=
+opair(NV[c("Thickness", "Sweetness")], NV$Samples)
+@
+
+We can also get the results for all the descriptors in the
+\texttt{NV} data set. First extract a vector of descriptor names
+and then fit the \texttt{opair} model to all 12 descriptors:
+<<>>=
+(desc.names <- names(NV)[4:ncol(NV)])
+opair(NV[desc.names], NV$Samples)
+@
+
+If the \texttt{descriptors} or \texttt{products} have long labels, it
+can be difficult to view the table in its entire width. For that reason
+it is possible to abbreviate the labels of \texttt{descriptors} and
+\texttt{products} by setting the argument \texttt{abbreviate.names} to
+\texttt{TRUE}. For the \texttt{'Fruit quantity impression'}
+\texttt{descriptor} this looks like
+<<>>=
+opair(NV[desc.names[2]], NV$Samples, abbreviate.names=TRUE)
+@
+Partial matching can be used, so
+<<echo=TRUE, results=hide>>=
+opair(NV[desc.names[2]], NV$Samples, abbrev=TRUE)
+@
+will give the same results.
+
+
+\section{Plotting $d'$ values from the \texttt{opair} function}
+\label{sec:plotting-d-values}
+
+Two types of plots are directly available for illustrating $d'$ values
+produced by the \texttt{opair} function; a dot plot and a bar plot.
+
+To produce the plots, we first save the \texttt{opair} model in the
+object \texttt{fit}:
+<<>>=
+fit <- opair(NV[desc.names], NV$Samples)
+@
+Note that this does not print anything. Evaluating
+<<results=hide>>=
+fit
+@
+will however product the printed output shown above.
+
+We can produce the dot plot with the following command:
+<<dotplot, fig=TRUE, include=FALSE, echo=TRUE>>=
+plot(fit, type=1)
+@
+The result is shown in Figure~\ref{fig:dotplot}. Here labels and dots
+are blue for negative $d'$ values and red for positive $d'$ values.
+
+\begin{figure}
+  \centering
+<<dotplotFig, fig=TRUE, include=TRUE, echo=FALSE, results=hide, width=6>>=
+<<dotplot>>
+@
+  \caption{Illustration of $d'$ values in a dot plot.}
+  \label{fig:dotplot}
+\end{figure}
+
+The \texttt{plot} method for \texttt{opair} objects can also produce a
+bar plot using \texttt{type = 2}:
+<<barplot, fig=TRUE, include=FALSE, echo=TRUE>>=
+plot(fit, type=2)
+@
+The result is shown in Figure~\ref{fig:barplot}. Here, also, bars are
+blue for negative $d'$ values and red for positive $d'$ values. Bars
+are labeled by consecutive numbers.
+
+\begin{figure}
+  \centering
+<<bartplotFig, fig=TRUE, include=TRUE, echo=FALSE, results=hide, width=6>>=
+<<barplot>>
+@
+  \caption{Illustration of $d'$ values in a bar plot.}
+  \label{fig:barplot}
+\end{figure}
+
+\section{Saving $d'$ values to a \texttt{csv} file}
+\label{sec:Saving $d'$ values to a csv file}
+
+The function \texttt{save.opair} will save the coefficient table
+including $d'$ values, confidence limits and $p$-values to a
+\texttt{csv} file.
+
+The results from above can be saved with
+<<echo=TRUE, eval=FALSE>>=
+save.opair(fit, "myDprimes")
+@
+This will produce the file \texttt{myDprimes.csv}, and it will put the
+file in the working directory. If you do not remember where that is,
+you can find out by running
+<<echo=TRUE, eval=FALSE>>=
+getwd()
+@
+
+By default the columns of the file will be separated by a comma, and
+the decimal operator will be a dot. This can be changed, though, for
+instance, the following will produce a semi-colon separated file where
+a comma is used as decimal separator.
+<<echo=TRUE, eval=FALSE>>=
+save.opair(fit, "myDprimes", sep=";", dec=".")
+@
+Microsoft Excel will open csv files correctly if the column and
+decimal separators are selected appropriately. The right setting
+depends on the language or regional settings in Microsoft Excel (for
+example, \texttt{sep=";", dec="."} works in the Excel settings for
+Denmark).
+
+If you want to save the file somewhere else, you can supply the path
+to the folder where you want to save the file. For example, to save
+the file in the root of the C-drive, use
+<<echo=TRUE, eval=FALSE>>=
+save.opair(fit, "C:/myDprimes")
+@
+
+\section{Reading in data from spreadsheets to use with the
+\texttt{opair} function}
+\label{sec:reading-data-from-spreadsheets}
+
+To analyze data stored in Microsoft Excel spreadsheet, there are two
+main obstacles:
+\begin{enumerate}
+\item Getting the data into \textsf{R}
+\item Making sure data are in the right format.
+\end{enumerate}
+
+The are many ways to get data from a spreadsheet into \textsf{R}.
+I find that the easiest way is to first save the data as a comma
+separated csv file using the \emph{save as} menu and then reading the
+data into \textsf{R} using the \textsf{R} function \texttt{read.table}
+with something like
+<<eval=FALSE>>=
+myData <- read.table("myData", header=TRUE, sep=",")
+@
+
+If in doubt about how the data should be structured in the spreadsheet
+before loading into \textsf{R}, take a look at the data set produced
+by
+<<eval=FALSE>>=
+write.table(NV, file="NV.csv", row.names=FALSE)
+@
+
+
+%% \newpage
+\addcontentsline{toc}{section}{Appendices}
+\appendix
+
+\section{SessionInfo}
+\label{sec:sessioninfo}
+
+<<>>=
+sessionInfo()
+@
+
+%% \section{\textsf{R} functions used in this document}
+%%
+%% \fvset{frame=single,numbers=left,numbersep=3pt,fontsize=\scriptsize}
+%% \VerbatimInput{functions.R}
+%%
+%% \section{\textsf{R} code used in this document}
+
+<<echo=FALSE, results=hide, eval=FALSE>>=
+##
+@
+
+\end{document}
+
+
+
+<<misc, eval=FALSE>>=
+@
+
