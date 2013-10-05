@@ -1,65 +1,11 @@
 \documentclass[a4paper]{article}
-\usepackage{amsmath}%the AMS math extension of LaTeX.
-\usepackage{amssymb}%the extended AMS math symbols.
-\usepackage{bm}%Use 'bm.sty' to get `bold math' symbols
-\usepackage{natbib}
-\usepackage{Sweave}
-\usepackage{url}
-\usepackage{algorithmic}
-%% \usepackage{subfigure}
-\usepackage{float}%Use `float.sty'
+\usepackage{amsmath,amssymb,bm,natbib,Sweave,float}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%        Page settings:
 \usepackage[left=3.5cm,right=3.5cm]{geometry}
 %% \numberwithin{equation}{section}
 \setlength{\parskip}{2mm}%.8\baselineskip}
 \setlength{\parindent}{0in}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%        Example environments:
-%% \usepackage[amsmath,thmmarks,standard,thref]{ntheorem}
-%% \theoremstyle{plain} %% {break}
-%% \theoremseparator{:}
-%% \theoremsymbol{{\tiny $\square$}}
-%% %%\theoremstyle{plain}
-%% \theorembodyfont{\small}
-%% \theoremindent5mm
-%% \renewtheorem{example}{Example}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%        Margin notes:
-%RE-DEFINE marginpar
-\setlength{\marginparwidth}{1in}
-\let\oldmarginpar\marginpar
-\renewcommand\marginpar[1]{\oldmarginpar[\-\raggedleft\tiny #1]%
-{\tiny #1}}
-%% Uncomment to _HIDE_MARGINPAR_:
-%\renewcommand\marginpar[1]{}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%       Send figures to the end of the document:
-%% figurer bagerst i artikel
-%% \usepackage[tablesfirst, nolists]{endfloat}
-%% \renewcommand{\efloatseparator}{\vspace{.5cm}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%       Linenumbers
-\usepackage{lineno}
-% \linenumbers
-%% AMSmath patch for lineno:
-\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
-\expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
-\expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
-\renewenvironment{#1}%
-{\linenomath\csname old#1\endcsname}%
-{\csname oldend#1\endcsname\endlinenomath}}%
-\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
- \patchAmsMathEnvironmentForLineno{#1}%
- \patchAmsMathEnvironmentForLineno{#1*}}%
-\AtBeginDocument{%
-\patchBothAmsMathEnvironmentsForLineno{equation}%
-\patchBothAmsMathEnvironmentsForLineno{align}%
-\patchBothAmsMathEnvironmentsForLineno{flalign}%
-\patchBothAmsMathEnvironmentsForLineno{alignat}%
-\patchBothAmsMathEnvironmentsForLineno{gather}%
-\patchBothAmsMathEnvironmentsForLineno{multline}%
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%        New commands:
 \newcommand{\s}{\square}
@@ -86,22 +32,11 @@
 \bibliographystyle{chicago}
 \maketitle
 
-%% \begin{abstract}
-%%   This is the abstract
-%% \end{abstract}
-
 \newpage
 \tableofcontents
 \newpage
 
 <<Initialize, echo=FALSE, results=hide>>=
-## Load common packages, functions and set settings:
-## library(sensR)
-## library(ordinal)
-## library(xtable)
-## data(wine)
-##
-RUN <- FALSE    #redo computations and write .RData files
 ## Change options:
 op <- options() ## To be able to reset settings
 options("digits" = 7)
@@ -109,8 +44,6 @@ options(help_type = "html")
 options("SweaveHooks" = list(fig=function()
         par(mar=c(4,4,.5,0)+.5)))
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
-## options(continue=" ")
-## options("width" = 75)
 
 @
 
@@ -474,25 +407,7 @@ of the two $p$-values:
 sessionInfo()
 @
 
-%% \section{\textsf{R} functions used in this document}
-%%
-%% \fvset{frame=single,numbers=left,numbersep=3pt,fontsize=\scriptsize}
-%% \VerbatimInput{functions.R}
-%%
-%% \section{\textsf{R} code used in this document}
-
-<<echo=FALSE, results=hide, eval=FALSE>>=
-Stangle("exe8_2_solution.Rnw")
-@
-
-%% \fvset{frame=single,numbers=left,numbersep=3pt,fontsize=\scriptsize}
-%% \VerbatimInput{exe8_2_solution.R}
-
-
-
 \end{document}
-
-
 
 <<misc, eval=FALSE>>=
 @
