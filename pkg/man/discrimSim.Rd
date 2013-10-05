@@ -48,6 +48,13 @@ discrimSim(sample.size, replicates, d.prime, sd.indiv = 0,
 ## Running simulations:
 discrimSim(sample.size = 10, replicates = 3, d.prime = 2,
            method = "triangle", sd.indiv = 1)
+\dontshow{
+set.seed(1)
+a <- discrimSim(sample.size = 10, replicates = 3, d.prime = 2,
+           method = "triangle", sd.indiv = 1)
+expect <- c(3L, 3L, 2L, 3L, 3L, 1L, 3L, 3L, 1L, 2L)
+stopifnot(identical(a, expect))
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

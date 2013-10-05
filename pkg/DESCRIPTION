@@ -7,7 +7,7 @@ Authors@R: c(person(given="Rune Haubo Bojesen", family="Christensen",
 	   person(given="Per Bruun", family="Brockhoff",
 	   email="perbb@dtu.dk", role=c("aut")))
 Imports: multcomp, MASS, numDeriv
-Suggests: ordinal
+Suggests: ordinal, testthat
 ByteCompile: yes
 Description: Provides methods for sensory discrimination methods;
   duotrio, tetrad, triangle, 2-AFC, 3-AFC, A-not A, same-different and
