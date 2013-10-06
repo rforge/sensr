@@ -395,7 +395,7 @@ of the two $p$-values:
 
 %% \newpage
 \addcontentsline{toc}{section}{References}
-\bibliography{/Users/rhbc/Documents/DTU/EksProjPBB/EksProj}
+\bibliography{opair}
 
 %% \newpage
 \addcontentsline{toc}{section}{Appendices}
