@@ -5,7 +5,7 @@ lrp_binom <-
     logLikMax <- dbinom(x=x, size=n, prob=phat, log=TRUE)
     logLikNull <- dbinom(x=x, size=n, prob=pc0, log=TRUE)
     Stat <- sign(phat - pc0) * sqrt(2 * (logLikMax - logLikNull))
-    normPval(Stat, alt=alternative)
+    normPval(Stat, alternative=alternative)
 }
 
 Waldp_binom <-
@@ -13,7 +13,7 @@ Waldp_binom <-
 {
     phat <- delimit(x/n, lower=pg, upper=1)
     Stat <- (phat - pc0) / sqrt(phat*(1 - phat)/n)
-    normPval(Stat, alt=alternative)
+    normPval(Stat, alternative=alternative)
 }
 
 scorep_binom <-
@@ -21,7 +21,7 @@ scorep_binom <-
 {
     phat <- delimit(x/n, lower=pg, upper=1)
     Stat <- (phat - pc0) / sqrt(pc0*(1 - pc0)/n)
-    normPval(Stat, alt=alternative)
+    normPval(Stat, alternative=alternative)
 }
 
 binomPwr <-

@@ -1,7 +1,7 @@
 ## Examples from Brockhoff, P.B. (2003). The statistical power of
 ## replications in difference tests.
 ## Food Quality and Preference, 14, pp. 405--417.
-library(sensR)
+library(sensRdod)
 
 ## Data hunter 2, tab1, dataset 1:
 x <- c(0, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4,

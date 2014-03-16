@@ -1,4 +1,4 @@
 
-if(require(testthat) && require(sensR)) {
-    test_package("sensR")
+if(require(testthat) && require(sensRdod)) {
+    test_package("sensRdod")
 }

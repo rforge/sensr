@@ -107,7 +107,7 @@ if(require(parallel)) {
     dvec <- c(0, .2, .5, .7, 1, 1.2, 1.5, 1.75)
     system.time(
         res <- parLapply(cl, dvec, fun=function(dp) {
-            library(sensR)
+            library(sensRdod)
             x <- dodPwr(dp, 0, sample.size=100, nsim=1e3, stat="Wil")
             c("power"=x, "se"=attr(x, "se(power)"))
         })

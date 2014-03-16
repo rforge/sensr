@@ -1,4 +1,4 @@
-library(sensR)
+library(sensRdod)
 
 ## Testing Tetrad link function:
 d.primePwr(1, sample.size = 50, method = "tetrad")

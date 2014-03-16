@@ -1,4 +1,4 @@
-library(sensR)
+library(sensRdod)
 
 ## Testing border line cases:
 twoAC(c(5, 0, 15))

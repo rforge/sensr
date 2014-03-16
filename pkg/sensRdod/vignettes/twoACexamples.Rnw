@@ -8,7 +8,7 @@
 \usepackage[left=3.5cm,right=3.5cm]{geometry}
 
 %%\VignetteIndexEntry{Examples for 2-AC paper}
-%%\VignetteDepends{sensR, ordinal}
+%%\VignetteDepends{sensRdod, ordinal}
 \title{\textsf{R}-companion to:\\ Estimation of the Thurstonian model
   for the 2-AC protocol}
 \author{Rune Haubo Bojesen Christensen, \\
@@ -105,7 +105,7 @@ It is assumed that we have $\bm n = (2, 2, 6)$ observations in the
 three categories. We may estimate $\tau$, $d'$ and their standard
 errors with the \texttt{twoAC} function in the \textsf{sensR} package:
 <<example1-1, echo=TRUE, results=verb>>=
-library(sensR)
+library(sensRdod)
 fit <- twoAC(c(2,2,6))
 fit
 @
