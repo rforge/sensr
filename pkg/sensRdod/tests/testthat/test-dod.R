@@ -4,7 +4,7 @@
 ## functions etc.:
 ##   library(testthat)
 ##   library(devtools)
-##   Path <- "/Users/rhbc/Documents/Rpackages/sensR/pkg/sensR"
+##   Path <- "/Users/rhbc/Documents/Rpackages/sensR/pkg/sensRdod"
 ##   load_all(Path)
 
 context("Tests of the main dod function(s)")
@@ -201,9 +201,10 @@ test_that("Control settings work as intended", {
     data2 <- data
     data2[, 2] <- 0
 
-    expect_warning(dod(data2[1, ], data2[2, ], control=ctrl,
-                       stat="Wil"),
-                   "Cannot assess convergence")
+    expect_error(
+        givesWarnings(dod(data2[1, ], data2[2, ], control=ctrl,
+                          stat="Wil"))
+        )
 })
 
 test_that("warning works in get_tau()", {

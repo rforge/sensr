@@ -103,12 +103,15 @@ dodPwr(d.primeA=0, d.prime0=1, sample.size=100, nsim=1e2,
 
 ## Using parallel computing to speed up computations:
 if(require(parallel)) {
-    cl <- makeCluster(detectCores())
+    ## Use detectCores() to get an appropriate number of cores for
+    ## practical use - for the example here we fix it at 2:
+    ## cl <- makeCluster(detectCores())
+    cl <- makeCluster(getOption("cl.cores", 2))
     dvec <- c(0, .2, .5, .7, 1, 1.2, 1.5, 1.75)
     system.time(
         res <- parLapply(cl, dvec, fun=function(dp) {
             library(sensRdod)
-            x <- dodPwr(dp, 0, sample.size=100, nsim=1e3, stat="Wil")
+            x <- dodPwr(dp, 0, sample.size=100, nsim=1e2, stat="Wil")
             c("power"=x, "se"=attr(x, "se(power)"))
         })
         )
