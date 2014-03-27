@@ -53,11 +53,12 @@ dodPwr(d.primeA, d.prime0=0, ncat = 4, sample.size, nsim = 1e3,
     especially prone.}
 }
 
-%% \references{
-%%   Brockhoff, P.B. and Christensen, R.H.B. (2010). Thurstonian
-%%   models for sensory discrimination tests as generalized linear models.
-%%   Food Quality and Preference, 21, pp. 330-338.
-%% }
+\references{
+  Ennis, J.M. and B. Rousseau (2014) A Thurstonian comparison
+  of the tetrad and degree of difference tests.
+  \emph{Food Quality and Preference}, in review.
+}
+
 \author{Rune Haubo B Christensen}
 
 \seealso{ \code{\link{dod}}, \code{\link{dod_fit}},

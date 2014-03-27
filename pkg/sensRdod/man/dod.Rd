@@ -83,9 +83,17 @@ dod(same, diff, d.prime0 = 0, conf.level = 0.95,
 
 %% FIXME: update references!
 
-%% \references{Brockhoff, P.B. and Christensen, R.H.B (2010). Thurstonian
-%%   models for sensory discrimination tests as generalized linear models.
-%%   Food Quality and Preference, 21, pp. 330-338.}
+\references{
+  Ennis, J.M. and B. Rousseau (2014) A Thurstonian comparison
+  of the tetrad and degree of difference tests.
+  \emph{Food Quality and Preference}, in review.
+
+  Christensen, R.H.B, J.M. Ennis, D.M. Ennis and P.B Brockhoff (2012)
+  A Thurstonian model for the Degree of Difference test
+  with extensions to unequal variance, sequence effects
+  and replicated data. Talk at Sensometrics conference, Rennes, France,
+  July 11th.
+}
 
 \author{Rune Haubo B Christensen}
 
