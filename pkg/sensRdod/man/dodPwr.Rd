@@ -3,7 +3,8 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Power of the Degree-of-Difference (DOD) method}
 \description{
-  Computes the power of the Degree-of-Difference (DOD) method
+  Computes the power of the Degree-of-Difference (DOD) method by
+  simulation
 }
 \usage{
 

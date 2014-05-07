@@ -89,7 +89,7 @@ dp <- 1
 ## with d.prime = 1 under the alternative hypothesis.
 
 ## Compute the probability that an observation will fall in each of
-## the (here 8) response categories given values of tau and d.prime:
+## the (here 2*4=8) response categories given values of tau and d.prime:
 par2prob_dod(tau=Tau, d.prime=dp)
 ##              [,1]      [,2]      [,3]       [,4]
 ##  p.same 0.6211921 0.2429480 0.1074307 0.02842911
