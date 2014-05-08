@@ -183,7 +183,7 @@ October 20. 2013:
 - Ensuring that the package will work under R-2.15.3 (and older?) by
   modifying tests in discrimSim.Rd and ./inst/tests/test-links.R.
 
-May 7th 2014:
+May 7th 2014 (version 1.4-0):
 
 - Implementing support for the Degree-of-Difference method: dod,
   dod_fit, dodSim, dodPwr, dodControl, optimal_tau.
