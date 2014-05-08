@@ -81,8 +81,6 @@ dod(same, diff, d.prime0 = 0, conf.level = 0.95,
   %%   test statistic used to calculate the p-value}
 }
 
-%% FIXME: update references!
-
 \references{
   Ennis, J.M. and R.H.B. Christensen (2014) A Thurstonian comparison
   of the tetrad and degree of difference tests.
