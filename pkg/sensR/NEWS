@@ -188,3 +188,7 @@ May 7th 2014 (version 1.4-0):
 - Implementing support for the Degree-of-Difference method: dod,
   dod_fit, dodSim, dodPwr, dodControl, optimal_tau.
 
+June 25th 2014 (version 1.4-1):
+
+- Allowing negative d-primes in AUC.default (reported by Andreas
+  Melzer June 25th 2014)

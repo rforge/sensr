@@ -87,8 +87,10 @@ AUC <- function(d, ...) {
 
 AUC.default <- function(d, se.d, scale = 1, CI.alpha = .05, ...) {
     stopifnot(is.numeric(d),
-              length(d) == 1L,
-              d >= 0)
+              length(d) == 1L)
+### NOTE: We allow negative d-primes here. Confidence intervals for
+### d-prime also work for negative d-primes. Note that AnotA can also
+### report negative d-primes.
     stopifnot(is.numeric(scale),
               length(scale) == 1L,
               scale > 0)
