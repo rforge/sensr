@@ -104,11 +104,12 @@ AUC.default <- function(d, se.d, scale = 1, CI.alpha = .05, ...) {
                   se.d >= 0)
     }
     ## Compute AUC:
-    res <- list(value = pnorm(d / sqrt(2)))
+    Scale <- 1 + scale^2
+    res <- list(value = pnorm(d / sqrt(Scale)))
     if(!missing(se.d) && !is.null(se.d)) {
         tol <- se.d * qnorm(1 - CI.alpha/2)
-        res$lower <- pnorm((d - tol)/sqrt(2))
-        res$upper <- pnorm((d + tol)/sqrt(2))
+        res$lower <- pnorm((d - tol)/sqrt(Scale))
+        res$upper <- pnorm((d + tol)/sqrt(Scale))
         res$CI.alpha = CI.alpha
     }
     class(res) <- "AUC"

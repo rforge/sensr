@@ -22,3 +22,11 @@ test_that("AUC works with negative d-primes", {
     expect_equal(x, xRes, tolerance=1e-7)
 })
 
+test_that("AUC works with scale argument", {
+    dprime <- 5
+    scale <- 2
+    expect_equal(AUC(dprime, scale=scale)$value,
+                 pnorm(dprime / sqrt(1 + scale^2)))
+})
+
+
