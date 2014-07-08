@@ -192,3 +192,9 @@ June 25th 2014 (version 1.4-1):
 
 - Allowing negative d-primes in AUC.default (reported by Andreas
   Melzer June 25th 2014)
+
+July 8th 2014 (version 1.4-1)
+
+- Correcting formulae for beta-binomial and chance-corrected
+  beta-binomial models in documentation (Thanks to Peter Nowee for
+  reporting).
