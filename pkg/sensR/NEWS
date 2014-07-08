@@ -198,3 +198,5 @@ July 8th 2014 (version 1.4-1)
 - Correcting formulae for beta-binomial and chance-corrected
   beta-binomial models in documentation (Thanks to Peter Nowee for
   reporting).
+- Adding d.prime0 (value of d-prime under the null hypothesis) as an
+  argument to discrim.
