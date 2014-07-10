@@ -93,21 +93,21 @@ The log-likelihood of the standard beta-binomial model is
 \deqn{\ell(\alpha, \beta; x, n) =
   \sum_{j=1}^N \left\{
   \log {n_j \choose x_j}
-  + \log Beta(\alpha, \beta)
-  - \log  Beta(\alpha + x_j, \beta - x_j + n_j) \right\}
+  - \log Beta(\alpha, \beta)
+  + \log  Beta(\alpha + x_j, \beta - x_j + n_j) \right\}
   }
 
 and the log-likelihood of the chance corrected beta-binomial model is
 \deqn{\ell(\alpha, \beta; x, n) =
   \sum_{j=1}^N \left\{ C
-  - \log \left[ \sum_{i=0}^{x_j} {{x_j} \choose i}
+  + \log \left[ \sum_{i=0}^{x_j} {{x_j} \choose i}
   (1-p_g)^{n_j-x_j+i} p_g^{x_j-i}
   Beta(\alpha + i, n_j - x_j + \beta) \right] \right\}
 }
 where
 \deqn{C =
-  \log {n_j \choose x_j} %+ (n_j - x_j) \log (1 - p_g) + x_j \log p_g
-  + \log Beta(\alpha, \beta)
+  \log {n_j \choose x_j}
+  - \log Beta(\alpha, \beta)
 }
 
 and where \eqn{\mu = \alpha/(\alpha + \beta)},
