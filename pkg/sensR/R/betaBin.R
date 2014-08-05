@@ -37,7 +37,7 @@ betabin <-
       warning(sprintf("Optimizer terminated with max|gradient|: %e",
                       max(abs(grad))), call. = FALSE) }
   else
-    warning("Parameters at boundary occured", call. = FALSE)
+    warning("Parameters at boundary occurred", call. = FALSE)
   ## collect results:
   coef <- fit$par
   names(coef) <- name
