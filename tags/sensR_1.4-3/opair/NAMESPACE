@@ -1,0 +1,11 @@
+
+importFrom(ordinal, clm)
+
+importFrom(graphics, plot)
+
+importFrom(stats, coef)
+
+export(opair, save.opair)
+
+S3method(print, opair)
+S3method(plot, opair)
