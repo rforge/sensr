@@ -94,6 +94,7 @@ CIdistd <-
 walddci <-
     function(x, n, level=0.95, plow=c("pGuess", "NA"),
              method=c("duotrio", "tetrad", "threeAFC", "twoAFC", "triangle"))
+### plow: is phat limited below at the guessing probability?
 {
     method <- match.arg(method)
     plow <- match.arg(plow)
@@ -119,7 +120,8 @@ waldci <- function(par, se, level=0.95) {
 waldcip <- function(x, n, level=0.95) {
     p <- x/n
     se <- sqrt(p * (1 - p) / n)
-    waldci(par=p, se=se, level=level)
+    ci <- waldci(par=p, se=se, level=level)
+    delimit(ci, lower=0, upper=1)
 }
 
 ## lrci <-
@@ -164,7 +166,7 @@ lici <- function(x, n, level=0.95) {
 ## }
 
 ACci <- function(x, n, level=0.95) {
-    waldcip(x+2, n+4, level=level)
+    ci <- waldcip(x+2, n+4, level=level)
 }
 
 scoreci <- function(x, n, level=0.95) {
@@ -203,9 +205,23 @@ blakerci <- function(x, n, level=0.95) {
     c("lwr"=lwr, "upr"=upr)
 }
 
+blakerci <- function(x, n, level=0.95, tol=1e-8) {
+    stopifnot(require(exactci))
+    ci <- binom.exact(x, n, conf.level=level, tsmethod="blaker",
+                      control=exactci:::binomControl(tol=tol))$conf.int
+    as.vector(ci)
+}
+
 binomci <-
     function(x, n, level=0.95,
              statistic=c("likelihood", "waldp", "AC", "score", "exact", "blaker"))
+### Computes the CI for a binomial p
+###
+### x may be a vector
+###
+### Result:
+###  A 2-column matrix [lwr, upr]
+###
 {
     stopifnot(length(n) == 1L)
     stopifnot(length(x) >= 1L)
@@ -228,10 +244,17 @@ binomci <-
 
 binomci.d <-
     function(x, n, level=0.95, plow=c("pGuess", "NA"),
-             statistic=c("likelihood", "waldp", "AC", "score", "exact",
-             "blaker", "waldd"),
-             method=c("duotrio", "tetrad", "threeAFC", "twoAFC",
-             "triangle"))
+             statistic=c("likelihood", "waldp", "AC", "score", "exact", "blaker", "waldd"),
+             method=c("duotrio", "tetrad", "threeAFC", "twoAFC", "triangle"))
+### Computes the CI for d-prime
+###
+### plow is only used for waldd
+###
+### x may be a vector
+###
+### Result:
+###  A 2-column matrix [lwr, upr]
+###
 {
     stopifnot(length(n) == 1L)
     stopifnot(length(x) >= 1L)
@@ -266,7 +289,15 @@ binomci.d <-
 
 covProb <-
     function(theta, n, level=0.95,
-             method=c("likelihood", "waldp", "AC", "score", "exact", "blaker"))
+             statistic=c("likelihood", "waldp", "AC", "score", "exact", "blaker"))
+### Computes the coverage probability for a CI
+###
+### theta: the binomial success probability - can be vector.
+### n: sample size
+###
+###
+### Result:
+###  a vector of coverage probabilities
 {
     ## Vectorized over theta.
     stopifnot(length(n) == 1L)
@@ -274,54 +305,44 @@ covProb <-
     n <- as.integer(round(n))
     stopifnot(length(theta) >= 1L)
     stopifnot(all(theta <=1 & theta >= 0))
-    method <- match.arg(method)
+    statistic <- match.arg(statistic)
     xvec <- 0:n
-    ## dens <- dbinom(xvec, n, theta)
-    cifun <- switch(method,
-                    "likelihood"=lici,
-                    "waldp"=waldcip,
-                    "AC"=ACci,
-                    "score"=scoreci,
-                    "exact"=exactci,
-                    "blaker"=blakerci)
-    CI <- t(sapply(xvec, cifun, n=n, level=level))
+    CI <- binomci(x=xvec, n=n, level=level, statistic=statistic)
     cp <- sapply(theta, function(th) {
         ok <- CI[, 1] <= th & th <= CI[, 2]
         sum(dbinom(xvec, n, th)[ok]) ## Coverage probability
     })
-    ## ok <- CI[, 1] <= theta & theta <= CI[, 2]
-    ## cp <- sum(dens[ok]) ## Coverage probability
     cp
 }
 
-covProb(.5, 10, method="like")
-covProb(.6, 10, method="like")
-
-covProb(c(.5, .6), 10, method="like")
+## covProb(.5, 10, method="like")
+## covProb(.6, 10, method="like")
+##
+## covProb(c(.5, .6), 10, method="like")
 
 ciWidth <-
     function(theta, n, level=0.95, type=c("expected", "median"),
-             method=c("likelihood", "waldp", "AC", "score", "exact", "blaker"))
+             statistic=c("likelihood", "waldp", "AC", "score", "exact", "blaker"))
+### Computes the expected or median width of a CI for a binomial
+###   success parameter
+###
+### theta: the binomial success probability - can be vector.
+### n: sample size
+###
+###
+### Result:
+###  a vector of expected/median CI widths
 {
     ## Vectorized over theta.
     stopifnot(length(n) == 1L)
     stopifnot(abs(round(n) - n) < 1e-4)
     stopifnot(length(theta) >= 1L)
     stopifnot(all(theta <=1 & theta >= 0))
-    method <- match.arg(method)
+    statistic <- match.arg(statistic)
     type <- match.arg(type)
-    ## if(type == "median") stop("'type = median' is not yet implemented")
     n <- as.integer(round(n))
     xvec <- 0:n
-    ## dens <- dbinom(xvec, n, theta)
-    cifun <- switch(method,
-                    "likelihood"=lici,
-                    "waldp"=waldcip,
-                    "AC"=ACci,
-                    "score"=scoreci,
-                    "exact"=exactci,
-                    "blaker"=blakerci)
-    CI <- t(sapply(xvec, cifun, n=n, level=level))
+    CI <- binomci(x=xvec, n=n, level=level, statistic=statistic)
     CI.width <- abs(apply(CI, 1, diff))
     if(type == "expected") {
         ll <- vapply(theta, function(th) {
@@ -337,9 +358,17 @@ ciWidth <-
 
 ciWidth.d <-
     function(d.prime, n, level=0.95, type=c("expected", "median"),
+             boundary=c("ignore-outcomes", "use-nearest", "not-covered", "covered"),
              method=c("duotrio", "tetrad", "threeAFC", "twoAFC", "triangle"),
-             statistic=c("likelihood", "waldp", "score",
-             "exact", "blaker", "waldd"))
+             statistic=c("likelihood", "waldp", "AC", "score", "exact", "blaker", "waldd"))
+### Computes the expected or median width of a CI for d-prime
+###
+### d.prime: value of d-prime - can be vector.
+### n: sample size
+###
+###
+### Result:
+###  a vector of expected/median CI widths
 {
     ## Vectorized over d.prime.
     stopifnot(length(n) == 1L)
@@ -349,15 +378,38 @@ ciWidth.d <-
     method <- match.arg(method)
     type <- match.arg(type)
     stat <- match.arg(statistic)
+    boundary <- match.arg(boundary)
     n <- as.integer(round(n))
     xvec <- 0:n
     theta <- psyfun(d.prime, method=method)
     ## Compute all CI and their widths:
-    CI <- t(sapply(xvec, getCId, n=n, level=level, method=method,
-                   statistic=stat))
+    CI <- binomci.d(x=xvec, n=n, level=level, statistic=statistic, method=method)
+    ## Handle boundary issues:
     keep <- apply(CI, 1, function(x) all(is.finite(x)))
-    xvec <- xvec[keep]
-    CI.width <- abs(apply(CI[keep, ], 1, diff))
+    isNA <- complete.cases(CI)
+    if(boundary == "use-nearest") {
+        pGuess <- ifelse(method %in% c("duotrio", "twoAFC"), 1/2, 1/3)
+        Keep <- keep | xvec > n*pGuess
+        CI[!Keep, 1] <- CI[Keep, ][1, 1]
+        CI[!Keep, 2] <- CI[Keep, ][1, 2]
+        CI <- CI[-(n+1), ]
+        xvec <- xvec[-(n+1)]
+        ## if(!all(is.finite(CI[n+1, ])))
+        ##     CI[n+1, 1:2] <- CI[n, 1:2]
+### FIXME: use-nearest option is not working properly for waldp,
+### e.g. binomci.d(0:10, 10, method="triangle", stat="waldp") for
+### which outcomes 8-10 give upr=Inf.
+    } else if(boundary == "ignore-outcomes") {
+        CI <- CI[keep, ]
+        xvec <- xvec[keep]
+    } else if(boundary == "not-covered") {
+        CI[!keep, ] <- -1 ## width = 0
+    } else if(boundary == "covered") {
+        CI[!keep, 1] <- 0 ## width = Inf
+        CI[!keep, 2] <- Inf
+    } else stop("'boundary' argument not recognized")
+    ## xvec <- xvec[keep]
+    CI.width <- abs(apply(CI, 1, diff))
     ## Average CI-width
     if(type == "expected") {
         ll <- vapply(theta, function(th) {
@@ -374,7 +426,16 @@ ciWidth.d <-
 
 covProb.waldd <-
     function(d.prime, n, level=0.95, plow=c("pGuess", "NA"),
+             boundary=c("use-nearest", "ignore-outcomes", "not-covered", "covered"),
              method=c("duotrio", "tetrad", "threeAFC", "twoAFC", "triangle"))
+### Computes the coverage probability of the wald_d CI for d-prime
+###
+### d.prime: the value of d-prime - can be vector.
+### n: sample size
+###
+###
+### Result:
+###  a vector of coverage probabilities
 {
     ## Vectorized over theta.
     stopifnot(length(n) == 1L)
@@ -383,19 +444,67 @@ covProb.waldd <-
     stopifnot(length(d.prime) >= 1L)
     stopifnot(all(d.prime >= 0))
     method <- match.arg(method)
+    plow <- match.arg(plow)
+    boundary <- match.arg(boundary)
     theta <- psyfun(d.prime, method=method)
     xvec <- 0:n
     CI <- do.call(rbind, lapply(xvec, walddci, n=n, level=level,
                                 plow=plow, method=method))
     keep <- complete.cases(CI)
-    xvec.keep <- xvec[keep]
-    CI.keep <- CI[keep, , drop=FALSE]
-    norm.const <- sum(dens.keep)
+    if(boundary == "use-nearest") {
+        CI[!keep, 1] <- CI[keep, ][1, 1]
+        CI[!keep, 2] <- CI[keep, ][1, 2]
+        CI[n+1, 1:2] <- CI[n, 1:2]
+    } else if(boundary == "ignore-outcomes") {
+        CI <- CI[keep, ]
+        xvec <- xvec[keep]
+    } else if(boundary == "not-covered") {
+        CI[!keep, ] <- -1
+    } else if(boundary == "covered") {
+        CI[!keep, 1] <- 0
+        CI[!keep, 2] <- Inf
+    } else stop("'boundary' argument not recognized")
     cp <- sapply(seq_along(d.prime), function(i) {
-        ok <- CI.keep[, 1] <= d.prime[i] & d.prime[i] <= CI.keep[, 2]
-        dens <- dbinom(xvec.keep, n, theta[i])
+        ok <- CI[, 1] <= d.prime[i] & d.prime[i] <= CI[, 2]
+        dens <- dbinom(xvec, n, theta[i])
+        dens <- dens / sum(dens)
         sum(dens[ok]) ## Coverage probability
     })
+    cp
+}
+
+covProb.d <-
+    function(d.prime, n, level=0.95, plow=c("pGuess", "NA"),
+             boundary=c("use-nearest", "ignore-outcomes", "not-covered", "covered"),
+             method=c("duotrio", "tetrad", "threeAFC", "twoAFC", "triangle"),
+             statistic=c("likelihood", "waldp", "AC", "score",
+             "exact", "blaker", "waldd"))
+###
+###
+### boundary: only used for statistic="waldd"
+###
+###
+###
+{
+    stopifnot(length(n) == 1L)
+    stopifnot(abs(round(n) - n) < 1e-4)
+    n <- as.integer(round(n))
+    stopifnot(length(d.prime) >= 1L)
+    stopifnot(all(d.prime >= 0))
+    method <- match.arg(method)
+    statistic <- match.arg(statistic)
+    boundary <- match.arg(boundary)
+    plow <- match.arg(plow)
+    ## Compute coverage probability:
+    if(statistic == "waldd") {
+        mc <- match.call()
+        mc$statistic <- NULL
+        mc[[1]] <- as.name("covProb.waldd")
+        cp <- eval.parent(mc)
+    } else {
+        thvec <- psyfun(d.prime, method=method)
+        cp <- covProb(theta=thvec, n=n, level=level, statistic=statistic)
+    }
     cp
 }
 
